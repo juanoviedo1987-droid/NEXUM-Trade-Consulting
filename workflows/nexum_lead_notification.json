@@ -1,0 +1,127 @@
+{
+  "name": "NEXUM - Notificación de Nuevos Leads (Supabase)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "e4a2d811-1234-4b5c-8901-abcdef123456",
+      "name": "Cada 5 Minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?status=eq.nuevo",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-5678-4901-abcd-ef1234567890",
+      "name": "Consultar Leads Nuevos en Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nif (!items || items.length === 0 || !items[0].json || !items[0].json.id) {\n  return [];\n}\n\nreturn items.map(item => {\n  const l = item.json;\n  const telClean = (l.telefono || '').replace(/[^0-9]/g, '');\n  const waLink = telClean ? `https://wa.me/${telClean}` : '#';\n  \n  const html = `🚨 <b>¡NUEVO LEAD EN NEXUM TRADE CONSULTING!</b>\\n\\n` +\n    `👤 <b>Contacto:</b> ${l.nombre}\\n` +\n    `🏢 <b>Empresa:</b> ${l.empresa}\\n` +\n    `📧 <b>Email:</b> ${l.email}\\n` +\n    `📱 <b>WhatsApp:</b> <a href=\"${waLink}\">${l.telefono}</a>\\n` +\n    `🎯 <b>Situación:</b> ${l.operacion}\\n` +\n    `💬 <b>Mensaje:</b> ${l.mensaje || 'Sin detalles'}\\n\\n` +\n    `📅 <i>Registrado el: ${new Date(l.created_at).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}</i>`;\n    \n  return {\n    json: {\n      id: l.id,\n      nombre: l.nombre,\n      empresa: l.empresa,\n      email: l.email,\n      mensajeHtml: html\n    }\n  };\n});"
+      },
+      "id": "c3d4e5f6-7890-4123-abcd-ef1234567890",
+      "name": "Preparar Mensaje de Alerta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?id=eq.{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"status\": \"notificado\"\n}",
+        "options": {}
+      },
+      "id": "d4e5f6a1-2345-4678-bcde-f12345678901",
+      "name": "Marcar Lead como Notificado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [960, 300]
+    }
+  ],
+  "connections": {
+    "Cada 5 Minutos": {
+      "main": [
+        [
+          {
+            "node": "Consultar Leads Nuevos en Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Leads Nuevos en Supabase": {
+      "main": [
+        [
+          {
+            "node": "Preparar Mensaje de Alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Mensaje de Alerta": {
+      "main": [
+        [
+          {
+            "node": "Marcar Lead como Notificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
