@@ -24,6 +24,27 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo-3.png">
   <link rel="canonical" href="https://nexumtradeconsulting.com.ar/">
+  <link rel="alternate" hreflang="es" href="https://nexumtradeconsulting.com.ar/">
+  <link rel="alternate" hreflang="en" href="https://nexumtradeconsulting.com.ar/en/">
+  <link rel="alternate" hreflang="x-default" href="https://nexumtradeconsulting.com.ar/">
+
+  <!-- Auto-detección inteligente de idioma para navegadores en inglés -->
+  <script>
+    (function() {
+      try {
+        var pref = localStorage.getItem('nexum_lang');
+        if (!pref) {
+          var browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+          if (browserLang.startsWith('en')) {
+            localStorage.setItem('nexum_lang', 'en');
+            window.location.replace('en/');
+          }
+        } else if (pref === 'en') {
+          window.location.replace('en/');
+        }
+      } catch (e) {}
+    })();
+  </script>
   
   <!-- Schema.org JSON-LD para Google & SEO -->
   <script type="application/ld+json">
@@ -122,8 +143,23 @@
       <div class="hidden md:flex items-center gap-3">
         <!-- Language Switcher -->
         <div class="flex items-center bg-slate-100 rounded-lg p-0.5 text-xs font-bold text-slate-600 border border-slate-200">
-          <span class="px-2 py-1 rounded bg-white text-brand-900 shadow-xs">ES</span>
-          <a href="en/" class="px-2 py-1 text-slate-500 hover:text-brand-900 transition-colors">EN</a>
+          <span class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white text-brand-900 shadow-xs cursor-default">
+            <svg class="w-3.5 h-2.5 rounded-[2px] shadow-xs flex-shrink-0" viewBox="0 0 640 480" aria-hidden="true">
+              <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+              <path fill="#ffc400" d="M0 120h640v240H0z"/>
+            </svg>
+            <span>ES</span>
+          </span>
+          <a href="en/" onclick="try{localStorage.setItem('nexum_lang','en');}catch(e){}" class="flex items-center gap-1.5 px-2.5 py-1 text-slate-500 hover:text-brand-900 transition-colors" title="Switch to English">
+            <svg class="w-3.5 h-2.5 rounded-[2px] shadow-xs flex-shrink-0" viewBox="0 0 60 30" aria-hidden="true">
+              <path d="M0 0h60v30H0z" fill="#012169"/>
+              <path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/>
+              <path d="M0 0l60 30m0-30L0 30" stroke="#C8102E" stroke-width="2"/>
+              <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/>
+              <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/>
+            </svg>
+            <span>EN</span>
+          </a>
         </div>
 
         <a href="#contacto" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-brand-900 text-white font-semibold text-sm hover:bg-brand-800 shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
@@ -144,8 +180,23 @@
       <!-- Mobile Language Switcher -->
       <div class="flex items-center gap-2 py-2 border-b border-slate-100">
         <span class="text-xs font-semibold text-slate-500">Idioma:</span>
-        <span class="px-2.5 py-1 rounded bg-brand-900 text-white text-xs font-bold">Español</span>
-        <a href="en/" class="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">English</a>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-900 text-white text-xs font-bold shadow-xs">
+          <svg class="w-4 h-3 rounded-[2px] flex-shrink-0" viewBox="0 0 640 480" aria-hidden="true">
+            <path fill="#c60b1e" d="M0 0h640v480H0z"/>
+            <path fill="#ffc400" d="M0 120h640v240H0z"/>
+          </svg>
+          <span>Español</span>
+        </span>
+        <a href="en/" onclick="try{localStorage.setItem('nexum_lang','en');}catch(e){}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+          <svg class="w-4 h-3 rounded-[2px] flex-shrink-0" viewBox="0 0 60 30" aria-hidden="true">
+            <path d="M0 0h60v30H0z" fill="#012169"/>
+            <path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/>
+            <path d="M0 0l60 30m0-30L0 30" stroke="#C8102E" stroke-width="2"/>
+            <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/>
+            <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/>
+          </svg>
+          <span>English</span>
+        </a>
       </div>
 
       <a href="#problemas" class="block py-2 text-base font-semibold text-slate-700 hover:text-brand-800">Desafíos</a>
@@ -622,7 +673,11 @@
               </p>
 
               <p class="text-xs sm:text-sm text-white font-medium flex items-center gap-2.5">
-                <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+                <svg class="w-4 h-4 text-pink-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                </svg>
                 <a href="https://www.instagram.com/nexumtradeconsulting/" target="_blank" rel="noopener noreferrer" id="igLink" class="hover:text-sky-300 transition-colors">@nexumtradeconsulting</a>
               </p>
 
@@ -763,7 +818,11 @@
             <span>info@nexumtc.com.ar</span>
           </a>
           <a href="https://www.instagram.com/nexumtradeconsulting/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors" aria-label="Instagram">
-            <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+            <svg class="w-4 h-4 text-pink-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            </svg>
             <span>@nexumtradeconsulting</span>
           </a>
         </div>
