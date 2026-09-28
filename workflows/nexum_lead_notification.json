@@ -55,7 +55,7 @@
     },
     {
       "parameters": {
-        "sendTo": "info@nexumtc.com.ar, carlos.oviedo@nexumtc.com.ar",
+        "sendTo": "info@nexumtc.com.ar",
         "subject": "={{ $json.asunto }}",
         "message": "={{ $json.mensajeHtml }}",
         "options": {
