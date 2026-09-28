@@ -23,6 +23,35 @@
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo-3.png">
+  <link rel="canonical" href="https://nexumtradeconsulting.com.ar/">
+  
+  <!-- Schema.org JSON-LD para Google & SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Nexum Trade Consulting",
+    "url": "https://nexumtradeconsulting.com.ar/",
+    "logo": "https://nexumtradeconsulting.com.ar/assets/logo-1.png",
+    "image": "https://nexumtradeconsulting.com.ar/assets/og-banner.png",
+    "description": "Consultoría estratégica en comercio exterior y exportación para PyMEs argentinas liderada por Carlos A. Oviedo.",
+    "telephone": "+5491172376197",
+    "email": "info@nexumtc.com.ar",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Buenos Aires",
+      "addressCountry": "AR"
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Carlos A. Oviedo",
+      "jobTitle": "Director de Operaciones & Comercio Exterior"
+    },
+    "sameAs": [
+      "https://www.instagram.com/nexumtradeconsulting/"
+    ]
+  }
+  </script>
   
   <!-- Google Fonts: Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,7 +106,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <a href="#" class="flex items-center group py-2">
+      <a href="/" class="flex items-center group py-2">
         <img src="assets/logo-1.png" alt="Nexum Trade Consulting" class="h-10 sm:h-12 w-auto object-contain group-hover:opacity-90 transition-opacity">
       </a>
 
@@ -110,10 +139,14 @@
       <a href="#quienes-somos" class="block py-2 text-base font-semibold text-slate-700 hover:text-brand-800">Trayectoria</a>
       <a href="#servicios" class="block py-2 text-base font-semibold text-slate-700 hover:text-brand-800">Servicios</a>
       <a href="#contacto" class="block py-2 text-base font-semibold text-slate-700 hover:text-brand-800">Contacto</a>
-      <div class="pt-2">
+      <div class="pt-2 space-y-2">
         <a href="#contacto" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-brand-900 text-white font-semibold text-sm">
           <span>Solicitar Consulta Gratuita</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="https://wa.me/5491172376197" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-semibold text-sm">
+          <i data-lucide="phone" class="w-4 h-4"></i>
+          <span>WhatsApp (+54 9 11 7237-6197)</span>
         </a>
       </div>
     </div>
@@ -543,6 +576,11 @@
               <p class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-1">Canales Directos</p>
               
               <p class="text-sm text-white font-medium flex items-center gap-2.5">
+                <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400"></i>
+                <a href="https://wa.me/5491172376197" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-300 transition-colors">+54 9 11 7237-6197 (WhatsApp)</a>
+              </p>
+
+              <p class="text-sm text-white font-medium flex items-center gap-2.5">
                 <i data-lucide="mail" class="w-4 h-4 text-sky-400"></i>
                 <a href="mailto:info@nexumtc.com.ar" class="hover:text-sky-300 transition-colors">info@nexumtc.com.ar</a>
               </p>
@@ -553,7 +591,7 @@
               </p>
 
               <p class="text-xs text-slate-400 pt-1">
-                Atención a PyMEs de toda la Argentina y Cono Sur.
+                Atención personalizada a PyMEs de toda la Argentina y Cono Sur.
               </p>
             </div>
           </div>
@@ -670,21 +708,27 @@
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         
         <div class="flex items-center gap-3">
-          <img src="assets/logo-3.png" alt="Nexum Isotipo" class="w-10 h-10 object-contain">
+          <div class="w-10 h-10 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-sm">
+            <img src="assets/logo-3.png" alt="Nexum Isotipo" class="w-full h-full object-contain">
+          </div>
           <div>
             <span class="block font-heading font-bold text-white text-base tracking-tight">NEXUM TRADE CONSULTING</span>
             <span class="block text-[10px] uppercase font-bold tracking-widest text-slate-400">Consultoría Estratégica en Exportación</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-6">
-          <a href="https://www.instagram.com/nexumtradeconsulting/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors" aria-label="Instagram">
-            <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
-            <span>@nexumtradeconsulting</span>
+        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          <a href="https://wa.me/5491172376197" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-xs text-slate-400 hover:text-emerald-400 transition-colors" aria-label="WhatsApp">
+            <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i>
+            <span>+54 9 11 7237-6197</span>
           </a>
           <a href="mailto:info@nexumtc.com.ar" class="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors">
             <i data-lucide="mail" class="w-4 h-4 text-sky-400"></i>
             <span>info@nexumtc.com.ar</span>
+          </a>
+          <a href="https://www.instagram.com/nexumtradeconsulting/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-xs text-slate-400 hover:text-white transition-colors" aria-label="Instagram">
+            <i data-lucide="instagram" class="w-4 h-4 text-pink-400"></i>
+            <span>@nexumtradeconsulting</span>
           </a>
         </div>
 
