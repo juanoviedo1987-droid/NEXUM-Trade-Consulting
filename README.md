@@ -60,15 +60,15 @@ El proyecto exclusivo **`nexum-trade-consulting`** ya se encuentra activo en Sup
 
 ---
 
-## 🎨 Identidad Visual y Paleta de Colores
-
-| Color | HEX | RGB | Uso Principal |
+| Color | HEX | RGB | Rol / Aplicación |
 | :--- | :--- | :--- | :--- |
-| **Petróleo Oscuro** | `#002529` | `rgb(0, 37, 41)` | **Primario Institucional:** Fondos del hero, headers, footer y autoridad. |
-| **Azul Cerúleo** | `#0074A1` | `rgb(0, 116, 161)` | **Acento y Acción:** Botones de llamado a la acción (CTAs), badges y enlaces. |
-| **Blanco Puro** | `#FFFFFF` | `rgb(255, 255, 255)` | **Contraste y Limpieza:** Fondos de tarjetas de servicios y formulario. |
-| **Verde Esmeralda** | `#10B981` | `rgb(16, 185, 129)` | **Conversión y Éxito:** Botón de WhatsApp Business y checks de validación. |
-| **Celeste Hielo** | `#38BDF8` | `rgb(56, 189, 248)` | **Iluminación:** Glows sutiles y textos destacados en fondo oscuro. |
+| **Petróleo Oscuro** | `#002529` | `rgb(0, 37, 41)` | **Color Oficial Primario (Oscuro):** Fondos de hero, encabezados, footer y autoridad institucional. |
+| **Azul Cerúleo** | `#0074A1` | `rgb(0, 116, 161)` | **Color Oficial Secundario (Acento):** Botones de llamado a la acción (CTAs), isotipo, badges y enlaces. |
+| **Blanco Puro** | `#FFFFFF` | `rgb(255, 255, 255)` | **Color Oficial Primario (Luz & Fondo):** Color oficial de marca utilizado frecuentemente como fondo principal en piezas gráficas, presentaciones comerciales, papelería y secciones web para máxima claridad y elegancia. |
+| **Verde Esmeralda** | `#10B981` | `rgb(16, 185, 129)` | **Funcional / Conversión:** Botón de WhatsApp Business, estados activos y checks de validación. |
+| **Celeste Hielo** | `#38BDF8` | `rgb(56, 189, 248)` | **Funcional / Resaltado:** Resaltados técnicos, iluminación sutil y textos destacados sobre fondos oscuros. |
+
+> **Nota de Identidad:** El **Blanco Puro (#FFFFFF)** es un pilar oficial de la paleta de Nexum Trade Consulting; se concibe como color de fondo principal para transmitir transparencia, modernidad y alto contraste frente a la sobriedad del Petróleo Oscuro y la vivacidad del Azul Cerúleo.
 
 ### Tipografía Oficial
 * **Títulos y Encabezados:** `Plus Jakarta Sans` (Extrabold / Bold)
