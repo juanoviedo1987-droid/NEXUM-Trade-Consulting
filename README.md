@@ -51,32 +51,18 @@ const N8N_WEBHOOK_URL = "https://tu-instancia-n8n.com/webhook/nexum-contact";
 
 ---
 
-## 🗄️ Esquema de Tabla en Supabase
+## 🗄️ Base de Datos en Supabase (Proyecto Dedicado)
 
-Ejecutá esta consulta SQL en el SQL Editor de tu proyecto de Supabase para crear la tabla de leads:
-
-```sql
-create table leads_nexum (
-  id uuid default gen_random_uuid() primary key,
-  created_at timestamptz default now(),
-  nombre text not null,
-  empresa text not null,
-  email text not null,
-  telefono text,
-  operacion text,
-  mensaje text,
-  status text default 'nuevo' check (status in ('nuevo', 'contactado', 'reunion_agendada', 'descartado', 'cliente'))
-);
-```
+El proyecto exclusivo **`nexum-trade-consulting`** ya se encuentra activo en Supabase (Región: `sa-east-1` São Paulo):
+* **Project ID:** `wbcfmanuhotyevquiaht`
+* **URL:** `https://wbcfmanuhotyevquiaht.supabase.co`
+* **Tabla principal:** `leads_nexum` (con políticas de Row Level Security para inserciones seguras).
 
 ---
 
-## 🌐 Despliegue en GitHub Pages
+## 🌐 Despliegue en GitHub Pages y Dominio Personalizado
 
-1. Subir cambios a tu repositorio remoto:
-   ```bash
-   git add .
-   git commit -m "feat: landing page nexum trade consulting v1"
-   git push origin main
-   ```
-2. En GitHub: `Settings` → `Pages` → `Build and deployment` → Source: `Deploy from a branch` (`main` / `/root`).
+* **Repositorio:** [juanoviedo1987-droid/NEXUM-Trade-Consulting](https://github.com/juanoviedo1987-droid/NEXUM-Trade-Consulting)
+* **Dominio Oficial:** `https://nexumtradeconsulting.com.ar`
+* **CDN / SSL:** Cloudflare (Nameservers: `tessa.ns.cloudflare.com` y `tony.ns.cloudflare.com`).
+

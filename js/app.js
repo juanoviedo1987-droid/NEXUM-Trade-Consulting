@@ -6,8 +6,8 @@
 // CONFIGURACIÓN DE INTEGRACIÓN (Supabase & n8n)
 // ==========================================
 const SUPABASE_CONFIG = {
-  url: "https://hlvovocufifroigdlhmv.supabase.co",
-  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhsdm92b2N1Zmlmcm9pZ2RsaG12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMDM3MjksImV4cCI6MjEwNTY3OTcyOX0.7KGejvoqjyTAZhEGYODz_Jm2DpddYiLUyIKdhhLxsr0",
+  url: "https://wbcfmanuhotyevquiaht.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g",
   tableName: "leads_nexum"
 };
 
