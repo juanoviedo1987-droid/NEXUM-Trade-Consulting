@@ -1,0 +1,33 @@
+/* Custom styles for Nexum Trade Consulting */
+
+/* Smooth scroll & base enhancements */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1c30;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e476e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a7bb4;
+}
+
+/* Subtle card hover transition */
+.card-hover-effect {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease-in-out;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-3px);
+}
