@@ -45,13 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Detección de idioma
+  const isEn = document.documentElement.lang === "en" || window.location.pathname.includes("/en/");
+
   // 4. Configurar número de WhatsApp
   const whatsappBtn = document.getElementById("whatsappBtn");
   if (whatsappBtn && WHATSAPP_PHONE) {
-    const msg = encodeURIComponent(
-      "Hola Carlos y equipo de Nexum Trade Consulting, me gustaría consultarles por la exportación de nuestros productos."
-    );
-    whatsappBtn.href = `https://wa.me/${WHATSAPP_PHONE}?text=${msg}`;
+    const defaultMsg = isEn
+      ? "Hello Carlos and the Nexum Trade Consulting team, I would like to inquire about exporting our products."
+      : "Hola Carlos y equipo de Nexum Trade Consulting, me gustaría consultarles por la exportación de nuestros productos.";
+    whatsappBtn.href = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(defaultMsg)}`;
   }
 
   // 5. Manejo del Formulario de Captura de Leads (Envío directo a Supabase)
@@ -81,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         telefono: formData.get("telefono")?.toString().trim() || "",
         operacion: formData.get("operacion")?.toString().trim() || "",
         mensaje: formData.get("mensaje")?.toString().trim() || "",
-        origen: "landing_nexum_web",
+        origen: isEn ? "landing_nexum_en" : "landing_nexum_es",
       };
 
       // Estado visual de carga
@@ -123,8 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       } catch (err) {
         console.error("Error al enviar lead:", err);
-        formErrorMsg.textContent =
-          "Hubo un inconveniente técnico al guardar tu consulta. Por favor escribinos directamente por WhatsApp al +54 9 11 7237-6197.";
+        formErrorMsg.textContent = isEn
+          ? "There was a technical issue saving your inquiry. Please contact us directly via WhatsApp at +54 9 11 7237-6197."
+          : "Hubo un inconveniente técnico al guardar tu consulta. Por favor escribinos directamente por WhatsApp al +54 9 11 7237-6197.";
         formError.classList.remove("hidden");
       } finally {
         setLoading(false);
@@ -135,12 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function setLoading(isLoading) {
     if (isLoading) {
       submitBtn.disabled = true;
-      btnText.textContent = "Procesando...";
+      btnText.textContent = isEn ? "Processing..." : "Procesando...";
       btnIcon.classList.add("hidden");
       btnSpinner.classList.remove("hidden");
     } else {
       submitBtn.disabled = false;
-      btnText.textContent = "Solicitar Diagnóstico Sin Costo";
+      btnText.textContent = isEn ? "Request Free Assessment" : "Solicitar Diagnóstico Sin Costo";
       btnIcon.classList.remove("hidden");
       btnSpinner.classList.add("hidden");
     }
