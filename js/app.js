@@ -3,13 +3,18 @@
  */
 
 // ==========================================
-// CONFIGURACIÓN DE INTEGRACIÓN (n8n / Webhook)
+// CONFIGURACIÓN DE INTEGRACIÓN (Supabase & n8n)
 // ==========================================
-// Pega aquí la URL de tu Webhook de n8n cuando lo tengas activo:
-// Ejemplo: "https://n8n.tudominio.com/webhook/nexum-contact"
+const SUPABASE_CONFIG = {
+  url: "https://hlvovocufifroigdlhmv.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhsdm92b2N1Zmlmcm9pZ2RsaG12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxMDM3MjksImV4cCI6MjEwNTY3OTcyOX0.7KGejvoqjyTAZhEGYODz_Jm2DpddYiLUyIKdhhLxsr0",
+  tableName: "leads_nexum"
+};
+
+// Si tenés una URL pública para n8n, podés agregarla acá (opcional):
 const N8N_WEBHOOK_URL = ""; 
 
-// Número de WhatsApp para el botón flotante (formato internacional sin signos ni espacios, ej: 5491112345678)
+// Número de WhatsApp Business oficial
 const WHATSAPP_PHONE = "5491172376197"; 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
       mobileMenu.classList.toggle("hidden");
     });
 
-    // Cerrar menú al hacer click en un enlace
     mobileMenu.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
         mobileMenu.classList.add("hidden");
@@ -41,16 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 4. Configurar número de WhatsApp dinámicamente si se personaliza
+  // 4. Configurar número de WhatsApp
   const whatsappBtn = document.getElementById("whatsappBtn");
-  if (whatsappBtn && WHATSAPP_PHONE !== "5491100000000") {
+  if (whatsappBtn && WHATSAPP_PHONE) {
     const msg = encodeURIComponent(
       "Hola Carlos y equipo de Nexum Trade Consulting, me gustaría consultarles por la exportación de nuestros productos."
     );
     whatsappBtn.href = `https://wa.me/${WHATSAPP_PHONE}?text=${msg}`;
   }
 
-  // 5. Manejo del Formulario de Captura de Leads
+  // 5. Manejo del Formulario de Captura de Leads (Envío directo a Supabase)
   const form = document.getElementById("leadForm");
   const submitBtn = document.getElementById("submitBtn");
   const btnText = document.getElementById("btnText");
@@ -77,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         telefono: formData.get("telefono")?.toString().trim() || "",
         operacion: formData.get("operacion")?.toString().trim() || "",
         mensaje: formData.get("mensaje")?.toString().trim() || "",
-        timestamp: new Date().toISOString(),
         origen: "landing_nexum_web",
       };
 
@@ -85,38 +88,43 @@ document.addEventListener("DOMContentLoaded", () => {
       setLoading(true);
 
       try {
-        if (!N8N_WEBHOOK_URL) {
-          // MODO DEMO / SIMULACIÓN:
-          // Si aún no configuraste la URL de n8n, simula el éxito tras 800ms
-          console.log("[Nexum Demo Mode] Payload generado:", payload);
-          await new Promise((resolve) => setTimeout(resolve, 800));
-        } else {
-          // MODO PRODUCCIÓN: Envío real al Webhook de n8n
-          const response = await fetch(N8N_WEBHOOK_URL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify(payload),
-          });
+        // Inserción en Supabase en tiempo real (Base 24/7)
+        const supabaseEndpoint = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}`;
+        const response = await fetch(supabaseEndpoint, {
+          method: "POST",
+          headers: {
+            "apikey": SUPABASE_CONFIG.anonKey,
+            "Authorization": `Bearer ${SUPABASE_CONFIG.anonKey}`,
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify(payload),
+        });
 
-          if (!response.ok) {
-            throw new Error(`Error en el servidor: Código HTTP ${response.status}`);
-          }
+        if (!response.ok) {
+          throw new Error(`Error en Supabase: HTTP ${response.status}`);
+        }
+
+        // Si hay webhook de n8n configurado, enviar también en paralelo
+        if (N8N_WEBHOOK_URL) {
+          fetch(N8N_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }).catch((n8nErr) => console.warn("n8n webhook notification error:", n8nErr));
         }
 
         // Mostrar éxito y limpiar formulario
         formSuccess.classList.remove("hidden");
         form.reset();
 
-        // Scroll suave al mensaje de éxito si es necesario
+        // Scroll suave al mensaje de éxito
         formSuccess.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
       } catch (err) {
         console.error("Error al enviar lead:", err);
         formErrorMsg.textContent =
-          "No pudimos conectar con el servidor en este momento. Por favor, reintentá o comunicate por WhatsApp o email directo.";
+          "Hubo un inconveniente técnico al guardar tu consulta. Por favor escribinos directamente por WhatsApp al +54 9 11 7237-6197.";
         formError.classList.remove("hidden");
       } finally {
         setLoading(false);
