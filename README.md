@@ -60,6 +60,26 @@ El proyecto exclusivo **`nexum-trade-consulting`** ya se encuentra activo en Sup
 
 ---
 
+## 🎨 Identidad Visual y Paleta de Colores
+
+| Color | HEX | RGB | Uso Principal |
+| :--- | :--- | :--- | :--- |
+| **Petróleo Oscuro** | `#002529` | `rgb(0, 37, 41)` | **Primario Institucional:** Fondos del hero, headers, footer y autoridad. |
+| **Azul Cerúleo** | `#0074A1` | `rgb(0, 116, 161)` | **Acento y Acción:** Botones de llamado a la acción (CTAs), badges y enlaces. |
+| **Blanco Puro** | `#FFFFFF` | `rgb(255, 255, 255)` | **Contraste y Limpieza:** Fondos de tarjetas de servicios y formulario. |
+| **Verde Esmeralda** | `#10B981` | `rgb(16, 185, 129)` | **Conversión y Éxito:** Botón de WhatsApp Business y checks de validación. |
+| **Celeste Hielo** | `#38BDF8` | `rgb(56, 189, 248)` | **Iluminación:** Glows sutiles y textos destacados en fondo oscuro. |
+
+### Tipografía Oficial
+* **Títulos y Encabezados:** `Plus Jakarta Sans` (Extrabold / Bold)
+* **Cuerpo y Lectura:** `Inter` (Regular / Medium / Semibold)
+* **Activos de Marca:**
+  * `assets/logo-1.png`: Logo horizontal institucional completo.
+  * `assets/logo-3.png`: Isotipo de flechas ascendentes (Favicon y pie de página).
+  * `assets/og-banner.png`: Tarjeta de previsualización para WhatsApp y LinkedIn (1200x630 px).
+
+---
+
 ## 🌐 Despliegue en GitHub Pages y Dominio Personalizado
 
 * **Repositorio:** [juanoviedo1987-droid/NEXUM-Trade-Consulting](https://github.com/juanoviedo1987-droid/NEXUM-Trade-Consulting)
