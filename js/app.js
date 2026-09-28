@@ -10,7 +10,7 @@
 const N8N_WEBHOOK_URL = ""; 
 
 // Número de WhatsApp para el botón flotante (formato internacional sin signos ni espacios, ej: 5491112345678)
-const WHATSAPP_PHONE = "5491100000000"; 
+const WHATSAPP_PHONE = "5491172376197"; 
 
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Inicializar iconos de Lucide
