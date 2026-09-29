@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const whatsappBtn = document.getElementById("whatsappBtn");
   if (whatsappBtn && WHATSAPP_PHONE) {
     const defaultMsg = isEn
-      ? "Hello Carlos and the Nexum Trade Consulting team, I would like to inquire about exporting our products."
-      : "Hola Carlos y equipo de Nexum Trade Consulting, me gustaría consultarles por la exportación de nuestros productos.";
+      ? "Hello Nexum team, I would like to inquire about exporting our products."
+      : "Hola equipo de Nexum, me gustaría consultarles por la exportación de nuestros productos.";
     whatsappBtn.href = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(defaultMsg)}`;
   }
 
