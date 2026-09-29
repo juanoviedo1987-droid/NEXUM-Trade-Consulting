@@ -77,13 +77,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Recopilar datos del formulario
       const formData = new FormData(form);
+      const destino = formData.get("destino")?.toString().trim();
+      let rawMensaje = formData.get("mensaje")?.toString().trim() || "";
+      if (destino) {
+        rawMensaje += ` | Destinos de interés: ${destino}`;
+      }
+
       const payload = {
         nombre: formData.get("nombre")?.toString().trim() || "",
         empresa: formData.get("empresa")?.toString().trim() || "",
         email: formData.get("email")?.toString().trim() || "",
         telefono: formData.get("telefono")?.toString().trim() || "",
         operacion: formData.get("operacion")?.toString().trim() || "",
-        mensaje: formData.get("mensaje")?.toString().trim() || "",
+        mensaje: rawMensaje,
         origen: isEn ? "landing_nexum_en" : "landing_nexum_es",
       };
 

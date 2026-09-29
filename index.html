@@ -28,23 +28,6 @@
   <link rel="alternate" hreflang="en" href="https://nexumtradeconsulting.com.ar/en/">
   <link rel="alternate" hreflang="x-default" href="https://nexumtradeconsulting.com.ar/">
 
-  <!-- Auto-detección inteligente de idioma para navegadores en inglés -->
-  <script>
-    (function() {
-      try {
-        var pref = localStorage.getItem('nexum_lang');
-        if (!pref) {
-          var browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-          if (browserLang.startsWith('en')) {
-            localStorage.setItem('nexum_lang', 'en');
-            window.location.replace('en/');
-          }
-        } else if (pref === 'en') {
-          window.location.replace('en/');
-        }
-      } catch (e) {}
-    })();
-  </script>
   
   <!-- Schema.org JSON-LD para Google & SEO -->
   <script type="application/ld+json">
@@ -96,8 +79,8 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Lucide Icons (Versión fija para estabilidad en producción) -->
+  <script src="https://unpkg.com/lucide@0.469.0"></script>
   
   <script>
     tailwind.config = {
@@ -258,8 +241,8 @@
           </h1>
           
           <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed mb-6 sm:mb-8 max-w-2xl">
-            <strong class="text-white font-semibold">Consultoría en Comercio Exterior para PyMEs.</strong> 
-            Apertura de mercados de exportación y abastecimiento estratégico de insumos y bienes de capital, con total seguridad jurídica y operativa.
+            <strong class="text-white font-semibold">Consultoría Estratégica en Exportación para PyMEs.</strong> 
+            Abrimos mercados internacionales para tu producción con riguroso criterio técnico, jurídico y operativo.
           </p>
 
           <!-- CTAs -->
@@ -281,8 +264,8 @@
               <p class="text-xs sm:text-sm text-slate-400 mt-0.5 sm:mt-1">Años de trayectoria senior</p>
             </div>
             <div>
-              <p class="text-2xl sm:text-3xl font-heading font-extrabold text-sky-300">Red Global</p>
-              <p class="text-xs sm:text-sm text-slate-400 mt-0.5 sm:mt-1">Contactos comerciales en Mercosur, Unión Europea, EE.UU. y otros mercados</p>
+              <p class="text-2xl sm:text-3xl font-heading font-extrabold text-sky-300">Mercados</p>
+              <p class="text-xs sm:text-sm text-slate-400 mt-0.5 sm:mt-1">Contactos comerciales en Mercosur, UE y EE.UU.</p>
             </div>
             <div class="col-span-2 sm:col-span-1">
               <p class="text-2xl sm:text-3xl font-heading font-extrabold text-white">360°</p>
@@ -316,7 +299,7 @@
               NEXUM TRADE CONSULTING
             </h3>
             <p class="text-xs font-semibold uppercase tracking-widest text-sky-300 mt-1">
-              Consultoría Estratégica en Comercio Exterior
+              Consultoría Estratégica en Exportación
             </p>
 
             <!-- 3 Clean Value Pills (No dense text) -->
@@ -608,7 +591,7 @@
               <span>Entregable: Informe de Factibilidad</span>
             </div>
             <p class="text-[11px] text-slate-500 bg-white p-2.5 rounded-lg border border-slate-200/80 leading-snug">
-              <strong class="text-slate-800">Servicio pago:</strong> Te enviamos el presupuesto del diagnóstico en 24 h hábiles. Se abona antes de comenzar.
+              <strong class="text-slate-800">Servicio pago:</strong> Presupuesto en 24 h hábiles. Plazo de 1 a 2 semanas a partir de la acreditación del pago y relevamiento inicial.
             </p>
           </div>
         </div>
@@ -640,11 +623,12 @@
             </ul>
           </div>
 
-          <div class="pt-3 border-t border-slate-200/60">
+          <div class="pt-3 border-t border-slate-200/60 space-y-1">
             <div class="flex items-center gap-1.5 text-xs font-semibold text-brand-700">
               <i data-lucide="file-check" class="w-3.5 h-3.5 text-emerald-600"></i>
               <span>Entregable: Matriz de Costos & Compliance</span>
             </div>
+            <p class="text-[10px] text-slate-400">Presupuestado a medida según los hallazgos del diagnóstico</p>
           </div>
         </div>
 
@@ -675,11 +659,12 @@
             </ul>
           </div>
 
-          <div class="pt-3 border-t border-slate-200/60">
+          <div class="pt-3 border-t border-slate-200/60 space-y-1">
             <div class="flex items-center gap-1.5 text-xs font-semibold text-brand-700">
               <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
               <span>Acompañamiento punta a punta</span>
             </div>
+            <p class="text-[10px] text-slate-400">Cotizado según alcance y volumen operativo requerido</p>
           </div>
         </div>
 
@@ -688,7 +673,7 @@
       <!-- Nota de alcance operativo -->
       <div class="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs text-slate-600 max-w-3xl mx-auto">
         <p>
-          <strong class="text-slate-800">Nota de alcance operativo:</strong> Nexum Trade Consulting diseña y lidera la estrategia comercial, documental y logística integral tanto en proyectos de exportación como en importaciones estratégicas de insumos y bienes de capital, coordinando la ejecución operativa en aduana en conjunto con despachantes matriculados aliados para asegurar el estricto cumplimiento normativo vigente.
+          <strong class="text-slate-800">Nota de alcance operativo:</strong> Nexum Trade Consulting diseña y lidera la estrategia comercial, documental y logística integral, coordinando la ejecución operativa en aduana en conjunto con despachantes matriculados aliados para cumplir con la normativa vigente.
         </p>
       </div>
 
@@ -701,7 +686,7 @@
       
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6">
         <div>
-          <span class="text-xs uppercase font-extrabold tracking-widest text-brand-600 block mb-1">Especialización Sectorial</span>
+          <span class="text-xs uppercase font-extrabold tracking-widest text-brand-600 block mb-1">Sectores</span>
           <h2 class="text-xl sm:text-2xl font-heading font-bold text-slate-900">
             Experiencia Técnica por Industria
           </h2>
@@ -843,7 +828,7 @@
             <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></i>
           </summary>
           <div class="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3 bg-white/60">
-            Sí. Brindamos asesoramiento en importación estratégica para PyMEs industriales y productivas que necesitan incorporar bienes de capital (maquinaria y tecnología) o materias primas e insumos clave. Realizamos la validación del proveedor en origen, clasificación arancelaria, costeo integral de importación (Landed Cost), adecuación normativa y coordinación logística internacional para optimizar tu estructura productiva y rentabilidad.
+            Sí. Brindamos asesoramiento en importación estratégica para PyMEs industriales y productivas que necesitan incorporar bienes de capital (maquinaria y tecnología) o materias primas e insumos clave. Realizamos la validación del proveedor en origen, clasificación arancelaria, costeo integral de importación puesto en planta, adecuación normativa y coordinación logística internacional para optimizar tu estructura productiva y rentabilidad.
           </div>
         </details>
 
@@ -855,7 +840,7 @@
           ¿Tenés una duda puntual sobre tu producto o sector?
         </p>
         <a href="#contacto" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-900 hover:bg-brand-950 text-white font-bold text-xs sm:text-sm transition-colors shadow-md">
-          <span>Solicitar Diagnóstico</span>
+          <span>Solicitar Diagnóstico de Exportación</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
       </div>
@@ -983,36 +968,57 @@
                 </div>
               </div>
 
-              <!-- Tipo de Operación / Rubro -->
-              <div>
-                <label for="operacion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                  Objetivo comercial o motivo de consulta *
-                </label>
-                <select id="operacion" name="operacion"
-                  class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
-                  <option value="primera_exportacion">Quiero realizar mi primera exportación</option>
-                  <option value="diversificar_mercados">Ya exporto, pero busco abrir nuevos mercados</option>
-                  <option value="importacion_maquinaria">Importación estratégica: Maquinaria o bienes de capital</option>
-                  <option value="importacion_insumos">Importación estratégica: Materias primas o insumos</option>
-                  <option value="comercio_integral">Comercio exterior integral (Exportación + Importación)</option>
-                  <option value="traba_aduanera">Consulta normativa, arancelaria o logística puntual</option>
-                  <option value="otro">Otro tipo de consulta</option>
-                </select>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <!-- Tipo de Operación / Rubro -->
+                <div>
+                  <label for="operacion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                    Objetivo comercial *
+                  </label>
+                  <select id="operacion" name="operacion" required
+                    class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                    <option value="" disabled selected>Seleccioná tu objetivo...</option>
+                    <option value="primera_exportacion">Quiero realizar mi primera exportación</option>
+                    <option value="diversificar_mercados">Ya exporto, pero busco abrir nuevos mercados</option>
+                    <option value="importacion_maquinaria">Importación estratégica: Maquinaria o bienes de capital</option>
+                    <option value="importacion_insumos">Importación estratégica: Materias primas o insumos</option>
+                    <option value="comercio_integral">Comercio exterior integral (Exportación + Importación)</option>
+                    <option value="traba_aduanera">Consulta normativa, arancelaria o logística puntual</option>
+                    <option value="otro">Otro tipo de consulta</option>
+                  </select>
+                </div>
+
+                <!-- Mercados o países de interés (Opcional) -->
+                <div>
+                  <label for="destino" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                    Destinos de interés <span class="text-slate-400 font-normal lowercase">(opcional)</span>
+                  </label>
+                  <input type="text" id="destino" name="destino" placeholder="Ej. Brasil, EE.UU., UE, etc."
+                    class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                </div>
               </div>
 
               <!-- Mensaje -->
               <div>
                 <label for="mensaje" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                  ¿Qué producto fabricás o comercializás y qué objetivo tenés?
+                  ¿Qué producto fabricás o comercializás y qué meta tenés? *
                 </label>
-                <textarea id="mensaje" name="mensaje" rows="2" placeholder="Contanos brevemente sobre tus productos, volumen estimado, orígenes o destinos de interés..."
+                <textarea id="mensaje" name="mensaje" rows="2" required placeholder="Contanos sobre tus productos, volumen estimado y metas comerciales..."
                   class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all resize-none"></textarea>
+              </div>
+
+              <!-- Consentimiento Ley 25.326 -->
+              <div class="flex items-start gap-2.5 pt-1">
+                <input type="checkbox" id="privacidad" name="privacidad" required
+                  class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-900 focus:ring-brand-500 cursor-pointer">
+                <label for="privacidad" class="text-xs text-slate-600 leading-snug cursor-pointer select-none">
+                  Acepto el tratamiento de mis datos conforme a la <a href="politica-de-privacidad.html" target="_blank" class="font-semibold text-slate-900 underline hover:text-brand-900 transition-colors">Política de Privacidad (Ley 25.326)</a>.
+                </label>
               </div>
 
               <!-- Submit Button -->
               <button type="submit" id="submitBtn"
                 class="w-full py-3.5 sm:py-4 px-6 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-sm sm:text-base shadow-lg shadow-brand-900/20 transition-all flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed">
-                <span id="btnText">Solicitar Diagnóstico</span>
+                <span id="btnText">Solicitar Diagnóstico de Exportación</span>
                 <i data-lucide="send" id="btnIcon" class="w-4 h-4"></i>
                 <div id="btnSpinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               </button>
@@ -1022,7 +1028,7 @@
                 <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"></i>
                 <div>
                   <p class="font-bold">¡Mensaje recibido correctamente!</p>
-                  <p class="text-xs text-emerald-700 mt-0.5">Nos comunicaremos con vos a la brevedad para coordinar la consulta inicial.</p>
+                  <p class="text-xs text-emerald-700 mt-0.5">Te enviaremos el presupuesto formal del diagnóstico en menos de 24 h hábiles.</p>
                 </div>
               </div>
 
@@ -1035,7 +1041,7 @@
               </div>
 
               <p class="text-[11px] text-slate-400 text-center">
-                Tus datos están protegidos conforme a la Ley 25.326. Leé nuestra <a href="politica-de-privacidad.html" class="underline text-sky-400 hover:text-sky-300">Política de Privacidad</a>.
+                Atención confidencial y personalizada bajo estricto secreto comercial.
               </p>
 
             </form>
