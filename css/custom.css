@@ -31,3 +31,11 @@ html {
 .card-hover-effect:hover {
   transform: translateY(-3px);
 }
+
+/* FAQ Details & Summary styling */
+summary::-webkit-details-marker {
+  display: none;
+}
+summary {
+  list-style: none;
+}
