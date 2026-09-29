@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btnSpinner.classList.remove("hidden");
     } else {
       submitBtn.disabled = false;
-      btnText.textContent = isEn ? "Request Free Assessment" : "Solicitar Diagnóstico Sin Costo";
+      btnText.textContent = isEn ? "Request Feasibility Assessment" : "Solicitar Diagnóstico de Exportación";
       btnIcon.classList.remove("hidden");
       btnSpinner.classList.add("hidden");
     }
