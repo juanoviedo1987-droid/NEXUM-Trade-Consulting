@@ -149,4 +149,32 @@ document.addEventListener("DOMContentLoaded", () => {
       btnSpinner.classList.add("hidden");
     }
   }
+
+  // 6. Acordeón interactivo para Preguntas Frecuentes (FAQ)
+  const faqToggles = document.querySelectorAll(".faq-toggle");
+  faqToggles.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".faq-item");
+      if (!item) return;
+      const content = item.querySelector(".faq-content");
+      const icon = item.querySelector(".faq-icon");
+      const isOpen = !content.classList.contains("hidden");
+
+      // Cerrar otros acordeones
+      document.querySelectorAll(".faq-item").forEach((otherItem) => {
+        if (otherItem !== item) {
+          otherItem.querySelector(".faq-content")?.classList.add("hidden");
+          otherItem.querySelector(".faq-icon")?.classList.remove("rotate-180");
+        }
+      });
+
+      if (isOpen) {
+        content.classList.add("hidden");
+        icon?.classList.remove("rotate-180");
+      } else {
+        content.classList.remove("hidden");
+        icon?.classList.add("rotate-180");
+      }
+    });
+  });
 });
