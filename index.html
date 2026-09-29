@@ -258,8 +258,8 @@
           </h1>
           
           <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed mb-6 sm:mb-8 max-w-2xl">
-            <strong class="text-white font-semibold">Consultoría Estratégica en Exportación para PyMEs.</strong> 
-            Transformamos la complejidad aduanera, logística y regulatoria en operaciones internacionales rentables y seguras.
+            <strong class="text-white font-semibold">Consultoría en Comercio Exterior para PyMEs.</strong> 
+            Apertura de mercados de exportación y abastecimiento estratégico de insumos y bienes de capital, con total seguridad jurídica y operativa.
           </p>
 
           <!-- CTAs -->
@@ -316,7 +316,7 @@
               NEXUM TRADE CONSULTING
             </h3>
             <p class="text-xs font-semibold uppercase tracking-widest text-sky-300 mt-1">
-              Consultoría Estratégica en Exportación
+              Consultoría Estratégica en Comercio Exterior
             </p>
 
             <!-- 3 Clean Value Pills (No dense text) -->
@@ -688,7 +688,7 @@
       <!-- Nota de alcance operativo -->
       <div class="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs text-slate-600 max-w-3xl mx-auto">
         <p>
-          <strong class="text-slate-800">Nota de alcance operativo:</strong> Nexum Trade Consulting diseña y lidera la estrategia comercial, documental y logística integral, coordinando la ejecución operativa en aduana en conjunto con despachantes matriculados aliados para asegurar el estricto cumplimiento normativo vigente.
+          <strong class="text-slate-800">Nota de alcance operativo:</strong> Nexum Trade Consulting diseña y lidera la estrategia comercial, documental y logística integral tanto en proyectos de exportación como en importaciones estratégicas de insumos y bienes de capital, coordinando la ejecución operativa en aduana en conjunto con despachantes matriculados aliados para asegurar el estricto cumplimiento normativo vigente.
         </p>
       </div>
 
@@ -836,6 +836,17 @@
           </div>
         </details>
 
+        <!-- FAQ 6 -->
+        <details name="faq" class="group rounded-2xl border border-slate-200 bg-slate-50/50 overflow-hidden transition-all duration-200 shadow-xs">
+          <summary class="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-heading font-bold text-slate-900 text-sm sm:text-base hover:text-brand-700 transition-colors cursor-pointer select-none">
+            <span>¿También asesoran en la importación de maquinaria o materias primas?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3 bg-white/60">
+            Sí. Brindamos asesoramiento en importación estratégica para PyMEs industriales y productivas que necesitan incorporar bienes de capital (maquinaria y tecnología) o materias primas e insumos clave. Realizamos la validación del proveedor en origen, clasificación arancelaria, costeo integral de importación (Landed Cost), adecuación normativa y coordinación logística internacional para optimizar tu estructura productiva y rentabilidad.
+          </div>
+        </details>
+
       </div>
 
       <!-- FAQ CTA Box -->
@@ -975,14 +986,16 @@
               <!-- Tipo de Operación / Rubro -->
               <div>
                 <label for="operacion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                  Estado actual o rubro de tu empresa
+                  Objetivo comercial o motivo de consulta *
                 </label>
                 <select id="operacion" name="operacion"
                   class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
-                  <option value="primera_exportacion">Queremos realizar nuestra primera exportación</option>
-                  <option value="diversificar_mercados">Ya exportamos pero queremos abrir nuevos mercados</option>
-                  <option value="traba_aduanera">Tenemos una traba o consulta normativa / logística puntual</option>
-                  <option value="auditoria">Requerimos una auditoría documental o de costos</option>
+                  <option value="primera_exportacion">Quiero realizar mi primera exportación</option>
+                  <option value="diversificar_mercados">Ya exporto, pero busco abrir nuevos mercados</option>
+                  <option value="importacion_maquinaria">Importación estratégica: Maquinaria o bienes de capital</option>
+                  <option value="importacion_insumos">Importación estratégica: Materias primas o insumos</option>
+                  <option value="comercio_integral">Comercio exterior integral (Exportación + Importación)</option>
+                  <option value="traba_aduanera">Consulta normativa, arancelaria o logística puntual</option>
                   <option value="otro">Otro tipo de consulta</option>
                 </select>
               </div>
@@ -990,16 +1003,16 @@
               <!-- Mensaje -->
               <div>
                 <label for="mensaje" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                  ¿Qué producto fabrican y qué objetivo tienen?
+                  ¿Qué producto fabricás o comercializás y qué objetivo tenés?
                 </label>
-                <textarea id="mensaje" name="mensaje" rows="2" placeholder="Contanos brevemente sobre tus productos, volumen estimado y destinos de interés..."
+                <textarea id="mensaje" name="mensaje" rows="2" placeholder="Contanos brevemente sobre tus productos, volumen estimado, orígenes o destinos de interés..."
                   class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all resize-none"></textarea>
               </div>
 
               <!-- Submit Button -->
               <button type="submit" id="submitBtn"
                 class="w-full py-3.5 sm:py-4 px-6 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-sm sm:text-base shadow-lg shadow-brand-900/20 transition-all flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed">
-                <span id="btnText">Solicitar Diagnóstico de Exportación</span>
+                <span id="btnText">Solicitar Diagnóstico</span>
                 <i data-lucide="send" id="btnIcon" class="w-4 h-4"></i>
                 <div id="btnSpinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               </button>
@@ -1045,7 +1058,7 @@
           </div>
           <div>
             <span class="block font-heading font-bold text-white text-base tracking-tight">NEXUM TRADE CONSULTING</span>
-            <span class="block text-[10px] uppercase font-bold tracking-widest text-slate-400">Consultoría Estratégica en Exportación</span>
+            <span class="block text-[10px] uppercase font-bold tracking-widest text-slate-400">Consultoría Estratégica en Comercio Exterior</span>
           </div>
         </div>
 

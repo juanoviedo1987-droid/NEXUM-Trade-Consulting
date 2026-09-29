@@ -252,8 +252,8 @@
           </h1>
           
           <p class="text-base sm:text-xl text-slate-300 font-normal leading-relaxed mb-6 sm:mb-8 max-w-2xl">
-            <strong class="text-white font-semibold">Strategic Export Consulting for SMEs.</strong> 
-            We transform customs, logistics, and international regulatory complexities into profitable, secure cross-border trade operations.
+            <strong class="text-white font-semibold">International Trade Consulting for SMEs.</strong> 
+            Opening global export markets and securing strategic sourcing of capital goods and key inputs with rigorous compliance.
           </p>
 
           <!-- CTAs -->
@@ -682,7 +682,7 @@
       <!-- Operational scope note -->
       <div class="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs text-slate-600 max-w-3xl mx-auto">
         <p>
-          <strong class="text-slate-800">Operational scope note:</strong> Nexum Trade Consulting designs and directs the overarching commercial, regulatory, and logistics strategy, coordinating port operations in partnership with licensed customs brokers to ensure full regulatory compliance.
+          <strong class="text-slate-800">Operational scope note:</strong> Nexum Trade Consulting designs and directs the overarching commercial, regulatory, and logistics strategy for both export expansion and strategic imports of capital goods and inputs, coordinating port operations in partnership with licensed customs brokers to ensure full regulatory compliance.
         </p>
       </div>
 
@@ -830,6 +830,17 @@
           </div>
         </details>
 
+        <!-- FAQ 6 -->
+        <details name="faq" class="group rounded-2xl border border-slate-200 bg-slate-50/50 overflow-hidden transition-all duration-200 shadow-xs">
+          <summary class="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-heading font-bold text-slate-900 text-sm sm:text-base hover:text-brand-700 transition-colors cursor-pointer select-none">
+            <span>Do you also advise on importing machinery or raw materials?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3 bg-white/60">
+            Yes. We provide strategic import consulting for manufacturing and productive SMEs looking to acquire capital goods (machinery and technology) or essential raw materials and inputs. We handle supplier verification at origin, tariff classification, landed cost simulations, regulatory compliance, and international logistics coordination to boost your operational competitiveness and profitability.
+          </div>
+        </details>
+
       </div>
 
       <!-- FAQ CTA Box -->
@@ -969,14 +980,16 @@
               <!-- Operation / Objective -->
               <div>
                 <label for="operacion" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                  Current Trade Objective
+                  Commercial Objective / Inquiry Type *
                 </label>
                 <select id="operacion" name="operacion"
                   class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
                   <option value="primera_exportacion">First-time exporter looking to enter foreign markets</option>
                   <option value="diversificar_mercados">Existing exporter expanding to new regions</option>
+                  <option value="importacion_maquinaria">Strategic Import: Capital goods & machinery</option>
+                  <option value="importacion_insumos">Strategic Import: Raw materials & active ingredients</option>
+                  <option value="comercio_integral">Full Trade Advisory (Export + Strategic Import)</option>
                   <option value="traba_aduanera">Specific regulatory, customs, or tariff bottleneck</option>
-                  <option value="auditoria">Pre-shipment documentation or freight cost audit</option>
                   <option value="otro">Other trade / commercial inquiry</option>
                 </select>
               </div>
@@ -986,14 +999,14 @@
                 <label for="mensaje" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                   Tell us about your products and goals
                 </label>
-                <textarea id="mensaje" name="mensaje" rows="2" placeholder="Briefly describe your product lines, target regions, and estimated volumes..."
+                <textarea id="mensaje" name="mensaje" rows="2" placeholder="Briefly describe your product lines, estimated volume, origins or target destinations..."
                   class="w-full px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all resize-none"></textarea>
               </div>
 
               <!-- Submit Button -->
               <button type="submit" id="submitBtn"
                 class="w-full py-3.5 sm:py-4 px-6 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-sm sm:text-base shadow-lg shadow-brand-900/20 transition-all flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed">
-                <span id="btnText">Request Export Diagnostic</span>
+                <span id="btnText">Request Diagnostic</span>
                 <i data-lucide="send" id="btnIcon" class="w-4 h-4"></i>
                 <div id="btnSpinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               </button>
