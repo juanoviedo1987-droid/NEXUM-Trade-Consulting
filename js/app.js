@@ -77,6 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Recopilar datos del formulario
       const formData = new FormData(form);
+
+      // Anti-spam Honeypot: si el campo oculto contiene algún valor, es un bot
+      if (formData.get("_b_hp")) {
+        formSuccess.classList.remove("hidden");
+        form.reset();
+        return;
+      }
+
       const destino = formData.get("destino")?.toString().trim();
       let rawMensaje = formData.get("mensaje")?.toString().trim() || "";
       if (destino) {
