@@ -8,8 +8,6 @@
 -- ------------------------------------------------------------------------------
 -- 1. EXTENSIÓN DE COLUMNAS PARA EL CRM OPERATIVO
 -- ------------------------------------------------------------------------------
-
--- Nuevas columnas solicitadas para gestión y prospección:
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS sector text DEFAULT '';
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS responsable text DEFAULT 'Sin Asignar';
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS cargo text DEFAULT '';
@@ -31,12 +29,12 @@ END $$;
 -- 2. COMPATIBILIDAD DE ETAPAS (STATUS) CON FORMULARIO Y n8n
 -- ------------------------------------------------------------------------------
 -- Mantiene intactos los estados actuales:
---   'nuevo'       -> Valor por defecto al registrarse desde el formulario web
---   'notificado'  -> Asignado automáticamente por n8n al enviar el email
--- Y suma los estados del ciclo de venta consultivo:
+--   'nuevo'       -> Default que envía el formulario web de la landing
+--   'notificado'  -> Asignado automáticamente por n8n tras enviar el email de alerta
+-- Y agrega las etapas comerciales:
 --   'prospecto'          -> Outbound LinkedIn / Directorios
 --   'contactado'         -> En conversación / Esperando respuesta
---   'reunion_agendada'   -> Relevamiento 30 min acordado
+--   'reunion_agendada'   -> Relevamiento 30 min coordinado
 --   'presupuestado'      -> Diagnóstico presupuestado (propuesta 24 h)
 --   'cliente'            -> Cerrado ganado (abonado)
 --   'descartado'         -> En pausa o perdido
@@ -52,36 +50,46 @@ END $$;
 -- ------------------------------------------------------------------------------
 -- 3. POLÍTICAS DE ROW LEVEL SECURITY (RLS) ESTRICTAS
 -- ------------------------------------------------------------------------------
--- Activar RLS en la tabla leads_nexum
 ALTER TABLE leads_nexum ENABLE ROW LEVEL SECURITY;
 
--- Limpieza de políticas previas para evitar conflictos
+-- Limpieza de políticas previas para evitar duplicados o conflictos
 DROP POLICY IF EXISTS "Permitir insert publico para formulario web" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir todo a usuarios autenticados" ON leads_nexum;
+DROP POLICY IF EXISTS "Permitir todo a usuarios autenticados autorizados" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir select para anon" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir insert para anon" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir update para anon" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir delete para anon" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir todo a anon" ON leads_nexum;
 
--- POLÍTICA A (ROL 'anon' - Visitantes web):
--- SOLO permite INSERT para registrar consultas desde el formulario.
--- NO permite SELECT (no pueden ver datos), ni UPDATE, ni DELETE.
+-- POLÍTICA A (ROL 'anon' - Visitantes web / Formulario landing):
+-- SOLO permite INSERT si el status es exactamente 'nuevo'.
+-- Queda estrictamente PROHIBIDO SELECT (no leen datos), UPDATE y DELETE.
 CREATE POLICY "Permitir insert publico para formulario web"
 ON leads_nexum
 FOR INSERT
 TO anon
-WITH CHECK (true);
+WITH CHECK (status = 'nuevo');
 
--- POLÍTICA B (ROL 'authenticated' - Juan y Facu logueados en CRM):
--- Permite SELECT, INSERT, UPDATE y DELETE únicamente si el usuario
--- inició sesión exitosamente con Supabase Auth (email + contraseña).
-CREATE POLICY "Permitir todo a usuarios autenticados"
+-- POLÍTICA B (ROL 'authenticated' - Juan y Facu autorizados):
+-- Permite SELECT, INSERT, UPDATE y DELETE únicamente a los correos autorizados.
+-- NOTA: Modificar los correos de la lista si difieren de los emails reales.
+CREATE POLICY "Permitir todo a usuarios autenticados autorizados"
 ON leads_nexum
 FOR ALL
 TO authenticated
-USING (true)
-WITH CHECK (true);
+USING (
+    (auth.jwt() ->> 'email') IN (
+        'juanoviedo1987@gmail.com',         -- Email de Juan (reemplazar por el real si difiere)
+        'facundo.oviedo@nexumtc.com.ar'     -- Email de Facu (reemplazar por el real si difiere)
+    )
+)
+WITH CHECK (
+    (auth.jwt() ->> 'email') IN (
+        'juanoviedo1987@gmail.com',
+        'facundo.oviedo@nexumtc.com.ar'
+    )
+);
 
 -- ------------------------------------------------------------------------------
 -- 4. ÍNDICES DE RENDIMIENTO

@@ -7,6 +7,10 @@
   
   <!-- Privacidad Estricta: Sin indexación en buscadores -->
   <meta name="robots" content="noindex, nofollow">
+  
+  <!-- Content Security Policy Razonable y Estricta -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://wbcfmanuhotyevquiaht.supabase.co https://*.supabase.co;">
+
   <link rel="icon" type="image/png" href="assets/logo-3.png">
 
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
@@ -54,11 +58,11 @@
     }
   </script>
 
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@0.469.0"></script>
+  <!-- Lucide Icons (Versión Fija) -->
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
-  <!-- Supabase JS Client Oficial (v2) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase JS Client Oficial con Versión Fija (v2.48.1) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.js"></script>
 
   <style>
     /* Scrollbars elegantes */
@@ -223,12 +227,12 @@
       <!-- Acciones de Barra Superior -->
       <div class="flex items-center gap-2">
         
-        <!-- Botón Exportar CSV (Solo disponible con sesión activa) -->
+        <!-- Botón Exportar CSV (Solo con sesión iniciada) -->
         <button 
           onclick="exportToCSV()" 
           id="btnExportCsv"
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900/80 hover:bg-brand-900 text-slate-200 border border-brand-800/70 hover:border-brand-600 transition shadow-sm"
-          title="Exportar todos los prospectos a CSV (formato Excel)"
+          title="Exportar todos los prospectos a CSV (formato Excel seguro)"
         >
           <i data-lucide="download" class="w-3.5 h-3.5 text-accent-sky"></i>
           <span class="hidden sm:inline">Exportar CSV</span>
@@ -378,7 +382,7 @@
               </tr>
             </thead>
             <tbody id="tableBody" class="divide-y divide-brand-800/40">
-              <!-- Filas dinámicas generadas con JS -->
+              <!-- Filas dinámicas generadas con JS mediante createElement y textContent -->
             </tbody>
           </table>
         </div>
@@ -425,7 +429,7 @@
         
         <!-- Acciones Directas (Botones WhatsApp, Email, Teléfono) -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <a id="modalWaBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow-md shadow-emerald-950/30">
+          <a id="modalWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow-md shadow-emerald-950/30">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
             <span>Abrir WhatsApp</span>
           </a>
@@ -515,7 +519,7 @@
           </div>
         </div>
 
-        <!-- Mensaje Original de Consulta (Landing) -->
+        <!-- Mensaje Original de Consulta (Landing) - Seguro con textContent -->
         <div>
           <label class="block text-[11px] font-medium text-slate-400 mb-1">Mensaje Original de la Consulta</label>
           <div id="modalMessageOriginal" class="p-2.5 bg-slate-950/60 border border-brand-900 rounded-lg text-slate-300 whitespace-pre-wrap max-h-24 overflow-y-auto">
@@ -684,20 +688,19 @@
   <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
 
   <!-- ========================================================================= -->
-  <!-- 6. LÓGICA JAVASCRIPT ETAPA 1 (SUPABASE AUTH + TABLA + FILTROS)            -->
+  <!-- 6. LÓGICA JAVASCRIPT ETAPA 1 (BLINDADA CONTRA XSS E INYECCIONES)          -->
   <!-- ========================================================================= -->
   <script>
     /**
      * Nexum Trade Consulting - CRM Engine (Etapa 1)
-     * Autenticación con Supabase Auth & Gestión de Contactos
+     * Seguridad Reforzada: textContent nativo, CSP, Sanitización estricta & CSV Protection
      */
 
-    // --- CONFIGURACIÓN CLIENTE SUPABASE (SOLO CLAVE ANON) ---
     const SUPABASE_URL = "https://wbcfmanuhotyevquiaht.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g";
     const TABLE_NAME = "leads_nexum";
 
-    // Inicializar cliente Supabase oficial
+    // Inicializar cliente oficial Supabase v2.48.1
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // Estado en memoria
@@ -747,7 +750,7 @@
         // SESIÓN ACTIVA: Mostrar CRM y cargar datos
         authScreen.classList.add("hidden");
         crmApp.classList.remove("hidden");
-        userBadge.textContent = session.user.email;
+        userBadge.textContent = session.user.email || "Usuario Autenticado";
         if (window.lucide) window.lucide.createIcons();
         fetchLeads();
       } else {
@@ -841,7 +844,7 @@
       }
     }
 
-    // --- RENDERIZADO DE TABLA Y FILTROS ---
+    // --- RENDERIZADO DE TABLA (100% SEGURO MEDIANTE DOM NATIVO Y TEXTCONTENT) ---
     function renderTable() {
       const tbody = document.getElementById("tableBody");
       const emptyState = document.getElementById("tableEmpty");
@@ -865,76 +868,151 @@
           openLeadModal(lead.id);
         };
 
+        // 1. Columna Empresa & Contacto
+        const tdCompany = document.createElement("td");
+        tdCompany.className = "py-3 px-4";
+        const divComp = document.createElement("div");
+        divComp.className = "font-bold text-white text-xs hover:text-accent-sky";
+        divComp.textContent = lead.empresa || "Empresa Sin Nombre";
+        const divContact = document.createElement("div");
+        divContact.className = "text-[11px] text-slate-400";
+        divContact.textContent = lead.nombre || "Sin Contacto";
+        if (lead.cargo) {
+          const spanCargo = document.createElement("span");
+          spanCargo.className = "text-slate-500 ml-1";
+          spanCargo.textContent = `• ${lead.cargo}`;
+          divContact.appendChild(spanCargo);
+        }
+        tdCompany.appendChild(divComp);
+        tdCompany.appendChild(divContact);
+
+        // 2. Columna Etapa
+        const tdStage = document.createElement("td");
+        tdStage.className = "py-3 px-4";
         const stage = STAGE_LABELS[lead.status] || { name: lead.status || 'Nuevo', class: 'bg-slate-800 text-slate-300' };
-        const prio = lead.prioridad || 'B';
+        const spanStage = document.createElement("span");
+        spanStage.className = `px-2 py-0.5 rounded-full text-[10px] font-bold border ${stage.class}`;
+        spanStage.textContent = stage.name;
+        tdStage.appendChild(spanStage);
+
+        // 3. Columna Prioridad
+        const tdPrio = document.createElement("td");
+        tdPrio.className = "py-3 px-4";
+        const prio = (lead.prioridad || "B").toUpperCase();
         const prioClass = PRIORITY_BADGES[prio] || PRIORITY_BADGES.B;
+        const spanPrio = document.createElement("span");
+        spanPrio.className = `px-2 py-0.5 rounded-full text-[10px] font-bold border ${prioClass}`;
+        spanPrio.textContent = prio;
+        tdPrio.appendChild(spanPrio);
 
-        const cleanPhone = (lead.telefono || "").replace(/[^0-9]/g, "");
-        const waLink = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
-        const mailLink = lead.email ? `mailto:${lead.email}` : null;
+        // 4. Columna Sector
+        const tdSector = document.createElement("td");
+        tdSector.className = "py-3 px-4 text-slate-300";
+        tdSector.textContent = lead.sector || lead.operacion || "-";
 
-        // Formato Próxima Acción
-        let nextActionHtml = `<span class="text-slate-500 italic">Sin próxima acción</span>`;
+        // 5. Columna Responsable
+        const tdResp = document.createElement("td");
+        tdResp.className = "py-3 px-4 text-slate-300 font-medium";
+        tdResp.textContent = lead.responsable || "Sin Asignar";
+
+        // 6. Columna Próxima Acción
+        const tdNextAction = document.createElement("td");
+        tdNextAction.className = "py-3 px-4";
         if (lead.proxima_accion) {
-          nextActionHtml = `
-            <div class="truncate max-w-[200px] text-slate-200" title="${escapeHtml(lead.proxima_accion)}">
-              ${escapeHtml(lead.proxima_accion)}
-            </div>
-            ${lead.fecha_proxima_accion ? `<span class="text-[10px] text-accent-sky font-mono font-semibold">${lead.fecha_proxima_accion}</span>` : ''}
-          `;
+          const divAction = document.createElement("div");
+          divAction.className = "truncate max-w-[200px] text-slate-200";
+          divAction.textContent = lead.proxima_accion;
+          divAction.title = lead.proxima_accion;
+          tdNextAction.appendChild(divAction);
+
+          if (lead.fecha_proxima_accion) {
+            const spanDate = document.createElement("span");
+            spanDate.className = "text-[10px] text-accent-sky font-mono font-semibold";
+            spanDate.textContent = lead.fecha_proxima_accion;
+            tdNextAction.appendChild(spanDate);
+          }
+        } else {
+          const spanEmptyAction = document.createElement("span");
+          spanEmptyAction.className = "text-slate-500 italic";
+          spanEmptyAction.textContent = "Sin próxima acción";
+          tdNextAction.appendChild(spanEmptyAction);
         }
 
-        tr.innerHTML = `
-          <td class="py-3 px-4">
-            <div class="font-bold text-white text-xs hover:text-accent-sky">${escapeHtml(lead.empresa || 'Empresa Sin Nombre')}</div>
-            <div class="text-[11px] text-slate-400">
-              ${escapeHtml(lead.nombre || 'Sin Contacto')} 
-              ${lead.cargo ? `<span class="text-slate-500">• ${escapeHtml(lead.cargo)}</span>` : ''}
-            </div>
-          </td>
-          <td class="py-3 px-4">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${stage.class}">
-              ${stage.name}
-            </span>
-          </td>
-          <td class="py-3 px-4">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${prioClass}">
-              ${prio}
-            </span>
-          </td>
-          <td class="py-3 px-4 text-slate-300">
-            ${escapeHtml(lead.sector || lead.operacion || '-')}
-          </td>
-          <td class="py-3 px-4 text-slate-300">
-            <span class="font-medium">${escapeHtml(lead.responsable || 'Sin Asignar')}</span>
-          </td>
-          <td class="py-3 px-4">
-            ${nextActionHtml}
-          </td>
-          <td class="py-3 px-4">
-            <div class="flex items-center gap-2">
-              ${waLink ? `
-                <a href="${waLink}" target="_blank" onclick="event.stopPropagation()" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-mono text-[11px]" title="Abrir WhatsApp">
-                  <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-                  <span>${escapeHtml(lead.telefono)}</span>
-                </a>
-              ` : mailLink ? `
-                <a href="${mailLink}" onclick="event.stopPropagation()" class="text-slate-300 hover:text-white flex items-center gap-1 text-[11px]" title="Enviar Email">
-                  <i data-lucide="mail" class="w-3.5 h-3.5 text-accent-sky"></i>
-                  <span class="truncate max-w-[120px]">${escapeHtml(lead.email)}</span>
-                </a>
-              ` : `<span class="text-slate-600">-</span>`}
-            </div>
-          </td>
-          <td class="py-3 px-4 text-slate-400 text-[11px] whitespace-nowrap">
-            ${formatDate(lead.created_at)}
-          </td>
-          <td class="py-3 px-4 text-right">
-            <button onclick="openLeadModal('${lead.id}'); event.stopPropagation();" class="p-1.5 rounded-lg bg-slate-800 hover:bg-brand-700 text-slate-300 hover:text-white transition" title="Ver / Editar Ficha">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            </button>
-          </td>
-        `;
+        // 7. Columna Contacto Rápido (Sanitización rigurosa de URLs)
+        const tdContact = document.createElement("td");
+        tdContact.className = "py-3 px-4";
+        const divActions = document.createElement("div");
+        divActions.className = "flex items-center gap-2";
+
+        // Sanitización WhatsApp: solo dígitos
+        const cleanDigits = (lead.telefono || "").replace(/[^0-9]/g, "");
+        if (cleanDigits && cleanDigits.length >= 8 && cleanDigits.length <= 15) {
+          const aWa = document.createElement("a");
+          aWa.href = `https://wa.me/${cleanDigits}`;
+          aWa.target = "_blank";
+          aWa.rel = "noopener noreferrer";
+          aWa.className = "text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-mono text-[11px]";
+          aWa.title = "Abrir WhatsApp";
+          aWa.onclick = (e) => e.stopPropagation();
+          aWa.innerHTML = `<i data-lucide="message-circle" class="w-3.5 h-3.5"></i>`;
+          const spanPhone = document.createElement("span");
+          spanPhone.textContent = lead.telefono;
+          aWa.appendChild(spanPhone);
+          divActions.appendChild(aWa);
+        }
+
+        // Sanitización Email: validar formato RFC básico sin comillas
+        const emailClean = (lead.email || "").trim();
+        if (emailClean && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailClean)) {
+          const aMail = document.createElement("a");
+          aMail.href = `mailto:${emailClean}`;
+          aMail.className = "text-slate-300 hover:text-white flex items-center gap-1 text-[11px]";
+          aMail.title = "Enviar Email";
+          aMail.onclick = (e) => e.stopPropagation();
+          aMail.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-accent-sky"></i>`;
+          const spanMail = document.createElement("span");
+          spanMail.className = "truncate max-w-[120px]";
+          spanMail.textContent = emailClean;
+          aMail.appendChild(spanMail);
+          divActions.appendChild(aMail);
+        }
+
+        if (divActions.children.length === 0) {
+          const spanDash = document.createElement("span");
+          spanDash.className = "text-slate-600";
+          spanDash.textContent = "-";
+          divActions.appendChild(spanDash);
+        }
+        tdContact.appendChild(divActions);
+
+        // 8. Columna Fecha
+        const tdDate = document.createElement("td");
+        tdDate.className = "py-3 px-4 text-slate-400 text-[11px] whitespace-nowrap";
+        tdDate.textContent = formatDate(lead.created_at);
+
+        // 9. Columna Acciones
+        const tdBtn = document.createElement("td");
+        tdBtn.className = "py-3 px-4 text-right";
+        const btnView = document.createElement("button");
+        btnView.className = "p-1.5 rounded-lg bg-slate-800 hover:bg-brand-700 text-slate-300 hover:text-white transition";
+        btnView.title = "Ver / Editar Ficha";
+        btnView.onclick = (e) => {
+          e.stopPropagation();
+          openLeadModal(lead.id);
+        };
+        btnView.innerHTML = `<i data-lucide="external-link" class="w-3.5 h-3.5"></i>`;
+        tdBtn.appendChild(btnView);
+
+        // Adjuntar celdas a la fila
+        tr.appendChild(tdCompany);
+        tr.appendChild(tdStage);
+        tr.appendChild(tdPrio);
+        tr.appendChild(tdSector);
+        tr.appendChild(tdResp);
+        tr.appendChild(tdNextAction);
+        tr.appendChild(tdContact);
+        tr.appendChild(tdDate);
+        tr.appendChild(tdBtn);
 
         tbody.appendChild(tr);
       });
@@ -950,7 +1028,6 @@
       const prioFilter = document.getElementById("filterPriority")?.value || "all";
 
       return allLeads.filter(lead => {
-        // Filtro texto libre
         if (q) {
           const matchCompany = (lead.empresa || "").toLowerCase().includes(q);
           const matchName = (lead.nombre || "").toLowerCase().includes(q);
@@ -965,26 +1042,13 @@
           }
         }
 
-        // Filtro Etapa
-        if (stFilter !== "all" && lead.status !== stFilter) {
-          return false;
-        }
-
-        // Filtro Sector
+        if (stFilter !== "all" && lead.status !== stFilter) return false;
         if (secFilter !== "all") {
           const sec = (lead.sector || lead.operacion || "").toLowerCase();
           if (!sec.includes(secFilter.toLowerCase())) return false;
         }
-
-        // Filtro Responsable
-        if (respFilter !== "all" && lead.responsable !== respFilter) {
-          return false;
-        }
-
-        // Filtro Prioridad
-        if (prioFilter !== "all" && (lead.prioridad || "B") !== prioFilter) {
-          return false;
-        }
+        if (respFilter !== "all" && lead.responsable !== respFilter) return false;
+        if (prioFilter !== "all" && (lead.prioridad || "B").toUpperCase() !== prioFilter) return false;
 
         return true;
       });
@@ -1031,42 +1095,44 @@
       currentSelectedLead = lead;
       const stage = STAGE_LABELS[lead.status] || { name: lead.status || 'Nuevo' };
 
+      // Inserción segura con textContent
       document.getElementById("modalStageBadge").textContent = stage.name;
-      document.getElementById("modalPriorityBadge").textContent = `Prioridad: ${lead.prioridad || 'B'}`;
+      document.getElementById("modalPriorityBadge").textContent = `Prioridad: ${(lead.prioridad || 'B').toUpperCase()}`;
       document.getElementById("modalCreatedDate").textContent = `Ingresado el: ${formatDateFull(lead.created_at)}`;
       document.getElementById("modalCompanyTitle").textContent = lead.empresa || "Empresa Sin Nombre";
       document.getElementById("modalContactSubtitle").textContent = `${lead.nombre || 'Sin Contacto'} ${lead.cargo ? `(${lead.cargo})` : ''}`;
 
-      // Botones WhatsApp, Email y Llamar
-      const cleanPhone = (lead.telefono || "").replace(/[^0-9]/g, "");
+      // Botones WhatsApp, Email y Llamar con sanitización estricta
+      const cleanDigits = (lead.telefono || "").replace(/[^0-9]/g, "");
       const waBtn = document.getElementById("modalWaBtn");
       const mailBtn = document.getElementById("modalMailBtn");
       const callBtn = document.getElementById("modalCallBtn");
 
-      if (cleanPhone) {
+      if (cleanDigits && cleanDigits.length >= 8 && cleanDigits.length <= 15) {
         const msg = `Hola ${lead.nombre || ''}, te escribo de Nexum Trade Consulting en relación a tu consulta sobre comercio exterior.`;
-        waBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+        waBtn.href = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(msg)}`;
         waBtn.classList.remove("opacity-50", "pointer-events-none");
-        callBtn.href = `tel:${cleanPhone}`;
+        callBtn.href = `tel:${cleanDigits}`;
         callBtn.classList.remove("opacity-50", "pointer-events-none");
       } else {
-        waBtn.href = "#";
+        waBtn.removeAttribute("href");
         waBtn.classList.add("opacity-50", "pointer-events-none");
-        callBtn.href = "#";
+        callBtn.removeAttribute("href");
         callBtn.classList.add("opacity-50", "pointer-events-none");
       }
 
-      if (lead.email) {
-        mailBtn.href = `mailto:${lead.email}?subject=${encodeURIComponent(`Nexum Trade Consulting - Consulta de ${lead.empresa || 'su empresa'}`)}`;
+      const emailClean = (lead.email || "").trim();
+      if (emailClean && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailClean)) {
+        mailBtn.href = `mailto:${emailClean}?subject=${encodeURIComponent(`Nexum Trade Consulting - Consulta de ${lead.empresa || 'su empresa'}`)}`;
         mailBtn.classList.remove("opacity-50", "pointer-events-none");
       } else {
-        mailBtn.href = "#";
+        mailBtn.removeAttribute("href");
         mailBtn.classList.add("opacity-50", "pointer-events-none");
       }
 
-      // Asignar campos de formulario
+      // Asignar inputs mediante propiedad .value (no ejecutan HTML)
       document.getElementById("modalStatusSelect").value = lead.status || "nuevo";
-      document.getElementById("modalPrioritySelect").value = lead.prioridad || "B";
+      document.getElementById("modalPrioritySelect").value = (lead.prioridad || "B").toUpperCase();
       document.getElementById("modalResponsibleSelect").value = lead.responsable || "Sin Asignar";
       document.getElementById("modalInputNextAction").value = lead.proxima_accion || "";
       document.getElementById("modalInputNextActionDate").value = lead.fecha_proxima_accion || "";
@@ -1076,8 +1142,10 @@
       document.getElementById("modalInputSector").value = lead.sector || lead.operacion || "";
       document.getElementById("modalInputEmail").value = lead.email || "";
       document.getElementById("modalInputPhone").value = lead.telefono || "";
-      document.getElementById("modalMessageOriginal").textContent = lead.mensaje || "Sin mensaje adicional registrado.";
       document.getElementById("modalInputNotes").value = lead.notas || "";
+
+      // Mensaje original con textContent para blindar contra XSS
+      document.getElementById("modalMessageOriginal").textContent = lead.mensaje || "Sin mensaje adicional registrado.";
 
       document.getElementById("leadModal").classList.remove("hidden");
       if (window.lucide) window.lucide.createIcons();
@@ -1119,7 +1187,7 @@
 
         if (error) throw error;
 
-        // Actualizar objeto en memoria
+        // Actualizar en memoria
         Object.assign(currentSelectedLead, payload);
         renderTable();
         closeLeadModal();
@@ -1228,7 +1296,7 @@
       }
     }
 
-    // --- EXPORTACIÓN A CSV (DISPONIBLE SOLO CON SESIÓN INICIADA) ---
+    // --- EXPORTACIÓN A CSV CON PROTECCIÓN CONTRA CSV INJECTION ---
     function exportToCSV() {
       if (!currentSession) {
         showToast("Debés iniciar sesión para exportar datos.", "error");
@@ -1261,22 +1329,22 @@
       const rows = allLeads.map(lead => [
         lead.id || "",
         formatDateFull(lead.created_at),
-        cleanCsv(lead.empresa),
-        cleanCsv(lead.nombre),
-        cleanCsv(lead.cargo),
-        cleanCsv(lead.sector || lead.operacion),
-        cleanCsv(lead.prioridad || "B"),
-        cleanCsv(STAGE_LABELS[lead.status]?.name || lead.status),
-        cleanCsv(lead.responsable || "Sin Asignar"),
-        cleanCsv(lead.proxima_accion),
-        cleanCsv(lead.fecha_proxima_accion),
-        cleanCsv(lead.email),
-        cleanCsv(lead.telefono),
-        cleanCsv(lead.origen),
-        cleanCsv(lead.notas)
+        cleanCsvSafe(lead.empresa),
+        cleanCsvSafe(lead.nombre),
+        cleanCsvSafe(lead.cargo),
+        cleanCsvSafe(lead.sector || lead.operacion),
+        cleanCsvSafe(lead.prioridad || "B"),
+        cleanCsvSafe(STAGE_LABELS[lead.status]?.name || lead.status),
+        cleanCsvSafe(lead.responsable || "Sin Asignar"),
+        cleanCsvSafe(lead.proxima_accion),
+        cleanCsvSafe(lead.fecha_proxima_accion),
+        cleanCsvSafe(lead.email),
+        cleanCsvSafe(lead.telefono),
+        cleanCsvSafe(lead.origen),
+        cleanCsvSafe(lead.notas)
       ]);
 
-      // BOM UTF-8 (\uFEFF) para compatibilidad con Excel en Windows
+      // BOM UTF-8 (\uFEFF) para compatibilidad con Excel
       const csvContent = "\uFEFF" + [
         headers.join(";"),
         ...rows.map(r => r.join(";"))
@@ -1296,10 +1364,16 @@
       showToast("CSV descargado exitosamente", "success");
     }
 
-    function cleanCsv(val) {
-      if (!val) return '""';
-      const str = String(val).replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
-      return `"${str}"`;
+    // Prevención de Formula Injection en Excel:
+    // Si la celda empieza con =, +, -, @ o tab, se prefija con comilla simple
+    function cleanCsvSafe(val) {
+      if (val === null || val === undefined) return '""';
+      let str = String(val).replace(/(\r\n|\n|\r)/gm, " ");
+      const trimmed = str.trim();
+      if (trimmed.startsWith('=') || trimmed.startsWith('+') || trimmed.startsWith('-') || trimmed.startsWith('@') || trimmed.startsWith('\t')) {
+        str = "'" + str;
+      }
+      return `"${str.replace(/"/g, '""')}"`;
     }
 
     // --- UTILIDADES ---
@@ -1335,16 +1409,6 @@
       }
     }
 
-    function escapeHtml(str) {
-      if (!str) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
     function showToast(message, type = "info") {
       const container = document.getElementById("toastContainer");
       if (!container) return;
@@ -1358,7 +1422,7 @@
       };
 
       toast.className = `p-3 rounded-xl border shadow-xl text-xs font-medium flex items-center gap-2 backdrop-blur-md transition-all duration-300 transform translate-y-2 pointer-events-auto ${bgColors[type] || bgColors.info}`;
-      toast.innerHTML = `<span>${message}</span>`;
+      toast.textContent = message;
       container.appendChild(toast);
 
       requestAnimationFrame(() => toast.classList.remove("translate-y-2"));
