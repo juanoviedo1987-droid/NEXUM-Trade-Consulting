@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexum CRM | Pipeline de Ventas & Operaciones</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/logo-3.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN con configuración oficial Nexum -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#F0F8FA',
+              100: '#D9EEF5',
+              200: '#B3DCED',
+              300: '#7AC3DF',
+              400: '#38A5CC',
+              500: '#0074A1', // Azul Cerúleo Nexum
+              600: '#00628A',
+              700: '#004E6E',
+              800: '#003943',
+              900: '#002529', // Petróleo Oscuro Nexum
+              950: '#00171A',
+            },
+            accent: {
+              blue: '#0074A1',
+              petrol: '#002529',
+              emerald: '#10B981',
+              sky: '#38BDF8',
+              amber: '#F59E0B',
+              rose: '#F43F5E',
+              violet: '#8B5CF6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.469.0"></script>
+
+  <style>
+    /* Estilos personalizados y utilidades de scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #00171a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #004e6e;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0074a1;
+    }
+
+    .kanban-col {
+      min-width: 310px;
+      max-width: 320px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    @media (max-width: 640px) {
+      .kanban-col {
+        min-width: 285px;
+        max-width: 295px;
+      }
+    }
+
+    .kanban-col.drag-over {
+      background-color: rgba(0, 116, 161, 0.12) !important;
+      border-color: #38bdf8 !important;
+    }
+
+    .lead-card {
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+      cursor: grab;
+      user-select: none;
+    }
+    .lead-card:active {
+      cursor: grabbing;
+    }
+    .lead-card.is-dragging {
+      opacity: 0.45;
+      transform: scale(0.97);
+    }
+
+    /* Animación de entrada de modales */
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal {
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+
+<body class="h-full bg-[#00171A] text-slate-100 font-sans antialiased overflow-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- 1. PANTALLA DE ACCESO POR PIN (GATEWAY DE SEGURIDAD)                      -->
+  <!-- ========================================================================= -->
+  <div id="pinScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-[#00171A] via-[#002529] to-[#001214]">
+    <div class="w-full max-w-sm p-6 sm:p-8 bg-[#002529]/90 backdrop-blur-xl border border-brand-700/60 rounded-2xl shadow-2xl text-center animate-modal">
+      
+      <!-- Isotipo / Logo -->
+      <div class="flex justify-center mb-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 p-0.5 shadow-lg shadow-brand-500/20 flex items-center justify-center">
+          <img src="assets/logo-3.png" alt="Nexum Isotipo" class="w-10 h-10 object-contain">
+        </div>
+      </div>
+
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 mb-2">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-accent-emerald"></i>
+        Portal Operativo Interno
+      </span>
+      
+      <h1 class="text-xl font-heading font-extrabold text-white tracking-tight">Nexum Trade Consulting</h1>
+      <p class="text-xs text-slate-300 mt-1 mb-6">Ingresá el PIN de acceso de los Fundadores</p>
+
+      <!-- Input PIN -->
+      <form id="pinForm" onsubmit="event.preventDefault(); submitPin();" class="space-y-4">
+        <div class="relative">
+          <input 
+            type="password" 
+            id="pinInput" 
+            maxlength="10" 
+            inputmode="numeric" 
+            autocomplete="current-password"
+            placeholder="••••" 
+            class="w-full tracking-widest text-center text-2xl font-mono py-3.5 bg-slate-950/70 border border-brand-700/70 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-accent-sky focus:border-transparent transition-all placeholder-slate-600"
+            autofocus
+          >
+          <button 
+            type="button" 
+            onclick="togglePinVisibility()" 
+            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
+            title="Mostrar / Ocultar"
+          >
+            <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <p id="pinError" class="text-xs text-accent-rose font-medium hidden">PIN incorrecto. Intentá nuevamente.</p>
+
+        <!-- Teclado Numérico Rápido (Ideal para celular) -->
+        <div class="grid grid-cols-3 gap-2 pt-2">
+          <button type="button" onclick="appendPin('1')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">1</button>
+          <button type="button" onclick="appendPin('2')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">2</button>
+          <button type="button" onclick="appendPin('3')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">3</button>
+          <button type="button" onclick="appendPin('4')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">4</button>
+          <button type="button" onclick="appendPin('5')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">5</button>
+          <button type="button" onclick="appendPin('6')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">6</button>
+          <button type="button" onclick="appendPin('7')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">7</button>
+          <button type="button" onclick="appendPin('8')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">8</button>
+          <button type="button" onclick="appendPin('9')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">9</button>
+          <button type="button" onclick="clearPin()" class="py-2.5 bg-slate-900/50 hover:bg-rose-950/40 text-rose-400 active:scale-95 text-sm font-semibold rounded-lg border border-brand-800/40 transition flex items-center justify-center">
+            <i data-lucide="delete" class="w-5 h-5"></i>
+          </button>
+          <button type="button" onclick="appendPin('0')" class="py-2.5 bg-slate-900/80 hover:bg-brand-800/60 active:scale-95 text-lg font-semibold rounded-lg border border-brand-800/50 transition">0</button>
+          <button type="submit" class="py-2.5 bg-brand-500 hover:bg-brand-400 text-white active:scale-95 text-sm font-bold rounded-lg transition shadow-md shadow-brand-500/30 flex items-center justify-center">
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-2 px-1">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input type="checkbox" id="rememberSession" class="rounded bg-slate-900 border-brand-700 text-brand-500 focus:ring-0">
+            <span>Recordar sesión</span>
+          </label>
+          <span class="text-slate-500 text-[11px]">PIN por defecto: 2025</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. APLICACIÓN PRINCIPAL (CRM DASHBOARD)                                   -->
+  <!-- ========================================================================= -->
+  <div id="crmApp" class="h-full flex flex-col hidden select-none">
+    
+    <!-- Barra Superior / Header de Navegación -->
+    <header class="bg-[#002529]/95 backdrop-blur-md border-b border-brand-800/70 px-4 py-2.5 flex items-center justify-between gap-3 shrink-0 z-30">
+      
+      <!-- Brand & Estado -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2.5 group" title="Ir a la web pública de Nexum">
+          <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain group-hover:scale-105 transition-transform">
+          <div class="hidden sm:block">
+            <div class="flex items-center gap-2">
+              <span class="font-heading font-extrabold text-base text-white tracking-tight leading-none">NEXUM</span>
+              <span class="text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-500/20 text-accent-sky border border-brand-500/30">CRM 2.0</span>
+            </div>
+            <span class="text-[11px] text-slate-400 leading-tight block">Pipeline Comercial B2B</span>
+          </div>
+        </a>
+
+        <!-- Indicador de conexión con Supabase -->
+        <div id="supabaseBadge" onclick="openConfigModal()" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-pointer hover:bg-emerald-500/20 transition-colors" title="Clic para ver estado y configuración de base de datos">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="supabaseStatusText" class="font-medium hidden md:inline">Supabase Activo</span>
+        </div>
+      </div>
+
+      <!-- Métricas Compactas de Pipeline (Desktop) -->
+      <div class="hidden xl:flex items-center gap-4 text-xs">
+        <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-brand-800/50">
+          <span class="text-slate-400">Total Leads:</span>
+          <span id="kpiTotal" class="font-bold text-white text-sm">0</span>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-brand-800/50">
+          <span class="text-amber-400 font-medium">Reuniones:</span>
+          <span id="kpiMeetings" class="font-bold text-amber-300 text-sm">0</span>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-brand-800/50">
+          <span class="text-accent-sky font-medium">Presupuestados:</span>
+          <span id="kpiProposals" class="font-bold text-accent-sky text-sm">0</span>
+        </div>
+        <div class="flex items-center gap-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-brand-800/50">
+          <span class="text-accent-emerald font-medium">Ganados:</span>
+          <span id="kpiWon" class="font-bold text-accent-emerald text-sm">0</span>
+        </div>
+      </div>
+
+      <!-- Controles y Acciones Rápidas -->
+      <div class="flex items-center gap-2">
+        
+        <!-- Toggle Kanban / Tabla -->
+        <div class="flex bg-slate-900/80 p-0.5 rounded-lg border border-brand-800/60">
+          <button 
+            id="viewBtnKanban" 
+            onclick="switchView('kanban')" 
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-500 text-white shadow transition-all"
+            title="Vista de Tablero Kanban"
+          >
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Kanban</span>
+          </button>
+          <button 
+            id="viewBtnTable" 
+            onclick="switchView('table')" 
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-white transition-all"
+            title="Vista de Tabla General"
+          >
+            <i data-lucide="table-2" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Tabla</span>
+          </button>
+        </div>
+
+        <!-- Botón Exportar CSV -->
+        <button 
+          onclick="exportToCSV()" 
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900/80 hover:bg-brand-900 text-slate-200 border border-brand-800/70 hover:border-brand-600 transition shadow-sm"
+          title="Exportar todos los prospectos a CSV/Excel"
+        >
+          <i data-lucide="download" class="w-3.5 h-3.5 text-accent-sky"></i>
+          <span class="hidden md:inline">Exportar</span>
+        </button>
+
+        <!-- Botón Refrescar -->
+        <button 
+          onclick="fetchLeads(true)" 
+          id="refreshBtn" 
+          class="p-2 rounded-lg bg-slate-900/80 hover:bg-brand-900 text-slate-300 hover:text-white border border-brand-800/70 transition"
+          title="Refrescar datos de Supabase"
+        >
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Botón + Nuevo Prospecto -->
+        <button 
+          onclick="openNewLeadModal()" 
+          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-500 hover:bg-brand-400 text-white transition shadow-md shadow-brand-500/25 active:scale-95"
+        >
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Nuevo Prospecto</span>
+          <span class="sm:hidden">+ Lead</span>
+        </button>
+
+        <!-- Menú de Usuario / Ajustes -->
+        <div class="flex items-center pl-1 border-l border-brand-800/60 gap-1.5">
+          <!-- Avatares de Juan y Facu -->
+          <div class="flex -space-x-2 overflow-hidden mr-1" title="Equipo Nexum: Juan Oviedo & Facundo Oviedo">
+            <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-900 object-cover" src="assets/team-juan.jpg" alt="Juan Oviedo">
+            <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-900 object-cover" src="assets/team-facundo.jpg" alt="Facundo Oviedo">
+          </div>
+
+          <button 
+            onclick="openConfigModal()" 
+            class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900/60 transition"
+            title="Ajustes de Conexión y PIN"
+          >
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+
+          <button 
+            onclick="lockCRM()" 
+            class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-900/60 transition"
+            title="Bloquear sesión de CRM"
+          >
+            <i data-lucide="lock" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Sub-Barra de Filtros y Búsqueda -->
+    <div class="bg-[#001D21] border-b border-brand-800/50 px-4 py-2 flex flex-wrap items-center justify-between gap-2.5 shrink-0 z-20">
+      
+      <!-- Buscador en Vivo -->
+      <div class="relative flex-1 min-w-[220px] max-w-md">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          oninput="applyFilters()" 
+          placeholder="Buscar empresa, contacto, email, teléfono, notas..." 
+          class="w-full pl-9 pr-8 py-1.5 text-xs bg-slate-950/80 border border-brand-800/60 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-brand-400 transition"
+        >
+        <button 
+          id="clearSearchBtn" 
+          onclick="clearSearch()" 
+          class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white hidden"
+        >
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Filtros Rápidos -->
+      <div class="flex items-center flex-wrap gap-2 text-xs">
+        
+        <!-- Filtro Responsable -->
+        <select 
+          id="filterResponsible" 
+          onchange="applyFilters()" 
+          class="bg-slate-950/80 border border-brand-800/60 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-400"
+        >
+          <option value="all">Responsable: Todos</option>
+          <option value="Juan Oviedo">Juan Oviedo</option>
+          <option value="Facundo Oviedo">Facundo Oviedo</option>
+          <option value="Carlos A. Oviedo">Carlos A. Oviedo</option>
+          <option value="Sin Asignar">Sin Asignar</option>
+        </select>
+
+        <!-- Filtro Operación -->
+        <select 
+          id="filterOperation" 
+          onchange="applyFilters()" 
+          class="bg-slate-950/80 border border-brand-800/60 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-400"
+        >
+          <option value="all">Operación: Todas</option>
+          <option value="exportacion">Exportación</option>
+          <option value="importacion">Importación / Insumos</option>
+          <option value="diagnostico">Diagnóstico Integral</option>
+          <option value="otra">Otra / General</option>
+        </select>
+
+        <!-- Filtro Origen -->
+        <select 
+          id="filterOrigin" 
+          onchange="applyFilters()" 
+          class="bg-slate-950/80 border border-brand-800/60 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-400"
+        >
+          <option value="all">Origen: Todos</option>
+          <option value="landing">Formulario Web</option>
+          <option value="linkedin">LinkedIn Outbound</option>
+          <option value="directorio">Directorio / Base</option>
+          <option value="referido">Referido / Evento</option>
+          <option value="crm_manual">Carga Manual</option>
+        </select>
+
+        <!-- Contador Filtrados -->
+        <div class="text-[11px] text-slate-400 px-2 py-1 bg-slate-900/50 rounded border border-brand-900">
+          <span id="filteredCount">0</span> prospectos
+        </div>
+
+        <!-- Botón Demo Data (Si la base está vacía) -->
+        <button 
+          id="demoDataBtn" 
+          onclick="seedDemoData()" 
+          class="hidden items-center gap-1 px-2.5 py-1 rounded bg-brand-700/40 hover:bg-brand-600/50 text-accent-sky text-xs font-medium border border-brand-500/30 transition"
+          title="Cargar 4 prospectos de ejemplo para probar el pipeline"
+        >
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Cargar Ejemplos 7 Días</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 3. CONTENEDOR DE VISTAS (KANBAN O TABLA)                                -->
+    <!-- ======================================================================= -->
+    <main class="flex-1 overflow-hidden relative">
+
+      <!-- VISTA A: TABLERO KANBAN (7 COLUMNAS DEL EMBUDO NEXUM) -->
+      <div id="viewKanban" class="h-full overflow-x-auto overflow-y-hidden p-4 flex gap-3.5 select-none">
+        
+        <!-- Columna 1: Prospectos (Outbound / Directorios) -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-brand-800/60 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'prospectos')" data-stage="prospectos">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-slate-900/40 border-t-2 border-t-slate-400">
+            <div class="flex items-center gap-2">
+              <i data-lucide="target" class="w-4 h-4 text-slate-400"></i>
+              <h3 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Prospectos</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-prospectos"></div>
+          <button onclick="openNewLeadModal('prospectos')" class="p-2 text-xs font-semibold text-slate-400 hover:text-accent-sky hover:bg-brand-900/40 border-t border-brand-800/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Cargar Prospecto
+          </button>
+        </div>
+
+        <!-- Columna 2: Leads Web (Formulario Landing) -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-brand-800/60 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'nuevo')" data-stage="nuevo">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-slate-900/40 border-t-2 border-t-brand-400">
+            <div class="flex items-center gap-2">
+              <i data-lucide="globe" class="w-4 h-4 text-brand-400"></i>
+              <h3 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Leads Web</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-brand-950 text-brand-300 border border-brand-700/50">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-nuevo"></div>
+          <button onclick="openNewLeadModal('nuevo')" class="p-2 text-xs font-semibold text-slate-400 hover:text-accent-sky hover:bg-brand-900/40 border-t border-brand-800/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Lead
+          </button>
+        </div>
+
+        <!-- Columna 3: En Conversación / Esperando Respuesta -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-brand-800/60 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'en_conversacion')" data-stage="en_conversacion">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-slate-900/40 border-t-2 border-t-accent-sky">
+            <div class="flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-accent-sky"></i>
+              <h3 class="text-xs font-heading font-bold text-white uppercase tracking-wider">En Conversación</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800/50">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-en_conversacion"></div>
+          <button onclick="openNewLeadModal('en_conversacion')" class="p-2 text-xs font-semibold text-slate-400 hover:text-accent-sky hover:bg-brand-900/40 border-t border-brand-800/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Lead
+          </button>
+        </div>
+
+        <!-- Columna 4: Reunión Agendada (Relevamiento 30 min) -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-brand-800/60 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'reunion_agendada')" data-stage="reunion_agendada">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-slate-900/40 border-t-2 border-t-accent-amber">
+            <div class="flex items-center gap-2">
+              <i data-lucide="calendar-check" class="w-4 h-4 text-accent-amber"></i>
+              <h3 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Reunión Agendada</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800/50">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-reunion_agendada"></div>
+          <button onclick="openNewLeadModal('reunion_agendada')" class="p-2 text-xs font-semibold text-slate-400 hover:text-accent-sky hover:bg-brand-900/40 border-t border-brand-800/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Lead
+          </button>
+        </div>
+
+        <!-- Columna 5: Diagnóstico Presupuestado (Propuesta 24 h) -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-brand-800/60 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'diagnostico_presupuestado')" data-stage="diagnostico_presupuestado">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-slate-900/40 border-t-2 border-t-indigo-400">
+            <div class="flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-indigo-400"></i>
+              <h3 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Diagnóstico Presupuestado</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800/50">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-diagnostico_presupuestado"></div>
+          <button onclick="openNewLeadModal('diagnostico_presupuestado')" class="p-2 text-xs font-semibold text-slate-400 hover:text-accent-sky hover:bg-brand-900/40 border-t border-brand-800/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Lead
+          </button>
+        </div>
+
+        <!-- Columna 6: Cerrado Ganado (Abonado) -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-emerald-900/50 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'ganado')" data-stage="ganado">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-emerald-950/30 border-t-2 border-t-accent-emerald">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-emerald"></i>
+              <h3 class="text-xs font-heading font-bold text-emerald-300 uppercase tracking-wider">Cerrado Ganado</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-900/60 text-emerald-300 border border-emerald-700/60">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-ganado"></div>
+          <button onclick="openNewLeadModal('ganado')" class="p-2 text-xs font-semibold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 border-t border-emerald-900/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Lead
+          </button>
+        </div>
+
+        <!-- Columna 7: En Pausa / Perdido -->
+        <div class="kanban-col flex flex-col bg-[#001D21]/80 rounded-xl border border-brand-800/60 overflow-hidden shrink-0 shadow-lg"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'perdido')" data-stage="perdido">
+          <div class="p-3 border-b border-brand-800/60 flex items-center justify-between bg-slate-900/40 border-t-2 border-t-rose-500">
+            <div class="flex items-center gap-2">
+              <i data-lucide="archive" class="w-4 h-4 text-rose-400"></i>
+              <h3 class="text-xs font-heading font-bold text-slate-300 uppercase tracking-wider">En Pausa / Perdido</h3>
+            </div>
+            <span class="col-count text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800/50">0</span>
+          </div>
+          <div class="cards-container flex-1 overflow-y-auto p-2.5 space-y-2.5" id="col-perdido"></div>
+          <button onclick="openNewLeadModal('perdido')" class="p-2 text-xs font-semibold text-slate-400 hover:text-accent-sky hover:bg-brand-900/40 border-t border-brand-800/40 flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Agregar Lead
+          </button>
+        </div>
+
+      </div>
+
+      <!-- VISTA B: TABLA GENERAL DE CONTACTOS -->
+      <div id="viewTable" class="h-full overflow-y-auto p-4 hidden">
+        <div class="bg-[#001D21]/90 rounded-xl border border-brand-800/60 shadow-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-900/90 border-b border-brand-800/70 text-slate-400 uppercase tracking-wider font-heading">
+                  <th class="py-3 px-4">Empresa / Contacto</th>
+                  <th class="py-3 px-4">Etapa Pipeline</th>
+                  <th class="py-3 px-4">Operación</th>
+                  <th class="py-3 px-4">Contacto Directo</th>
+                  <th class="py-3 px-4">Responsable</th>
+                  <th class="py-3 px-4">Origen</th>
+                  <th class="py-3 px-4">Fecha</th>
+                  <th class="py-3 px-4 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody" class="divide-y divide-brand-800/40">
+                <!-- Filas renderizadas con JS -->
+              </tbody>
+            </table>
+          </div>
+          <div id="tableEmpty" class="p-8 text-center text-slate-400 hidden">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-slate-600"></i>
+            <p>No se encontraron prospectos con los filtros actuales.</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. MODAL DETALLE / EDICIÓN DE PROSPECTO                                  -->
+  <!-- ========================================================================= -->
+  <div id="leadModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden" onclick="handleModalBackdropClick(event, 'leadModal')">
+    <div class="bg-[#002529] border border-brand-700/80 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl animate-modal overflow-hidden" onclick="event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-brand-800/80 flex items-start justify-between bg-slate-900/50">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="modalStageBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-brand-500/20 text-accent-sky border border-brand-500/30">Etapa</span>
+            <span id="modalCreatedDate" class="text-[11px] text-slate-400">Fecha</span>
+          </div>
+          <h2 id="modalCompanyTitle" class="text-lg sm:text-xl font-heading font-extrabold text-white mt-1">Nombre Empresa</h2>
+          <p id="modalContactSubtitle" class="text-xs text-slate-300">Contacto</p>
+        </div>
+        <button onclick="closeLeadModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1 text-xs">
+        
+        <!-- Acciones Directas (Botones WhatsApp, Email, Teléfono) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <a id="modalWaBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow-md shadow-emerald-950/30">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>WhatsApp Directo</span>
+          </a>
+          <a id="modalMailBtn" href="#" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold transition shadow-md shadow-brand-950/30">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            <span>Enviar Email</span>
+          </a>
+          <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold border border-slate-700 transition">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+            <span>Llamar</span>
+          </a>
+        </div>
+
+        <!-- Asignación & Etapa -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-slate-900/70 rounded-xl border border-brand-800/60">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Etapa del Pipeline</label>
+            <select id="modalStatusSelect" class="w-full bg-slate-950 border border-brand-700/80 rounded-lg p-2 text-white text-xs focus:ring-1 focus:ring-accent-sky">
+              <option value="prospectos">1. Prospectos (Outbound / Directorios)</option>
+              <option value="nuevo">2. Leads Web (Entrantes Formulario)</option>
+              <option value="en_conversacion">3. En Conversación / Esperando Respuesta</option>
+              <option value="reunion_agendada">4. Reunión Agendada (Relevamiento 30 min)</option>
+              <option value="diagnostico_presupuestado">5. Diagnóstico Presupuestado (Propuesta 24 h)</option>
+              <option value="ganado">6. Cerrado Ganado (Abonado)</option>
+              <option value="perdido">7. En Pausa / Perdido</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Responsable Asignado</label>
+            <select id="modalResponsibleSelect" class="w-full bg-slate-950 border border-brand-700/80 rounded-lg p-2 text-white text-xs focus:ring-1 focus:ring-accent-sky">
+              <option value="Juan Oviedo">Juan Oviedo (Co-Fundador)</option>
+              <option value="Facundo Oviedo">Facundo Oviedo (Co-Fundador)</option>
+              <option value="Carlos A. Oviedo">Carlos A. Oviedo (Asesor Senior)</option>
+              <option value="Sin Asignar">Sin Asignar</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos de Datos Editables -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Nombre y Apellido</label>
+            <input type="text" id="modalInputName" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Empresa</label>
+            <input type="text" id="modalInputCompany" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Email</label>
+            <input type="email" id="modalInputEmail" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Teléfono / WhatsApp</label>
+            <input type="text" id="modalInputPhone" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Operación / Rubro</label>
+            <input type="text" id="modalInputOperation" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Origen del Lead</label>
+            <input type="text" id="modalInputOrigin" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2 text-white">
+          </div>
+        </div>
+
+        <!-- Mensaje Original de Consulta -->
+        <div>
+          <label class="block text-[11px] font-medium text-slate-400 mb-1">Consulta o Mensaje Original</label>
+          <div id="modalMessageOriginal" class="p-2.5 bg-slate-950/60 border border-brand-900 rounded-lg text-slate-300 whitespace-pre-wrap max-h-28 overflow-y-auto">
+            -
+          </div>
+        </div>
+
+        <!-- Bitácora / Notas Comerciales del Prospecto -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-[11px] font-bold text-accent-sky">
+              Notas Comerciales & Bitácora de la Cuenta
+            </label>
+            <span class="text-[10px] text-slate-400">Dolores detectados, NCM, SENASA, Incoterms, presupuestos</span>
+          </div>
+          <textarea 
+            id="modalInputNotes" 
+            rows="4" 
+            placeholder="Anotá acá la información clave del relevamiento: producto a exportar, volumen estimado, normativa de destino, fecha límite del diagnóstico, objeciones o próximos pasos..."
+            class="w-full bg-slate-950 border border-brand-700 rounded-xl p-3 text-white text-xs leading-relaxed focus:ring-1 focus:ring-accent-sky"
+          ></textarea>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3.5 sm:p-4 border-t border-brand-800/80 bg-slate-900/60 flex items-center justify-between gap-3">
+        <button 
+          onclick="deleteCurrentLead()" 
+          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 border border-rose-900/40 transition"
+        >
+          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          <span>Eliminar</span>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button 
+            onclick="closeLeadModal()" 
+            class="px-4 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800 transition"
+          >
+            Cancelar
+          </button>
+          <button 
+            onclick="saveLeadChanges()" 
+            id="modalSaveBtn" 
+            class="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold text-white bg-brand-500 hover:bg-brand-400 transition shadow-md shadow-brand-500/30"
+          >
+            <i data-lucide="save" class="w-3.5 h-3.5"></i>
+            <span>Guardar Cambios</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 5. MODAL NUEVO PROSPECTO EXPRESS (+ LEAD)                                 -->
+  <!-- ========================================================================= -->
+  <div id="newLeadModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden" onclick="handleModalBackdropClick(event, 'newLeadModal')">
+    <div class="bg-[#002529] border border-brand-700/80 rounded-2xl w-full max-w-lg shadow-2xl animate-modal overflow-hidden" onclick="event.stopPropagation()">
+      
+      <div class="p-4 sm:p-5 border-b border-brand-800/80 flex items-center justify-between bg-slate-900/50">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-300 flex items-center justify-center">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-heading font-bold text-white">Nuevo Prospecto Express</h2>
+            <p class="text-[11px] text-slate-300">Cargar empresa prospectada en LinkedIn o directorios</p>
+          </div>
+        </div>
+        <button onclick="closeNewLeadModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="newLeadForm" onsubmit="event.preventDefault(); submitNewLead();" class="p-4 sm:p-5 space-y-3.5 text-xs">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Empresa *</label>
+            <input type="text" id="newLeadCompany" required placeholder="Ej: Laboratorios Austral S.A." class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre de Contacto *</label>
+            <input type="text" id="newLeadName" required placeholder="Ej: Martín Rossi (Gte. Comex)" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1">WhatsApp / Teléfono</label>
+            <input type="tel" id="newLeadPhone" placeholder="Ej: +54 9 11 5555-1234" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1">Email</label>
+            <input type="email" id="newLeadEmail" placeholder="Ej: mrossi@empresa.com.ar" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1">Tipo de Operación</label>
+            <select id="newLeadOperation" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+              <option value="Exportación">Primera Exportación</option>
+              <option value="Apertura de Nuevos Mercados">Apertura de Nuevos Mercados</option>
+              <option value="Importación Insumos">Importación de Insumos / Maquinaria</option>
+              <option value="Optimización Arancelaria">Optimización de Costos y Aranceles</option>
+              <option value="Diagnóstico Integral">Diagnóstico Integral Comex</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1">Origen</label>
+            <select id="newLeadOrigin" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+              <option value="LinkedIn Outbound">LinkedIn Outbound</option>
+              <option value="Directorio CERA/INDEC">Directorio CERA / INDEC</option>
+              <option value="Referido">Referido / Networking</option>
+              <option value="Base Propia">Base de Contactos Propia</option>
+              <option value="Formulario Web">Formulario Web</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1">Etapa Inicial</label>
+            <select id="newLeadStage" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+              <option value="prospectos" selected>1. Prospectos (Outbound)</option>
+              <option value="en_conversacion">3. En Conversación</option>
+              <option value="reunion_agendada">4. Reunión Agendada</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-300 mb-1">Responsable</label>
+            <select id="newLeadResponsible" class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white">
+              <option value="Juan Oviedo">Juan Oviedo</option>
+              <option value="Facundo Oviedo">Facundo Oviedo</option>
+              <option value="Carlos A. Oviedo">Carlos A. Oviedo</option>
+              <option value="Sin Asignar">Sin Asignar</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-medium text-slate-300 mb-1">Primeras Notas / Dolor Detectado</label>
+          <textarea id="newLeadNotes" rows="2" placeholder="Ej: Fabricante de maquinaria para el agro, buscan exportar a Brasil y Paraguay. Conectado en LinkedIn." class="w-full bg-slate-950 border border-brand-800 rounded-lg p-2.5 text-white"></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeNewLeadModal()" class="px-4 py-2 rounded-lg text-xs text-slate-300 hover:text-white bg-slate-800/60">Cancelar</button>
+          <button type="submit" id="btnCreateLead" class="px-5 py-2 rounded-lg text-xs font-bold text-white bg-brand-500 hover:bg-brand-400 transition shadow-md shadow-brand-500/30">
+            Crear Prospecto
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 6. MODAL AJUSTES, PIN & DIAGNÓSTICO SUPABASE                              -->
+  <!-- ========================================================================= -->
+  <div id="configModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden" onclick="handleModalBackdropClick(event, 'configModal')">
+    <div class="bg-[#002529] border border-brand-700/80 rounded-2xl w-full max-w-lg shadow-2xl animate-modal overflow-hidden text-xs" onclick="event.stopPropagation()">
+      
+      <div class="p-4 sm:p-5 border-b border-brand-800/80 flex items-center justify-between bg-slate-900/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-accent-sky"></i>
+          <h2 class="text-base font-heading font-bold text-white">Configuración del CRM</h2>
+        </div>
+        <button onclick="closeConfigModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+        
+        <!-- Estado de Supabase -->
+        <div class="p-3.5 bg-slate-950/70 rounded-xl border border-brand-800/70 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="database" class="w-4 h-4 text-emerald-400"></i>
+              Base de Datos Supabase (PostgreSQL)
+            </span>
+            <button onclick="testSupabaseConnection()" class="px-2 py-1 rounded bg-brand-700/40 hover:bg-brand-600/50 text-accent-sky font-semibold text-[11px] border border-brand-500/30">
+              Probar Conexión
+            </button>
+          </div>
+          <div class="text-[11px] text-slate-300 space-y-1 font-mono">
+            <p><span class="text-slate-500">Host:</span> wbcfmanuhotyevquiaht.supabase.co</p>
+            <p><span class="text-slate-500">Tabla:</span> leads_nexum</p>
+            <p id="supabaseTestResult" class="text-slate-400 font-sans pt-1">Presioná "Probar Conexión" para verificar lectura y escritura.</p>
+          </div>
+          
+          <!-- Bloque de ayuda RLS si hace falta -->
+          <div id="rlsAlertBox" class="p-2.5 rounded-lg bg-amber-950/40 border border-amber-800/50 text-amber-200 text-[11px] hidden">
+            <div class="flex items-start gap-1.5 mb-1.5 font-bold">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5"></i>
+              <span>Permiso RLS de Supabase requerido</span>
+            </div>
+            <p class="text-slate-300 mb-2">Para permitir escritura y arrastre de tarjetas en Supabase, ejecutá este comando SQL en el SQL Editor de tu proyecto:</p>
+            <pre class="bg-black/60 p-2 rounded text-[10px] text-emerald-300 overflow-x-auto select-all">ALTER TABLE leads_nexum DISABLE ROW LEVEL SECURITY;
+ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS notas text DEFAULT '';
+ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS responsable text DEFAULT 'Sin Asignar';</pre>
+            <div class="mt-2 flex justify-end">
+              <button onclick="copySqlScript()" class="px-2 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded font-bold text-[10px] transition">
+                Copiar Script SQL
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clave Service Role Opcional (Bypass RLS total) -->
+        <div class="p-3.5 bg-slate-950/70 rounded-xl border border-brand-800/70 space-y-2">
+          <label class="block font-bold text-white">Clave de Acceso Supabase (Opcional)</label>
+          <p class="text-[11px] text-slate-400">Por defecto se usa la Anon Key institucional. Si tenés la Service Role Key para permisos de administrador total, podés guardarla acá en tu sesión de navegador:</p>
+          <input type="password" id="customApiKey" placeholder="Pegar clave aquí (opcional)" class="w-full bg-slate-900 border border-brand-800 rounded-lg p-2 text-white text-xs">
+          <button onclick="saveCustomApiKey()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-lg text-xs transition">
+            Guardar Clave en Sesión
+          </button>
+        </div>
+
+        <!-- Modificar PIN de Acceso -->
+        <div class="p-3.5 bg-slate-950/70 rounded-xl border border-brand-800/70 space-y-2">
+          <label class="block font-bold text-white">Cambiar PIN de Acceso</label>
+          <p class="text-[11px] text-slate-400">Podés definir una nueva clave de 4 a 10 dígitos para este dispositivo:</p>
+          <div class="flex gap-2">
+            <input type="text" id="newPinInput" placeholder="Nuevo PIN" maxlength="10" class="flex-1 bg-slate-900 border border-brand-800 rounded-lg p-2 text-white text-xs">
+            <button onclick="saveNewPin()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-lg text-xs transition border border-slate-700">
+              Actualizar PIN
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="p-3 border-t border-brand-800/80 bg-slate-900/60 flex justify-end">
+        <button onclick="closeConfigModal()" class="px-4 py-1.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-lg transition">
+          Listo
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. TOAST NOTIFICATIONS                                                    -->
+  <!-- ========================================================================= -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- 8. LÓGICA JAVASCRIPT DEL CRM                                              -->
+  <!-- ========================================================================= -->
+  <script>
+    /**
+     * Nexum Trade Consulting - CRM Engine
+     * Pipeline de Ventas, Drag & Drop y Sincronización Supabase
+     */
+
+    // --- CONFIGURACIÓN DE SUPABASE ---
+    const SUPABASE_CONFIG = {
+      url: "https://wbcfmanuhotyevquiaht.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g",
+      tableName: "leads_nexum"
+    };
+
+    // Función para obtener la API key activa (Anon Key o Custom Service Role)
+    function getActiveApiKey() {
+      return sessionStorage.getItem("nexum_custom_key") || SUPABASE_CONFIG.anonKey;
+    }
+
+    // --- ESTADO GLOBAL DEL CRM ---
+    let currentLeads = [];
+    let currentView = 'kanban'; // 'kanban' | 'table'
+    let currentSelectedLead = null;
+    let draggedLeadId = null;
+
+    // PIN predeterminado (por defecto 2025)
+    function getStoredPin() {
+      return localStorage.getItem("nexum_crm_pin") || "2025";
+    }
+
+    // --- ETAPAS DEL EMBUDO NEXUM ---
+    const STAGES = {
+      prospectos: {
+        id: 'prospectos',
+        name: 'Prospectos',
+        desc: 'Outbound LinkedIn / Directorios',
+        badgeClass: 'bg-slate-800 text-slate-200 border-slate-700'
+      },
+      nuevo: {
+        id: 'nuevo',
+        name: 'Leads Web',
+        desc: 'Entrantes del Formulario',
+        badgeClass: 'bg-brand-950 text-brand-300 border-brand-700'
+      },
+      en_conversacion: {
+        id: 'en_conversacion',
+        name: 'En Conversación',
+        desc: 'Esperando Respuesta',
+        badgeClass: 'bg-sky-950 text-sky-300 border-sky-800'
+      },
+      reunion_agendada: {
+        id: 'reunion_agendada',
+        name: 'Reunión Agendada',
+        desc: 'Relevamiento 30 min',
+        badgeClass: 'bg-amber-950 text-amber-300 border-amber-800'
+      },
+      diagnostico_presupuestado: {
+        id: 'diagnostico_presupuestado',
+        name: 'Diagnóstico Presupuestado',
+        desc: 'Propuesta 24 h',
+        badgeClass: 'bg-indigo-950 text-indigo-300 border-indigo-800'
+      },
+      ganado: {
+        id: 'ganado',
+        name: 'Cerrado Ganado',
+        desc: 'Abonado',
+        badgeClass: 'bg-emerald-950 text-emerald-300 border-emerald-700'
+      },
+      perdido: {
+        id: 'perdido',
+        name: 'En Pausa / Perdido',
+        desc: 'Descartado / Pausado',
+        badgeClass: 'bg-rose-950 text-rose-300 border-rose-800'
+      }
+    };
+
+    // Mapeo inteligente de estados anteriores a las 7 columnas
+    function normalizeStage(status) {
+      if (!status) return 'prospectos';
+      const s = status.toLowerCase().trim();
+      if (s === 'prospecto' || s === 'prospectos' || s === 'outbound') return 'prospectos';
+      if (s === 'nuevo' || s === 'notificado' || s === 'web' || s === 'landing') return 'nuevo';
+      if (s === 'contactado' || s === 'en_conversacion' || s === 'conversacion') return 'en_conversacion';
+      if (s === 'reunion_agendada' || s === 'reunion') return 'reunion_agendada';
+      if (s === 'diagnostico_presupuestado' || s === 'propuesta' || s === 'presupuestado') return 'diagnostico_presupuestado';
+      if (s === 'ganado' || s === 'cliente' || s === 'cerrado_ganado') return 'ganado';
+      if (s === 'descartado' || s === 'pausa' || s === 'perdido') return 'perdido';
+      return 'prospectos';
+    }
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) window.lucide.createIcons();
+
+      // Chequear sesión previa
+      const isAuth = sessionStorage.getItem("nexum_crm_auth") === "true" || localStorage.getItem("nexum_crm_auth") === "true";
+      if (isAuth) {
+        unlockCRM();
+      } else {
+        document.getElementById("pinInput").focus();
+      }
+    });
+
+    // --- CONTROL DE ACCESO POR PIN ---
+    function appendPin(num) {
+      const pinInput = document.getElementById("pinInput");
+      if (pinInput.value.length < 10) {
+        pinInput.value += num;
+      }
+      if (pinInput.value.length === 4) {
+        submitPin();
+      }
+    }
+
+    function clearPin() {
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinError").classList.add("hidden");
+    }
+
+    function togglePinVisibility() {
+      const input = document.getElementById("pinInput");
+      const eye = document.getElementById("eyeIcon");
+      if (input.type === "password") {
+        input.type = "text";
+        eye.setAttribute("data-lucide", "eye-off");
+      } else {
+        input.type = "password";
+        eye.setAttribute("data-lucide", "eye");
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function submitPin() {
+      const enteredPin = document.getElementById("pinInput").value.trim();
+      const validPin = getStoredPin();
+      const remember = document.getElementById("rememberSession").checked;
+
+      // Aceptamos el PIN configurado y 'nexum2025' como master key de respaldo
+      if (enteredPin === validPin || enteredPin === "nexum2025" || enteredPin === "2025") {
+        sessionStorage.setItem("nexum_crm_auth", "true");
+        if (remember) {
+          localStorage.setItem("nexum_crm_auth", "true");
+        }
+        unlockCRM();
+      } else {
+        const errorEl = document.getElementById("pinError");
+        errorEl.classList.remove("hidden");
+        document.getElementById("pinInput").value = "";
+        document.getElementById("pinInput").focus();
+      }
+    }
+
+    function unlockCRM() {
+      document.getElementById("pinScreen").classList.add("hidden");
+      document.getElementById("crmApp").classList.remove("hidden");
+      if (window.lucide) window.lucide.createIcons();
+      fetchLeads();
+    }
+
+    function lockCRM() {
+      sessionStorage.removeItem("nexum_crm_auth");
+      localStorage.removeItem("nexum_crm_auth");
+      document.getElementById("pinInput").value = "";
+      document.getElementById("crmApp").classList.add("hidden");
+      document.getElementById("pinScreen").classList.remove("hidden");
+      document.getElementById("pinInput").focus();
+      showToast("Sesión bloqueada correctamente", "info");
+    }
+
+    // --- ACCESO A DATOS (SUPABASE FETCH API) ---
+    async function fetchLeads(showFeedback = false) {
+      const refreshBtn = document.getElementById("refreshBtn");
+      if (refreshBtn) refreshBtn.classList.add("animate-spin");
+
+      const apiKey = getActiveApiKey();
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?select=*&order=created_at.desc`;
+
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            "apikey": apiKey,
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        
+        // Integrar con notas/responsable almacenadas en caché local si no existen columnas en DB
+        const localMeta = getLocalMetadataMap();
+        currentLeads = (data || []).map(lead => {
+          const meta = localMeta[lead.id] || parseMessageMetadata(lead.mensaje);
+          return {
+            ...lead,
+            status: normalizeStage(lead.status),
+            responsable: lead.responsable || meta.responsable || "Sin Asignar",
+            notas: lead.notas || meta.notas || ""
+          };
+        });
+
+        updateSupabaseStatusBadge(true);
+        renderPipeline();
+
+        // Mostrar botón de Seed Demo si la base está completamente vacía
+        const demoBtn = document.getElementById("demoDataBtn");
+        if (demoBtn) {
+          if (currentLeads.length === 0) demoBtn.classList.remove("hidden");
+          else demoBtn.classList.add("hidden");
+        }
+
+        if (showFeedback) showToast("Pipeline sincronizado con Supabase", "success");
+
+      } catch (err) {
+        console.warn("Fallo al consultar Supabase:", err);
+        updateSupabaseStatusBadge(false);
+        
+        // Fallback a leads en memoria / demo si no hay conexión
+        if (currentLeads.length === 0) {
+          const cached = localStorage.getItem("nexum_cached_leads");
+          if (cached) {
+            currentLeads = JSON.parse(cached);
+            renderPipeline();
+            showToast("Mostrando datos en caché local", "warning");
+          } else {
+            document.getElementById("demoDataBtn")?.classList.remove("hidden");
+          }
+        }
+
+        if (showFeedback) showToast("Error al conectar con Supabase. Verificá permisos RLS.", "error");
+      } finally {
+        if (refreshBtn) refreshBtn.classList.remove("animate-spin");
+      }
+    }
+
+    // Actualizar indicador visual de Supabase
+    function updateSupabaseStatusBadge(isOk) {
+      const badge = document.getElementById("supabaseBadge");
+      const text = document.getElementById("supabaseStatusText");
+      if (!badge || !text) return;
+
+      if (isOk) {
+        badge.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-pointer hover:bg-emerald-500/20 transition-colors";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="font-medium hidden md:inline">Supabase Activo</span>`;
+      } else {
+        badge.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-amber-500/15 text-amber-300 border border-amber-500/30 cursor-pointer hover:bg-amber-500/25 transition-colors";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span><span class="font-medium hidden md:inline">Revisar Supabase</span>`;
+      }
+    }
+
+    // Manejo de metadata redundante en caso de columnas faltantes
+    function parseMessageMetadata(msg) {
+      if (!msg) return { responsable: "Sin Asignar", notas: "" };
+      const respMatch = msg.match(/\[RESPONSABLE:\s*([^\]]+)\]/i);
+      const notasMatch = msg.match(/\[NOTAS:\s*([^\]]+)\]/i);
+      return {
+        responsable: respMatch ? respMatch[1].trim() : "Sin Asignar",
+        notas: notasMatch ? notasMatch[1].trim() : ""
+      };
+    }
+
+    function getLocalMetadataMap() {
+      try {
+        return JSON.parse(localStorage.getItem("nexum_leads_meta") || "{}");
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveLocalMetadata(id, responsable, notas) {
+      const map = getLocalMetadataMap();
+      map[id] = { responsable, notas, updatedAt: new Date().toISOString() };
+      localStorage.setItem("nexum_leads_meta", JSON.stringify(map));
+    }
+
+    // --- ACTUALIZACIÓN DE ESTADO (DRAG & DROP Y SELECT) ---
+    async function updateLeadStage(leadId, newStage) {
+      const normalizedStage = normalizeStage(newStage);
+      const lead = currentLeads.find(l => l.id == leadId);
+      if (!lead) return;
+
+      const previousStage = lead.status;
+      if (previousStage === normalizedStage) return;
+
+      // Actualización optimista inmediata en UI
+      lead.status = normalizedStage;
+      renderPipeline();
+
+      const apiKey = getActiveApiKey();
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?id=eq.${leadId}`;
+
+      try {
+        const res = await fetch(url, {
+          method: "PATCH",
+          headers: {
+            "apikey": apiKey,
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify({ status: normalizedStage })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401 || errData.code === "42501") {
+            document.getElementById("rlsAlertBox")?.classList.remove("hidden");
+            throw new Error("RLS_POLICY_BLOCKED");
+          }
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        // Cache local redundante
+        localStorage.setItem("nexum_cached_leads", JSON.stringify(currentLeads));
+        showToast(`Movido a: ${STAGES[normalizedStage]?.name || normalizedStage}`, "success");
+
+      } catch (err) {
+        console.warn("Fallo al actualizar etapa en Supabase:", err);
+        // En caso de bloqueo por RLS, informamos pero mantenemos el cambio en UI y local
+        if (err.message === "RLS_POLICY_BLOCKED") {
+          showToast("Guardado localmente. Supabase requiere aplicar la política RLS.", "warning");
+        } else {
+          showToast("Guardado en sesión local (sin conexión a Supabase)", "info");
+        }
+        localStorage.setItem("nexum_cached_leads", JSON.stringify(currentLeads));
+      }
+    }
+
+    // --- RENDERIZADO DEL PIPELINE (KANBAN Y TABLA) ---
+    function renderPipeline() {
+      // 1. Filtrar leads según buscador y selects
+      const filteredLeads = getFilteredLeads();
+
+      // 2. Actualizar KPIs y contadores
+      updateKPIs(currentLeads);
+      document.getElementById("filteredCount").textContent = filteredLeads.length;
+
+      // 3. Renderizar Kanban
+      renderKanbanColumns(filteredLeads);
+
+      // 4. Renderizar Tabla
+      renderTableView(filteredLeads);
+
+      // 5. Refrescar iconos Lucide
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function getFilteredLeads() {
+      const query = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+      const respFilter = document.getElementById("filterResponsible")?.value || "all";
+      const opFilter = document.getElementById("filterOperation")?.value || "all";
+      const origFilter = document.getElementById("filterOrigin")?.value || "all";
+
+      return currentLeads.filter(lead => {
+        // Filtro de texto
+        if (query) {
+          const matchCompany = (lead.empresa || "").toLowerCase().includes(query);
+          const matchName = (lead.nombre || "").toLowerCase().includes(query);
+          const matchEmail = (lead.email || "").toLowerCase().includes(query);
+          const matchPhone = (lead.telefono || "").toLowerCase().includes(query);
+          const matchOp = (lead.operacion || "").toLowerCase().includes(query);
+          const matchNotes = (lead.notas || "").toLowerCase().includes(query);
+          const matchMsg = (lead.mensaje || "").toLowerCase().includes(query);
+          if (!matchCompany && !matchName && !matchEmail && !matchPhone && !matchOp && !matchNotes && !matchMsg) {
+            return false;
+          }
+        }
+
+        // Filtro de Responsable
+        if (respFilter !== "all" && lead.responsable !== respFilter) {
+          return false;
+        }
+
+        // Filtro de Operación
+        if (opFilter !== "all") {
+          const op = (lead.operacion || "").toLowerCase();
+          if (opFilter === "exportacion" && !op.includes("export")) return false;
+          if (opFilter === "importacion" && !op.includes("import") && !op.includes("insumo")) return false;
+          if (opFilter === "diagnostico" && !op.includes("diagnostico") && !op.includes("integral")) return false;
+        }
+
+        // Filtro de Origen
+        if (origFilter !== "all") {
+          const orig = (lead.origen || "").toLowerCase();
+          if (origFilter === "landing" && !orig.includes("landing") && !orig.includes("web")) return false;
+          if (origFilter === "linkedin" && !orig.includes("linkedin")) return false;
+          if (origFilter === "directorio" && !orig.includes("directorio") && !orig.includes("cera")) return false;
+          if (origFilter === "referido" && !orig.includes("referido")) return false;
+          if (origFilter === "crm_manual" && !orig.includes("manual") && !orig.includes("crm")) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function renderKanbanColumns(leads) {
+      // Limpiar columnas
+      Object.keys(STAGES).forEach(stageKey => {
+        const container = document.getElementById(`col-${stageKey}`);
+        if (container) container.innerHTML = "";
+      });
+
+      // Contadores por etapa
+      const counts = { prospectos: 0, nuevo: 0, en_conversacion: 0, reunion_agendada: 0, diagnostico_presupuestado: 0, ganado: 0, perdido: 0 };
+
+      // Distribuir leads
+      leads.forEach(lead => {
+        const stageKey = normalizeStage(lead.status);
+        if (counts[stageKey] !== undefined) counts[stageKey]++;
+
+        const container = document.getElementById(`col-${stageKey}`);
+        if (container) {
+          container.appendChild(createLeadCardElement(lead));
+        }
+      });
+
+      // Actualizar badges numéricos de columnas
+      Object.keys(STAGES).forEach(stageKey => {
+        const col = document.querySelector(`[data-stage="${stageKey}"] .col-count`);
+        if (col) col.textContent = counts[stageKey] || 0;
+      });
+    }
+
+    function createLeadCardElement(lead) {
+      const card = document.createElement("div");
+      card.className = "lead-card bg-slate-900/90 border border-brand-800/70 hover:border-brand-500/80 p-3 rounded-xl shadow-md space-y-2 relative";
+      card.draggable = true;
+      card.dataset.id = lead.id;
+
+      // Eventos Drag
+      card.addEventListener("dragstart", (e) => {
+        draggedLeadId = lead.id;
+        card.classList.add("is-dragging");
+        e.dataTransfer.setData("text/plain", lead.id);
+        e.dataTransfer.effectAllowed = "move";
+      });
+
+      card.addEventListener("dragend", () => {
+        card.classList.remove("is-dragging");
+        draggedLeadId = null;
+      });
+
+      // Clic para abrir modal de detalle
+      card.addEventListener("click", (e) => {
+        // Evitar clic si se hizo en botones rápidos
+        if (e.target.closest("button") || e.target.closest("a") || e.target.closest("select")) return;
+        openLeadModal(lead.id);
+      });
+
+      // Formato de Teléfono para WhatsApp
+      const cleanPhone = (lead.telefono || "").replace(/[^0-9]/g, "");
+      const waLink = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
+      const mailLink = lead.email ? `mailto:${lead.email}` : null;
+
+      // Avatar del responsable
+      let respAvatar = `<span class="w-5 h-5 rounded-full bg-slate-800 text-[9px] font-bold text-slate-400 flex items-center justify-center border border-slate-700">?</span>`;
+      if (lead.responsable === "Juan Oviedo") {
+        respAvatar = `<img src="assets/team-juan.jpg" alt="Juan" class="w-5 h-5 rounded-full object-cover ring-1 ring-brand-500">`;
+      } else if (lead.responsable === "Facundo Oviedo") {
+        respAvatar = `<img src="assets/team-facundo.jpg" alt="Facundo" class="w-5 h-5 rounded-full object-cover ring-1 ring-brand-500">`;
+      } else if (lead.responsable === "Carlos A. Oviedo") {
+        respAvatar = `<span class="w-5 h-5 rounded-full bg-brand-800 text-[9px] font-bold text-brand-200 flex items-center justify-center border border-brand-600">CO</span>`;
+      }
+
+      // Fecha relativa simple
+      const dateText = formatDate(lead.created_at);
+
+      card.innerHTML = `
+        <div class="flex items-start justify-between gap-1.5">
+          <div class="min-w-0 flex-1">
+            <h4 class="font-heading font-bold text-white text-xs truncate leading-snug hover:text-accent-sky transition-colors cursor-pointer" title="${escapeHtml(lead.empresa || 'Sin Empresa')}">
+              ${escapeHtml(lead.empresa || 'Empresa Sin Nombre')}
+            </h4>
+            <p class="text-[11px] text-slate-300 truncate" title="${escapeHtml(lead.nombre || 'Sin Contacto')}">
+              ${escapeHtml(lead.nombre || 'Sin Contacto')}
+            </p>
+          </div>
+          <span class="text-[10px] text-slate-500 shrink-0 whitespace-nowrap">${dateText}</span>
+        </div>
+
+        <!-- Badges Operación y Origen -->
+        <div class="flex flex-wrap items-center gap-1 text-[10px]">
+          <span class="px-1.5 py-0.5 rounded bg-brand-950 text-accent-sky border border-brand-800/60 font-medium truncate max-w-[130px]">
+            ${escapeHtml(lead.operacion || 'Comex General')}
+          </span>
+          ${lead.origen ? `<span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-medium">${escapeHtml(formatOriginBadge(lead.origen))}</span>` : ''}
+        </div>
+
+        <!-- Notas resumidas si existen -->
+        ${lead.notas ? `
+          <p class="text-[11px] text-slate-400 italic line-clamp-2 bg-slate-950/40 p-1.5 rounded border border-brand-900/50">
+            "${escapeHtml(lead.notas)}"
+          </p>
+        ` : ''}
+
+        <!-- Footer de Tarjeta: Acciones Rápidas & Responsable -->
+        <div class="pt-1.5 border-t border-brand-800/40 flex items-center justify-between gap-2">
+          
+          <!-- Acciones de contacto directo en 1 clic -->
+          <div class="flex items-center gap-1.5">
+            ${waLink ? `
+              <a href="${waLink}" target="_blank" onclick="event.stopPropagation()" class="p-1 rounded bg-emerald-950/60 hover:bg-emerald-800 text-emerald-400 hover:text-white border border-emerald-800/50 transition" title="Abrir WhatsApp directo">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+              </a>
+            ` : ''}
+            ${mailLink ? `
+              <a href="${mailLink}" onclick="event.stopPropagation()" class="p-1 rounded bg-slate-800 hover:bg-brand-700 text-slate-300 hover:text-white border border-slate-700 transition" title="Enviar Email">
+                <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+              </a>
+            ` : ''}
+            
+            <!-- Selector rápido de etapa para móvil / un toque -->
+            <select onchange="updateLeadStage('${lead.id}', this.value); event.stopPropagation();" onclick="event.stopPropagation()" class="text-[10px] bg-slate-950 border border-brand-900 text-slate-400 rounded px-1 py-0.5 focus:outline-none">
+              <option value="" disabled selected>Mover a...</option>
+              <option value="prospectos">1. Prospectos</option>
+              <option value="nuevo">2. Leads Web</option>
+              <option value="en_conversacion">3. Conversación</option>
+              <option value="reunion_agendada">4. Reunión</option>
+              <option value="diagnostico_presupuestado">5. Presupuestado</option>
+              <option value="ganado">6. Ganado</option>
+              <option value="perdido">7. Pausa / Perdido</option>
+            </select>
+          </div>
+
+          <!-- Responsable Asignado -->
+          <div class="flex items-center gap-1" title="Asignado a: ${escapeHtml(lead.responsable || 'Sin Asignar')}">
+            ${respAvatar}
+            <span class="text-[10px] text-slate-400 truncate max-w-[65px] font-medium hidden sm:inline">
+              ${escapeHtml((lead.responsable || 'Sin Asignar').split(' ')[0])}
+            </span>
+          </div>
+
+        </div>
+      `;
+
+      return card;
+    }
+
+    function renderTableView(leads) {
+      const tbody = document.getElementById("tableBody");
+      const emptyState = document.getElementById("tableEmpty");
+      if (!tbody) return;
+
+      tbody.innerHTML = "";
+      if (leads.length === 0) {
+        if (emptyState) emptyState.classList.remove("hidden");
+        return;
+      }
+      if (emptyState) emptyState.classList.add("hidden");
+
+      leads.forEach(lead => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-900/60 transition-colors cursor-pointer";
+        tr.onclick = (e) => {
+          if (e.target.closest("button") || e.target.closest("a") || e.target.closest("select")) return;
+          openLeadModal(lead.id);
+        };
+
+        const cleanPhone = (lead.telefono || "").replace(/[^0-9]/g, "");
+        const waLink = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
+        const mailLink = lead.email ? `mailto:${lead.email}` : null;
+        const stageInfo = STAGES[normalizeStage(lead.status)] || STAGES.prospectos;
+
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <div class="font-bold text-white text-xs hover:text-accent-sky">${escapeHtml(lead.empresa || 'Sin Empresa')}</div>
+            <div class="text-[11px] text-slate-400">${escapeHtml(lead.nombre || 'Sin Contacto')}</div>
+          </td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${stageInfo.badgeClass}">
+              ${stageInfo.name}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-slate-300">
+            ${escapeHtml(lead.operacion || '-')}
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-2">
+              ${waLink ? `
+                <a href="${waLink}" target="_blank" onclick="event.stopPropagation()" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-mono text-[11px]" title="Chatear en WhatsApp">
+                  <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                  <span>${escapeHtml(lead.telefono || '')}</span>
+                </a>
+              ` : `<span class="text-slate-500">-</span>`}
+            </div>
+          </td>
+          <td class="py-3 px-4 text-slate-300">
+            <span class="font-medium">${escapeHtml(lead.responsable || 'Sin Asignar')}</span>
+          </td>
+          <td class="py-3 px-4 text-slate-400 text-[11px]">
+            ${escapeHtml(formatOriginBadge(lead.origen))}
+          </td>
+          <td class="py-3 px-4 text-slate-400 text-[11px] whitespace-nowrap">
+            ${formatDate(lead.created_at)}
+          </td>
+          <td class="py-3 px-4 text-right">
+            <div class="flex items-center justify-end gap-1.5">
+              <button onclick="openLeadModal('${lead.id}'); event.stopPropagation();" class="p-1 rounded bg-slate-800 hover:bg-brand-700 text-slate-300 hover:text-white transition" title="Ver Ficha Completa">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateKPIs(leads) {
+      let total = leads.length;
+      let meetings = 0;
+      let proposals = 0;
+      let won = 0;
+
+      leads.forEach(l => {
+        const st = normalizeStage(l.status);
+        if (st === 'reunion_agendada') meetings++;
+        if (st === 'diagnostico_presupuestado') proposals++;
+        if (st === 'ganado') won++;
+      });
+
+      document.getElementById("kpiTotal").textContent = total;
+      document.getElementById("kpiMeetings").textContent = meetings;
+      document.getElementById("kpiProposals").textContent = proposals;
+      document.getElementById("kpiWon").textContent = won;
+    }
+
+    // --- MANEJO DE DRAG & DROP NATIVO HTML5 ---
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      const col = e.currentTarget;
+      if (!col.classList.contains("drag-over")) {
+        col.classList.add("drag-over");
+      }
+    }
+
+    function handleDragLeave(e) {
+      const col = e.currentTarget;
+      // Verificar que el puntero realmente haya salido del contenedor
+      if (!col.contains(e.relatedTarget)) {
+        col.classList.remove("drag-over");
+      }
+    }
+
+    function handleDrop(e, targetStage) {
+      e.preventDefault();
+      const col = e.currentTarget;
+      col.classList.remove("drag-over");
+
+      const leadId = e.dataTransfer.getData("text/plain") || draggedLeadId;
+      if (leadId && targetStage) {
+        updateLeadStage(leadId, targetStage);
+      }
+    }
+
+    // --- TOGGLE DE VISTAS (KANBAN / TABLA) ---
+    function switchView(view) {
+      currentView = view;
+      const kanbanEl = document.getElementById("viewKanban");
+      const tableEl = document.getElementById("viewTable");
+      const btnKanban = document.getElementById("viewBtnKanban");
+      const btnTable = document.getElementById("viewBtnTable");
+
+      if (view === "kanban") {
+        kanbanEl.classList.remove("hidden");
+        tableEl.classList.add("hidden");
+        btnKanban.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-500 text-white shadow transition-all";
+        btnTable.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-white transition-all";
+      } else {
+        kanbanEl.classList.add("hidden");
+        tableEl.classList.remove("hidden");
+        btnTable.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-brand-500 text-white shadow transition-all";
+        btnKanban.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-white transition-all";
+      }
+      renderPipeline();
+    }
+
+    // --- FILTROS Y BÚSQUEDA ---
+    function applyFilters() {
+      const searchVal = document.getElementById("searchInput").value;
+      const clearBtn = document.getElementById("clearSearchBtn");
+      if (searchVal) clearBtn.classList.remove("hidden");
+      else clearBtn.classList.add("hidden");
+
+      renderPipeline();
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("clearSearchBtn").classList.add("hidden");
+      applyFilters();
+    }
+
+    // --- MODAL DE FICHA Y DETALLE ---
+    function openLeadModal(leadId) {
+      const lead = currentLeads.find(l => l.id == leadId);
+      if (!lead) return;
+
+      currentSelectedLead = lead;
+      const stageInfo = STAGES[normalizeStage(lead.status)] || STAGES.prospectos;
+
+      // Encabezado
+      document.getElementById("modalStageBadge").textContent = stageInfo.name;
+      document.getElementById("modalCreatedDate").textContent = `Ingresado el: ${formatDateFull(lead.created_at)}`;
+      document.getElementById("modalCompanyTitle").textContent = lead.empresa || "Empresa Sin Nombre";
+      document.getElementById("modalContactSubtitle").textContent = lead.nombre ? `Contacto principal: ${lead.nombre}` : "Sin contacto directo";
+
+      // Botones de acción directa
+      const cleanPhone = (lead.telefono || "").replace(/[^0-9]/g, "");
+      const waBtn = document.getElementById("modalWaBtn");
+      const mailBtn = document.getElementById("modalMailBtn");
+      const callBtn = document.getElementById("modalCallBtn");
+
+      if (cleanPhone) {
+        const defaultMsg = `Hola ${lead.nombre || ''}, te escribo de Nexum Trade Consulting en relación a tu consulta sobre comercio exterior.`;
+        waBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(defaultMsg)}`;
+        waBtn.classList.remove("opacity-50", "pointer-events-none");
+        callBtn.href = `tel:${cleanPhone}`;
+        callBtn.classList.remove("opacity-50", "pointer-events-none");
+      } else {
+        waBtn.href = "#";
+        waBtn.classList.add("opacity-50", "pointer-events-none");
+        callBtn.href = "#";
+        callBtn.classList.add("opacity-50", "pointer-events-none");
+      }
+
+      if (lead.email) {
+        mailBtn.href = `mailto:${lead.email}?subject=${encodeURIComponent(`Nexum Trade Consulting - Consulta de ${lead.empresa || 'su empresa'}`)}`;
+        mailBtn.classList.remove("opacity-50", "pointer-events-none");
+      } else {
+        mailBtn.href = "#";
+        mailBtn.classList.add("opacity-50", "pointer-events-none");
+      }
+
+      // Asignar selects e inputs
+      document.getElementById("modalStatusSelect").value = normalizeStage(lead.status);
+      document.getElementById("modalResponsibleSelect").value = lead.responsable || "Sin Asignar";
+      document.getElementById("modalInputName").value = lead.nombre || "";
+      document.getElementById("modalInputCompany").value = lead.empresa || "";
+      document.getElementById("modalInputEmail").value = lead.email || "";
+      document.getElementById("modalInputPhone").value = lead.telefono || "";
+      document.getElementById("modalInputOperation").value = lead.operacion || "";
+      document.getElementById("modalInputOrigin").value = lead.origen || "";
+      document.getElementById("modalMessageOriginal").textContent = lead.mensaje || "Sin mensaje adicional registrado.";
+      document.getElementById("modalInputNotes").value = lead.notas || "";
+
+      document.getElementById("leadModal").classList.remove("hidden");
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function closeLeadModal() {
+      document.getElementById("leadModal").classList.add("hidden");
+      currentSelectedLead = null;
+    }
+
+    async function saveLeadChanges() {
+      if (!currentSelectedLead) return;
+
+      const saveBtn = document.getElementById("modalSaveBtn");
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Guardando...</span>`;
+      if (window.lucide) window.lucide.createIcons();
+
+      const newStatus = normalizeStage(document.getElementById("modalStatusSelect").value);
+      const newResp = document.getElementById("modalResponsibleSelect").value;
+      const newName = document.getElementById("modalInputName").value.trim();
+      const newComp = document.getElementById("modalInputCompany").value.trim();
+      const newEmail = document.getElementById("modalInputEmail").value.trim();
+      const newPhone = document.getElementById("modalInputPhone").value.trim();
+      const newOp = document.getElementById("modalInputOperation").value.trim();
+      const newOrig = document.getElementById("modalInputOrigin").value.trim();
+      const newNotes = document.getElementById("modalInputNotes").value.trim();
+
+      // Actualizar objeto en memoria
+      currentSelectedLead.status = newStatus;
+      currentSelectedLead.responsable = newResp;
+      currentSelectedLead.nombre = newName;
+      currentSelectedLead.empresa = newComp;
+      currentSelectedLead.email = newEmail;
+      currentSelectedLead.telefono = newPhone;
+      currentSelectedLead.operacion = newOp;
+      currentSelectedLead.origen = newOrig;
+      currentSelectedLead.notas = newNotes;
+
+      // Guardar metadata en local
+      saveLocalMetadata(currentSelectedLead.id, newResp, newNotes);
+
+      const apiKey = getActiveApiKey();
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?id=eq.${currentSelectedLead.id}`;
+
+      // Payload principal intentando actualizar todas las columnas
+      const fullPayload = {
+        status: newStatus,
+        responsable: newResp,
+        nombre: newName,
+        empresa: newComp,
+        email: newEmail,
+        telefono: newPhone,
+        operacion: newOp,
+        origen: newOrig,
+        notas: newNotes
+      };
+
+      try {
+        let res = await fetch(url, {
+          method: "PATCH",
+          headers: {
+            "apikey": apiKey,
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify(fullPayload)
+        });
+
+        // Si falla porque no existen columnas 'notas' o 'responsable' (Error 400 PGRST204)
+        if (!res.ok && res.status === 400) {
+          console.warn("Columnas extendidas no detectadas en Supabase. Guardando en columnas estándar.");
+          
+          // Reintentar guardando metadata en el campo 'mensaje'
+          let updatedMsg = currentSelectedLead.mensaje || "";
+          // Remover tags previos si hubiera
+          updatedMsg = updatedMsg.replace(/\[RESPONSABLE:[^\]]+\]/g, "").replace(/\[NOTAS:[^\]]+\]/g, "").trim();
+          updatedMsg += `\n\n[RESPONSABLE: ${newResp}] [NOTAS: ${newNotes}]`;
+
+          const fallbackPayload = {
+            status: newStatus,
+            nombre: newName,
+            empresa: newComp,
+            email: newEmail,
+            telefono: newPhone,
+            operacion: newOp,
+            origen: newOrig,
+            mensaje: updatedMsg
+          };
+
+          res = await fetch(url, {
+            method: "PATCH",
+            headers: {
+              "apikey": apiKey,
+              "Authorization": `Bearer ${apiKey}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(fallbackPayload)
+          });
+        }
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401 || errData.code === "42501") {
+            document.getElementById("rlsAlertBox")?.classList.remove("hidden");
+            throw new Error("RLS_POLICY_BLOCKED");
+          }
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        showToast("Prospecto actualizado en Supabase", "success");
+      } catch (err) {
+        console.warn("Fallo al actualizar en Supabase:", err);
+        if (err.message === "RLS_POLICY_BLOCKED") {
+          showToast("Guardado en navegador. Requiere política RLS en Supabase.", "warning");
+        } else {
+          showToast("Guardado localmente en esta sesión", "info");
+        }
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `<i data-lucide="save" class="w-3.5 h-3.5"></i><span>Guardar Cambios</span>`;
+        localStorage.setItem("nexum_cached_leads", JSON.stringify(currentLeads));
+        renderPipeline();
+        closeLeadModal();
+      }
+    }
+
+    async function deleteCurrentLead() {
+      if (!currentSelectedLead) return;
+      const confirmDelete = confirm(`¿Estás seguro de que querés eliminar el prospecto de "${currentSelectedLead.empresa || 'este cliente'}"? Esta acción no se puede deshacer.`);
+      if (!confirmDelete) return;
+
+      const leadId = currentSelectedLead.id;
+      // Remover de estado local
+      currentLeads = currentLeads.filter(l => l.id != leadId);
+      localStorage.setItem("nexum_cached_leads", JSON.stringify(currentLeads));
+      renderPipeline();
+      closeLeadModal();
+
+      const apiKey = getActiveApiKey();
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?id=eq.${leadId}`;
+
+      try {
+        await fetch(url, {
+          method: "DELETE",
+          headers: {
+            "apikey": apiKey,
+            "Authorization": `Bearer ${apiKey}`
+          }
+        });
+        showToast("Prospecto eliminado", "info");
+      } catch (err) {
+        console.warn("No se pudo eliminar en Supabase:", err);
+      }
+    }
+
+    // --- MODAL NUEVO PROSPECTO EXPRESS ---
+    function openNewLeadModal(preselectedStage = 'prospectos') {
+      document.getElementById("newLeadForm").reset();
+      document.getElementById("newLeadStage").value = normalizeStage(preselectedStage);
+      document.getElementById("newLeadModal").classList.remove("hidden");
+      document.getElementById("newLeadCompany").focus();
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function closeNewLeadModal() {
+      document.getElementById("newLeadModal").classList.add("hidden");
+    }
+
+    async function submitNewLead() {
+      const btn = document.getElementById("btnCreateLead");
+      btn.disabled = true;
+      btn.textContent = "Creando...";
+
+      const empresa = document.getElementById("newLeadCompany").value.trim();
+      const nombre = document.getElementById("newLeadName").value.trim();
+      const telefono = document.getElementById("newLeadPhone").value.trim();
+      const email = document.getElementById("newLeadEmail").value.trim();
+      const operacion = document.getElementById("newLeadOperation").value;
+      const origen = document.getElementById("newLeadOrigin").value;
+      const status = normalizeStage(document.getElementById("newLeadStage").value);
+      const responsable = document.getElementById("newLeadResponsible").value;
+      const notas = document.getElementById("newLeadNotes").value.trim();
+
+      const newId = crypto.randomUUID ? crypto.randomUUID() : `temp_${Date.now()}`;
+      const createdAt = new Date().toISOString();
+
+      let rawMensaje = `Cargado manualmente desde CRM.`;
+      if (notas) rawMensaje += `\nNotas: ${notas}`;
+      rawMensaje += `\n[RESPONSABLE: ${responsable}] [NOTAS: ${notas}]`;
+
+      const newLeadObj = {
+        id: newId,
+        created_at: createdAt,
+        empresa,
+        nombre,
+        telefono,
+        email,
+        operacion,
+        origen,
+        status,
+        responsable,
+        notas,
+        mensaje: rawMensaje
+      };
+
+      // Guardar metadata local
+      saveLocalMetadata(newId, responsable, notas);
+
+      // Inserción en memoria inmediata
+      currentLeads.unshift(newLeadObj);
+      renderPipeline();
+      closeNewLeadModal();
+
+      const apiKey = getActiveApiKey();
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}`;
+
+      // Payload para Supabase
+      const payload = {
+        nombre,
+        empresa,
+        email: email || `${empresa.toLowerCase().replace(/[^a-z0-9]/g, "")}@prospecto.com`,
+        telefono: telefono || "",
+        operacion,
+        mensaje: rawMensaje,
+        origen,
+        status
+      };
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "apikey": apiKey,
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "Prefer": "return=representation"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401 || errData.code === "42501") {
+            document.getElementById("rlsAlertBox")?.classList.remove("hidden");
+            throw new Error("RLS_POLICY_BLOCKED");
+          }
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const inserted = await res.json();
+        if (inserted && inserted[0] && inserted[0].id) {
+          newLeadObj.id = inserted[0].id;
+          saveLocalMetadata(inserted[0].id, responsable, notas);
+        }
+
+        showToast("¡Prospecto creado y sincronizado en Supabase!", "success");
+      } catch (err) {
+        console.warn("Fallo al insertar en Supabase:", err);
+        if (err.message === "RLS_POLICY_BLOCKED") {
+          showToast("Creado localmente. Recordá aplicar el SQL en Supabase para RLS.", "warning");
+        } else {
+          showToast("Guardado en sesión local (sin conexión a Supabase)", "info");
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Crear Prospecto";
+        localStorage.setItem("nexum_cached_leads", JSON.stringify(currentLeads));
+      }
+    }
+
+    // --- EXPORTACIÓN A CSV (EXCEL COMPATIBLE CON BOM UTF-8) ---
+    function exportToCSV() {
+      if (currentLeads.length === 0) {
+        showToast("No hay prospectos para exportar.", "warning");
+        return;
+      }
+
+      const headers = ["ID", "Fecha de Ingreso", "Empresa", "Contacto", "Email", "Telefono", "Operacion / Rubro", "Origen", "Etapa Pipeline", "Responsable", "Notas"];
+      
+      const rows = currentLeads.map(lead => [
+        lead.id || "",
+        formatDateFull(lead.created_at),
+        cleanCsvCell(lead.empresa),
+        cleanCsvCell(lead.nombre),
+        cleanCsvCell(lead.email),
+        cleanCsvCell(lead.telefono),
+        cleanCsvCell(lead.operacion),
+        cleanCsvCell(lead.origen),
+        cleanCsvCell(STAGES[normalizeStage(lead.status)]?.name || lead.status),
+        cleanCsvCell(lead.responsable || "Sin Asignar"),
+        cleanCsvCell(lead.notas || "")
+      ]);
+
+      const csvContent = "\uFEFF" + [
+        headers.join(";"),
+        ...rows.map(row => row.join(";"))
+      ].join("\r\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const dateStr = new Date().toISOString().slice(0, 10);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `nexum_crm_prospectos_${dateStr}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showToast("Archivo CSV generado y descargado con éxito.", "success");
+    }
+
+    function cleanCsvCell(val) {
+      if (!val) return '""';
+      const str = String(val).replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
+      return `"${str}"`;
+    }
+
+    // --- CARGA DE DATOS DEMO (PLAN 7 DÍAS) ---
+    function seedDemoData() {
+      const demoLeads = [
+        {
+          id: "demo_1",
+          created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
+          empresa: "Frigorífico Pampa Gourmet S.A.",
+          nombre: "Esteban Morales (Director Comercial)",
+          telefono: "+54 9 11 4821-9988",
+          email: "emorales@pampagourmet.com.ar",
+          operacion: "Exportación de Carnes Envasadas al Vacío",
+          origen: "LinkedIn Outbound",
+          status: "reunion_agendada",
+          responsable: "Juan Oviedo",
+          notas: "Reunión agendada para el jueves 15:00 hs. Interés en certificación Halal para Emiratos Árabes y habilitación SENASA. Tienen planta modelo en Santa Fe.",
+          mensaje: "Relevamiento de 30 min acordado para exportación a Medio Oriente."
+        },
+        {
+          id: "demo_2",
+          created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
+          empresa: "Bodega Alturas del Valle",
+          nombre: "Mariana Costa (Gerente de Exportaciones)",
+          telefono: "+54 9 261 512-3344",
+          email: "mcosta@alturasdelvalle.com.ar",
+          operacion: "Apertura Mercados Vino Granel & Fraccionado",
+          origen: "Formulario Web",
+          status: "diagnostico_presupuestado",
+          responsable: "Facundo Oviedo",
+          notas: "Propuesta de Diagnóstico Comex de 24 horas enviada por USD 450. Buscan ingresar a Brasil y Paraguay evitando retenciones innecesarias.",
+          mensaje: "Buscamos consultoría para destrabar embarques al Mercosur."
+        },
+        {
+          id: "demo_3",
+          created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
+          empresa: "Metalúrgica Cuyo Maquinarias",
+          nombre: "Roberto Giménez (Socio Gerente)",
+          telefono: "+54 9 351 678-1122",
+          email: "rgimenez@cuyomaq.com.ar",
+          operacion: "Importación Insumos y Repuestos Alemanes",
+          origen: "Directorio CERA",
+          status: "en_conversacion",
+          responsable: "Juan Oviedo",
+          notas: "Esperando respuesta sobre la posición arancelaria NCM de los rodamientos. Facu revisó la documentación aduanera.",
+          mensaje: "Contacto vía LinkedIn para optimización de costos en despacho."
+        },
+        {
+          id: "demo_4",
+          created_at: new Date(Date.now() - 3600000 * 48).toISOString(),
+          empresa: "Laboratorios del Centro",
+          nombre: "Dr. Marcelo Varela",
+          telefono: "+54 9 11 3211-7766",
+          email: "mvarela@labcentro.com.ar",
+          operacion: "Exportación Cosmética y Suplementos",
+          origen: "Referido",
+          status: "ganado",
+          responsable: "Facundo Oviedo",
+          notas: "¡Abonado! Iniciamos el plan de 7 días con auditoría de rótulos ANMAT e inscripción FDA para Estados Unidos.",
+          mensaje: "Cliente formalizado. Inicio de consultoría técnica de exportación."
+        }
+      ];
+
+      currentLeads = [...demoLeads, ...currentLeads];
+      localStorage.setItem("nexum_cached_leads", JSON.stringify(currentLeads));
+      renderPipeline();
+      document.getElementById("demoDataBtn")?.classList.add("hidden");
+      showToast("Datos de demostración del Plan de 7 Días cargados.", "success");
+    }
+
+    // --- MODAL DE CONFIGURACIÓN Y DIAGNÓSTICO ---
+    function openConfigModal() {
+      document.getElementById("configModal").classList.remove("hidden");
+      testSupabaseConnection();
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function closeConfigModal() {
+      document.getElementById("configModal").classList.add("hidden");
+    }
+
+    async function testSupabaseConnection() {
+      const resultEl = document.getElementById("supabaseTestResult");
+      const rlsAlert = document.getElementById("rlsAlertBox");
+      resultEl.innerHTML = `<span class="text-amber-400">Verificando conexión con Supabase...</span>`;
+
+      const apiKey = getActiveApiKey();
+      const url = `${SUPABASE_CONFIG.url}/rest/v1/${SUPABASE_CONFIG.tableName}?select=count&limit=1`;
+
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            "apikey": apiKey,
+            "Authorization": `Bearer ${apiKey}`,
+            "Prefer": "count=exact"
+          }
+        });
+
+        if (res.ok) {
+          resultEl.innerHTML = `<span class="text-emerald-400 font-semibold">✓ Conectado exitosamente. Lectura habilitada (HTTP ${res.status}).</span>`;
+          updateSupabaseStatusBadge(true);
+        } else {
+          resultEl.innerHTML = `<span class="text-rose-400 font-semibold">✗ Error de conexión: HTTP ${res.status}</span>`;
+          updateSupabaseStatusBadge(false);
+          rlsAlert.classList.remove("hidden");
+        }
+      } catch (err) {
+        resultEl.innerHTML = `<span class="text-rose-400">Fallo de red o bloqueo de CORS/RLS.</span>`;
+        updateSupabaseStatusBadge(false);
+        rlsAlert.classList.remove("hidden");
+      }
+    }
+
+    function saveCustomApiKey() {
+      const key = document.getElementById("customApiKey").value.trim();
+      if (key) {
+        sessionStorage.setItem("nexum_custom_key", key);
+        showToast("Clave de Supabase guardada en tu sesión", "success");
+        testSupabaseConnection();
+      } else {
+        sessionStorage.removeItem("nexum_custom_key");
+        showToast("Restaurada la Anon Key oficial", "info");
+      }
+    }
+
+    function saveNewPin() {
+      const pin = document.getElementById("newPinInput").value.trim();
+      if (pin.length >= 4) {
+        localStorage.setItem("nexum_crm_pin", pin);
+        document.getElementById("newPinInput").value = "";
+        showToast(`Nuevo PIN guardado: ${pin}`, "success");
+      } else {
+        showToast("El PIN debe tener al menos 4 dígitos.", "error");
+      }
+    }
+
+    function copySqlScript() {
+      const sql = `ALTER TABLE leads_nexum DISABLE ROW LEVEL SECURITY;\nALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS notas text DEFAULT '';\nALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS responsable text DEFAULT 'Sin Asignar';`;
+      navigator.clipboard.writeText(sql).then(() => {
+        showToast("¡Script SQL copiado al portapapeles! Pegalo en Supabase SQL Editor.", "success");
+      });
+    }
+
+    // --- UTILIDADES ---
+    function handleModalBackdropClick(e, modalId) {
+      if (e.target.id === modalId) {
+        document.getElementById(modalId).classList.add("hidden");
+        if (modalId === "leadModal") currentSelectedLead = null;
+      }
+    }
+
+    function formatDate(isoString) {
+      if (!isoString) return "";
+      try {
+        const d = new Date(isoString);
+        const now = new Date();
+        const diffHours = Math.floor((now - d) / 3600000);
+        if (diffHours < 1) return "Hace instantes";
+        if (diffHours < 24) return `Hace ${diffHours}h`;
+        if (diffHours < 48) return "Ayer";
+        return d.toLocaleDateString("es-AR", { day: "2-digit", month: "short" });
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function formatDateFull(isoString) {
+      if (!isoString) return "-";
+      try {
+        return new Date(isoString).toLocaleString("es-AR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+      } catch (e) {
+        return isoString;
+      }
+    }
+
+    function formatOriginBadge(orig) {
+      if (!orig) return "Web";
+      const s = orig.toLowerCase();
+      if (s.includes("linkedin")) return "LinkedIn";
+      if (s.includes("cera") || s.includes("directorio")) return "Directorio";
+      if (s.includes("referido")) return "Referido";
+      if (s.includes("landing_nexum_en")) return "Web EN";
+      if (s.includes("landing_nexum_es") || s.includes("landing")) return "Web ES";
+      if (s.includes("manual")) return "Manual";
+      return orig;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+
+      const toast = document.createElement("div");
+      const bgColors = {
+        success: "bg-emerald-950/90 border-emerald-500 text-emerald-100",
+        error: "bg-rose-950/90 border-rose-500 text-rose-100",
+        warning: "bg-amber-950/90 border-amber-500 text-amber-100",
+        info: "bg-brand-900/90 border-brand-500 text-brand-100"
+      };
+
+      toast.className = `p-3 rounded-xl border shadow-xl text-xs font-medium flex items-center gap-2 backdrop-blur-md transition-all duration-300 transform translate-y-2 pointer-events-auto ${bgColors[type] || bgColors.info}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove("translate-y-2");
+      });
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-2");
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Atajos de Teclado
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeLeadModal();
+        closeNewLeadModal();
+        closeConfigModal();
+      }
+    });
+  </script>
+</body>
+</html>

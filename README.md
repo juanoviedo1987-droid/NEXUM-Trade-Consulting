@@ -80,6 +80,33 @@ El proyecto exclusivo **`nexum-trade-consulting`** ya se encuentra activo en Sup
 
 ---
 
+## 💼 CRM Interno & Pipeline de Ventas (`/crm.html` | `/admin/`)
+
+Herramienta interna para los co-fundadores (Juan Oviedo y Facundo Oviedo) y Carlos A. Oviedo para la gestión comercial y seguimiento de prospectos en el marco del Plan de 7 Días y a futuro.
+
+* **URL Directa:** `https://nexumtradeconsulting.com.ar/crm.html` (o `https://nexumtradeconsulting.com.ar/admin/`)
+* **Seguridad:** Acceso protegido por PIN (predeterminado: `2025` o `nexum2025`, configurable en navegador).
+* **Pipeline de 7 Etapas:**
+  1. Prospectos (Outbound LinkedIn / Directorios)
+  2. Leads Web (Entrantes de la landing)
+  3. En Conversación / Esperando Respuesta
+  4. Reunión Agendada (Relevamiento 30 min)
+  5. Diagnóstico Presupuestado (Propuesta 24 h)
+  6. Cerrado Ganado (Abonado)
+  7. En Pausa / Perdido
+* **Funcionalidades:**
+  * Tablero Kanban con Drag & Drop nativo.
+  * Vista alternativa de Tabla con búsqueda en vivo y filtros por responsable, rubro y origen.
+  * Ficha individual con botones de 1 clic a WhatsApp (`wa.me`) y Email (`mailto`).
+  * Bitácora de notas comerciales (normativas SENASA/FDA, NCM, cotizaciones).
+  * Asignación de responsables (Juan Oviedo, Facundo Oviedo, Carlos A. Oviedo).
+  * Carga express "+ Nuevo Prospecto" para prospección en frío.
+  * Exportación completa a CSV (compatible con Excel mediante BOM UTF-8).
+* **Configuración Supabase:**
+  * Ejecutar el script `supabase_crm_setup.sql` en el SQL Editor de Supabase para habilitar columnas y políticas de acceso.
+
+---
+
 ## 🌐 Despliegue en GitHub Pages y Dominio Personalizado
 
 * **Repositorio:** [juanoviedo1987-droid/NEXUM-Trade-Consulting](https://github.com/juanoviedo1987-droid/NEXUM-Trade-Consulting)
