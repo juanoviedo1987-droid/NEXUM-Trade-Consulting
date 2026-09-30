@@ -1,12 +1,18 @@
 -- ==============================================================================
--- NEXUM TRADE CONSULTING - SCRIPT DE CONFIGURACIÓN CRM (SUPABASE POSTGRESQL)
+-- NEXUM TRADE CONSULTING - SCRIPT DEFINITIVO DE CONFIGURACIÓN CRM (SUPABASE)
 -- ==============================================================================
 -- Proyecto: nexum-trade-consulting (wbcfmanuhotyevquiaht)
--- Este script define las nuevas columnas del CRM y las políticas de seguridad (RLS).
 -- ==============================================================================
 
 -- ------------------------------------------------------------------------------
--- 1. EXTENSIÓN DE COLUMNAS PARA EL CRM OPERATIVO
+-- PASO 1: LIMPIEZA INICIAL DE LA TABLA (ANTES DE MODIFICAR COLUMNAS Y CHECKS)
+-- ------------------------------------------------------------------------------
+-- Elimina los registros generados durante las pruebas técnicas para que las nuevas
+-- restricciones (CHECK constraints) se apliquen de forma limpia sin errores.
+DELETE FROM leads_nexum;
+
+-- ------------------------------------------------------------------------------
+-- PASO 2: EXTENSIÓN DE COLUMNAS PARA EL CRM OPERATIVO
 -- ------------------------------------------------------------------------------
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS sector text DEFAULT '';
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS responsable text DEFAULT 'Sin Asignar';
@@ -15,6 +21,9 @@ ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS prioridad text DEFAULT 'B';
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS proxima_accion text DEFAULT '';
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS fecha_proxima_accion date;
 ALTER TABLE leads_nexum ADD COLUMN IF NOT EXISTS notas text DEFAULT '';
+
+-- Asegurar que el DEFAULT de la columna status sea exactamente 'nuevo'
+ALTER TABLE leads_nexum ALTER COLUMN status SET DEFAULT 'nuevo';
 
 -- Restricción de prioridad: A (Alta), B (Media), C (Baja)
 DO $$
@@ -26,18 +35,8 @@ EXCEPTION
 END $$;
 
 -- ------------------------------------------------------------------------------
--- 2. COMPATIBILIDAD DE ETAPAS (STATUS) CON FORMULARIO Y n8n
+-- PASO 3: COMPATIBILIDAD DE ETAPAS (STATUS) CON FORMULARIO Y n8n
 -- ------------------------------------------------------------------------------
--- Mantiene intactos los estados actuales:
---   'nuevo'       -> Default que envía el formulario web de la landing
---   'notificado'  -> Asignado automáticamente por n8n tras enviar el email de alerta
--- Y agrega las etapas comerciales:
---   'prospecto'          -> Outbound LinkedIn / Directorios
---   'contactado'         -> En conversación / Esperando respuesta
---   'reunion_agendada'   -> Relevamiento 30 min coordinado
---   'presupuestado'      -> Diagnóstico presupuestado (propuesta 24 h)
---   'cliente'            -> Cerrado ganado (abonado)
---   'descartado'         -> En pausa o perdido
 DO $$
 BEGIN
     ALTER TABLE leads_nexum DROP CONSTRAINT IF EXISTS leads_nexum_status_check;
@@ -48,11 +47,11 @@ EXCEPTION
 END $$;
 
 -- ------------------------------------------------------------------------------
--- 3. POLÍTICAS DE ROW LEVEL SECURITY (RLS) ESTRICTAS
+-- PASO 4: POLÍTICAS DE ROW LEVEL SECURITY (RLS) ESTRICTAS
 -- ------------------------------------------------------------------------------
 ALTER TABLE leads_nexum ENABLE ROW LEVEL SECURITY;
 
--- Limpieza de políticas previas para evitar duplicados o conflictos
+-- Limpieza de políticas previas
 DROP POLICY IF EXISTS "Permitir insert publico para formulario web" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir todo a usuarios autenticados" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir todo a usuarios autenticados autorizados" ON leads_nexum;
@@ -62,37 +61,41 @@ DROP POLICY IF EXISTS "Permitir update para anon" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir delete para anon" ON leads_nexum;
 DROP POLICY IF EXISTS "Permitir todo a anon" ON leads_nexum;
 
--- POLÍTICA A (ROL 'anon' - Visitantes web / Formulario landing):
--- SOLO permite INSERT si el status es exactamente 'nuevo'.
--- Queda estrictamente PROHIBIDO SELECT (no leen datos), UPDATE y DELETE.
+-- POLÍTICA A (ROL 'anon' - Formulario de la Landing Web):
+-- El formulario web NO envía status; PostgreSQL aplica el default 'nuevo'.
+-- Esta política permite la inserción únicamente si el status resultante es 'nuevo'.
 CREATE POLICY "Permitir insert publico para formulario web"
 ON leads_nexum
 FOR INSERT
 TO anon
 WITH CHECK (status = 'nuevo');
 
--- POLÍTICA B (ROL 'authenticated' - Juan y Facu autorizados):
--- Permite SELECT, INSERT, UPDATE y DELETE únicamente a los correos autorizados.
--- NOTA: Modificar los correos de la lista si difieren de los emails reales.
+-- POLÍTICA B (ROL 'authenticated' - Socios de Nexum Autorizados):
+-- Permite SELECT, INSERT, UPDATE y DELETE exclusivamente a los correos autorizados.
+-- (Verificar que coincidan exactamente con las cuentas creadas en Supabase Auth)
 CREATE POLICY "Permitir todo a usuarios autenticados autorizados"
 ON leads_nexum
 FOR ALL
 TO authenticated
 USING (
     (auth.jwt() ->> 'email') IN (
-        'juanoviedo1987@gmail.com',         -- Email de Juan (reemplazar por el real si difiere)
-        'facundo.oviedo@nexumtc.com.ar'     -- Email de Facu (reemplazar por el real si difiere)
+        'juan.oviedo@nexumtc.com.ar',       -- << EMAIL JUAN OVIEDO >>
+        'facundo.oviedo@nexumtc.com.ar'     -- << EMAIL FACUNDO OVIEDO >>
+        -- Si desean habilitar el acceso a Carlos A. Oviedo, descomentar la siguiente línea:
+        -- ,'carlos.oviedo@nexumtc.com.ar'
     )
 )
 WITH CHECK (
     (auth.jwt() ->> 'email') IN (
-        'juanoviedo1987@gmail.com',
-        'facundo.oviedo@nexumtc.com.ar'
+        'juan.oviedo@nexumtc.com.ar',       -- << EMAIL JUAN OVIEDO >>
+        'facundo.oviedo@nexumtc.com.ar'     -- << EMAIL FACUNDO OVIEDO >>
+        -- Si desean habilitar el acceso a Carlos A. Oviedo, descomentar la siguiente línea:
+        -- ,'carlos.oviedo@nexumtc.com.ar'
     )
 );
 
 -- ------------------------------------------------------------------------------
--- 4. ÍNDICES DE RENDIMIENTO
+-- PASO 5: ÍNDICES DE RENDIMIENTO
 -- ------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_leads_nexum_status ON leads_nexum(status);
 CREATE INDEX IF NOT EXISTS idx_leads_nexum_responsable ON leads_nexum(responsable);
