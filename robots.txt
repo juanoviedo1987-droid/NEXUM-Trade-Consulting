@@ -1,4 +1,6 @@
 User-agent: *
+Disallow: /crm.html
+Disallow: /admin/
 Allow: /
 
 Sitemap: https://nexumtradeconsulting.com.ar/sitemap.xml
