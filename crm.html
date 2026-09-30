@@ -427,20 +427,20 @@
       <!-- Modal Body (Scrollable) -->
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
         
-        <!-- Acciones Directas (Botones WhatsApp, Email, Teléfono) -->
+        <!-- Acciones Directas: WhatsApp Directo & Copiado Rápido -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <a id="modalWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-sm">
+          <button type="button" id="modalWaBtn" onclick="openWhatsAppModal()" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-sm active:scale-95 cursor-pointer">
             <i data-lucide="message-circle" class="w-4 h-4"></i>
             <span>Abrir WhatsApp</span>
-          </a>
-          <a id="modalMailBtn" href="#" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold transition shadow-sm">
-            <i data-lucide="mail" class="w-4 h-4"></i>
-            <span>Enviar Email</span>
-          </a>
-          <a id="modalCallBtn" href="#" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold border border-slate-300 transition">
-            <i data-lucide="phone-call" class="w-4 h-4 text-slate-600"></i>
-            <span>Llamar</span>
-          </a>
+          </button>
+          <button type="button" id="modalCopyPhoneBtn" onclick="copyModalPhone()" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold border border-slate-300 transition shadow-sm active:scale-95 cursor-pointer">
+            <i data-lucide="phone" class="w-4 h-4 text-slate-500"></i>
+            <span id="modalCopyPhoneLabel">Copiar Teléfono</span>
+          </button>
+          <button type="button" id="modalCopyMailBtn" onclick="copyModalEmail()" class="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold border border-slate-300 transition shadow-sm active:scale-95 cursor-pointer">
+            <i data-lucide="mail" class="w-4 h-4 text-slate-500"></i>
+            <span id="modalCopyMailLabel">Copiar Email</span>
+          </button>
         </div>
 
         <!-- Selectores de Gestión Comercial -->
@@ -938,43 +938,47 @@
           tdNextAction.appendChild(spanEmptyAction);
         }
 
-        // 7. Columna Contacto Rápido (Sanitización rigurosa de URLs)
+        // 7. Columna Contacto Rápido (WhatsApp directo y copiado rápido)
         const tdContact = document.createElement("td");
         tdContact.className = "py-3.5 px-4";
         const divActions = document.createElement("div");
         divActions.className = "flex items-center gap-2";
 
-        // Sanitización WhatsApp: solo dígitos
+        // WhatsApp: apertura directa sin pestañas residuales
         const cleanDigits = (lead.telefono || "").replace(/[^0-9]/g, "");
         if (cleanDigits && cleanDigits.length >= 8 && cleanDigits.length <= 15) {
-          const aWa = document.createElement("a");
-          aWa.href = `https://wa.me/${cleanDigits}`;
-          aWa.target = "_blank";
-          aWa.rel = "noopener noreferrer";
-          aWa.className = "text-emerald-600 hover:text-emerald-700 flex items-center gap-1 font-mono text-[11px] font-semibold";
-          aWa.title = "Abrir WhatsApp";
-          aWa.onclick = (e) => e.stopPropagation();
-          aWa.innerHTML = `<i data-lucide="message-circle" class="w-3.5 h-3.5"></i>`;
+          const btnWa = document.createElement("button");
+          btnWa.type = "button";
+          btnWa.className = "text-emerald-600 hover:text-emerald-700 flex items-center gap-1 font-mono text-[11px] font-semibold p-1 hover:bg-emerald-50 rounded transition cursor-pointer";
+          btnWa.title = "Abrir WhatsApp directo";
+          btnWa.onclick = (e) => {
+            e.stopPropagation();
+            openWhatsAppDirect(lead.telefono, lead.nombre);
+          };
+          btnWa.innerHTML = `<i data-lucide="message-circle" class="w-3.5 h-3.5"></i>`;
           const spanPhone = document.createElement("span");
           spanPhone.textContent = lead.telefono;
-          aWa.appendChild(spanPhone);
-          divActions.appendChild(aWa);
+          btnWa.appendChild(spanPhone);
+          divActions.appendChild(btnWa);
         }
 
-        // Sanitización Email: validar formato RFC básico sin comillas
+        // Email: copiado rápido al portapapeles en 1 clic
         const emailClean = (lead.email || "").trim();
         if (emailClean && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailClean)) {
-          const aMail = document.createElement("a");
-          aMail.href = `mailto:${emailClean}`;
-          aMail.className = "text-slate-600 hover:text-brand-600 flex items-center gap-1 text-[11px] font-medium";
-          aMail.title = "Enviar Email";
-          aMail.onclick = (e) => e.stopPropagation();
-          aMail.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-brand-500"></i>`;
+          const btnMail = document.createElement("button");
+          btnMail.type = "button";
+          btnMail.className = "text-slate-600 hover:text-brand-600 flex items-center gap-1 text-[11px] font-medium p-1 hover:bg-slate-100 rounded transition cursor-pointer";
+          btnMail.title = "Clic para copiar email";
+          btnMail.onclick = (e) => {
+            e.stopPropagation();
+            copyToClipboard(emailClean, "Email copiado al portapapeles");
+          };
+          btnMail.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-brand-500"></i>`;
           const spanMail = document.createElement("span");
           spanMail.className = "truncate max-w-[120px]";
           spanMail.textContent = emailClean;
-          aMail.appendChild(spanMail);
-          divActions.appendChild(aMail);
+          btnMail.appendChild(spanMail);
+          divActions.appendChild(btnMail);
         }
 
         if (divActions.children.length === 0) {
@@ -1102,32 +1106,31 @@
       document.getElementById("modalCompanyTitle").textContent = lead.empresa || "Empresa Sin Nombre";
       document.getElementById("modalContactSubtitle").textContent = `${lead.nombre || 'Sin Contacto'} ${lead.cargo ? `(${lead.cargo})` : ''}`;
 
-      // Botones WhatsApp, Email y Llamar con sanitización estricta
+      // Botones de acción directa: WhatsApp inteligente y copiado rápido
       const cleanDigits = (lead.telefono || "").replace(/[^0-9]/g, "");
       const waBtn = document.getElementById("modalWaBtn");
-      const mailBtn = document.getElementById("modalMailBtn");
-      const callBtn = document.getElementById("modalCallBtn");
+      const copyPhoneBtn = document.getElementById("modalCopyPhoneBtn");
+      const copyMailBtn = document.getElementById("modalCopyMailBtn");
+
+      // Restaurar textos originales de los botones
+      const phoneLabel = document.getElementById("modalCopyPhoneLabel");
+      const mailLabel = document.getElementById("modalCopyMailLabel");
+      if (phoneLabel) phoneLabel.textContent = "Copiar Teléfono";
+      if (mailLabel) mailLabel.textContent = "Copiar Email";
 
       if (cleanDigits && cleanDigits.length >= 8 && cleanDigits.length <= 15) {
-        const msg = `Hola ${lead.nombre || ''}, te escribo de Nexum Trade Consulting en relación a tu consulta sobre comercio exterior.`;
-        waBtn.href = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(msg)}`;
         waBtn.classList.remove("opacity-50", "pointer-events-none");
-        callBtn.href = `tel:${cleanDigits}`;
-        callBtn.classList.remove("opacity-50", "pointer-events-none");
+        copyPhoneBtn.classList.remove("opacity-50", "pointer-events-none");
       } else {
-        waBtn.removeAttribute("href");
         waBtn.classList.add("opacity-50", "pointer-events-none");
-        callBtn.removeAttribute("href");
-        callBtn.classList.add("opacity-50", "pointer-events-none");
+        copyPhoneBtn.classList.add("opacity-50", "pointer-events-none");
       }
 
       const emailClean = (lead.email || "").trim();
       if (emailClean && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailClean)) {
-        mailBtn.href = `mailto:${emailClean}?subject=${encodeURIComponent(`Nexum Trade Consulting - Consulta de ${lead.empresa || 'su empresa'}`)}`;
-        mailBtn.classList.remove("opacity-50", "pointer-events-none");
+        copyMailBtn.classList.remove("opacity-50", "pointer-events-none");
       } else {
-        mailBtn.removeAttribute("href");
-        mailBtn.classList.add("opacity-50", "pointer-events-none");
+        copyMailBtn.classList.add("opacity-50", "pointer-events-none");
       }
 
       // Asignar inputs mediante propiedad .value (no ejecutan HTML)
@@ -1372,6 +1375,86 @@
         str = "'" + str;
       }
       return `"${str.replace(/"/g, '""')}"`;
+    }
+
+    // --- ACCIONES DIRECTAS: WHATSAPP DIRECTO Y COPIADO AL PORTAPAPELES ---
+    function openWhatsAppDirect(phone, contactName) {
+      const cleanDigits = (phone || "").replace(/[^0-9]/g, "");
+      if (!cleanDigits || cleanDigits.length < 8) {
+        showToast("Número telefónico inválido o incompleto", "warning");
+        return;
+      }
+
+      const nameGreeting = contactName && contactName.trim() ? `Hola ${contactName.trim()}, ` : 'Hola, ';
+      const msg = `${nameGreeting}te escribo de Nexum Trade Consulting en relación a tu consulta sobre comercio exterior.`;
+      const encodedMsg = encodeURIComponent(msg);
+
+      // En móviles abre directamente la app de WhatsApp
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.href = `whatsapp://send?phone=${cleanDigits}&text=${encodedMsg}`;
+      } else {
+        // En escritorio: abre o reutiliza una pestaña nombrada para evitar acumular pestañas en blanco
+        window.open(`https://web.whatsapp.com/send?phone=${cleanDigits}&text=${encodedMsg}`, "nexum_whatsapp_chat");
+      }
+      showToast("Abriendo WhatsApp...", "info");
+    }
+
+    function openWhatsAppModal() {
+      if (!currentSelectedLead) return;
+      openWhatsAppDirect(currentSelectedLead.telefono, currentSelectedLead.nombre);
+    }
+
+    async function copyToClipboard(text, successMsg, labelElementId, originalLabel) {
+      if (!text || !text.trim()) {
+        showToast("No hay datos para copiar", "warning");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text.trim());
+        showToast(successMsg, "success");
+        if (labelElementId && originalLabel) {
+          const el = document.getElementById(labelElementId);
+          if (el) {
+            el.textContent = "¡Copiado!";
+            setTimeout(() => {
+              el.textContent = originalLabel;
+            }, 1800);
+          }
+        }
+      } catch (err) {
+        // Fallback para navegadores con permisos restringidos
+        const textArea = document.createElement("textarea");
+        textArea.value = text.trim();
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          showToast(successMsg, "success");
+          if (labelElementId && originalLabel) {
+            const el = document.getElementById(labelElementId);
+            if (el) {
+              el.textContent = "¡Copiado!";
+              setTimeout(() => {
+                el.textContent = originalLabel;
+              }, 1800);
+            }
+          }
+        } catch (e) {
+          showToast("No se pudo copiar automáticamente", "error");
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+
+    function copyModalPhone() {
+      if (!currentSelectedLead) return;
+      copyToClipboard(currentSelectedLead.telefono, "Teléfono copiado al portapapeles", "modalCopyPhoneLabel", "Copiar Teléfono");
+    }
+
+    function copyModalEmail() {
+      if (!currentSelectedLead) return;
+      copyToClipboard(currentSelectedLead.email, "Email copiado al portapapeles", "modalCopyMailLabel", "Copiar Email");
     }
 
     // --- UTILIDADES ---
