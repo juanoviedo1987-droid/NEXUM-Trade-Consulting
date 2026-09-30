@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btnSpinner.classList.remove("hidden");
     } else {
       submitBtn.disabled = false;
-      btnText.textContent = isEn ? "Request Feasibility Assessment" : "Solicitar Diagnóstico de Exportación";
+      btnText.textContent = isEn ? "Request Diagnostic" : "Solicitar Diagnóstico";
       btnIcon.classList.remove("hidden");
       btnSpinner.classList.add("hidden");
     }
