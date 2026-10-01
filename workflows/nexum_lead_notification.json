@@ -16,7 +16,10 @@
       "name": "Cada 5 Minutos",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [240, 300]
+      "position": [
+        240,
+        300
+      ]
     },
     {
       "parameters": {
@@ -27,11 +30,11 @@
           "parameters": [
             {
               "name": "apikey",
-              "value": "YOUR_SUPABASE_SERVICE_ROLE_KEY"
+              "value": "={{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
             },
             {
               "name": "Authorization",
-              "value": "Bearer YOUR_SUPABASE_SERVICE_ROLE_KEY"
+              "value": "=Bearer {{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
             }
           ]
         },
@@ -41,7 +44,10 @@
       "name": "Buscar Leads Nuevos en Supabase",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [480, 300]
+      "position": [
+        480,
+        300
+      ]
     },
     {
       "parameters": {
@@ -51,7 +57,10 @@
       "name": "Formatear Email de Notificación",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [700, 300]
+      "position": [
+        700,
+        300
+      ]
     },
     {
       "parameters": {
@@ -62,11 +71,11 @@
           "parameters": [
             {
               "name": "apikey",
-              "value": "YOUR_SUPABASE_SERVICE_ROLE_KEY"
+              "value": "={{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
             },
             {
               "name": "Authorization",
-              "value": "Bearer YOUR_SUPABASE_SERVICE_ROLE_KEY"
+              "value": "=Bearer {{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
             },
             {
               "name": "Content-Type",
@@ -83,7 +92,10 @@
       "name": "Marcar Lead como Notificado en Supabase",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [920, 300]
+      "position": [
+        920,
+        300
+      ]
     },
     {
       "parameters": {
@@ -98,7 +110,10 @@
       "name": "Enviar Email Oficial Nexum",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
-      "position": [1140, 300],
+      "position": [
+        1140,
+        300
+      ],
       "credentials": {
         "smtp": {
           "id": "NexumHostingerSmtp",
@@ -154,6 +169,7 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   }
 }
