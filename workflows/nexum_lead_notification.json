@@ -59,7 +59,8 @@
         "subject": "={{ $json.asunto }}",
         "message": "={{ $json.mensajeHtml }}",
         "options": {
-          "appendAttribution": false
+          "appendAttribution": false,
+          "senderName": "Nexum Trade Consulting"
         }
       },
       "id": "send-email-lead-nexum",
@@ -77,7 +78,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?id=eq.{{ $json.id }}",
+        "url": "=https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?id=eq.{{ $('Formatear Email de Notificación').item.json.id }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
