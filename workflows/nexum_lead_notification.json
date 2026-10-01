@@ -1,5 +1,5 @@
 {
-  "name": "NEXUM - Notificación de Nuevos Leads (Email a Carlos e Info)",
+  "name": "NEXUM - Notificación de Nuevos Leads (Hostinger SMTP)",
   "nodes": [
     {
       "parameters": {
@@ -27,11 +27,11 @@
           "parameters": [
             {
               "name": "apikey",
-              "value": "={{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
+              "value": "YOUR_SUPABASE_SERVICE_ROLE_KEY"
             },
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
+              "value": "Bearer YOUR_SUPABASE_SERVICE_ROLE_KEY"
             }
           ]
         },
@@ -45,7 +45,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const items = $input.all();\nif (!items || items.length === 0 || !items[0].json || !items[0].json.id) {\n  return [];\n}\n\nreturn items.map(item => {\n  const l = item.json;\n  const telClean = (l.telefono || '').replace(/[^0-9]/g, '');\n  const waLink = telClean ? `https://wa.me/${telClean}` : '#';\n  \n  const html = `<h2>🚨 Nuevo Contacto Recibido en Nexum Trade Consulting</h2>` +\n    `<p>Se ha recibido una nueva solicitud de consulta desde la web:</p>` +\n    `<ul>` +\n    `<li><b>Nombre y Apellido:</b> ${l.nombre}</li>` +\n    `<li><b>Empresa:</b> ${l.empresa}</li>` +\n    `<li><b>Email de contacto:</b> <a href=\"mailto:${l.email}\">${l.email}</a></li>` +\n    `<li><b>Teléfono / WhatsApp:</b> <a href=\"${waLink}\">${l.telefono}</a></li>` +\n    `<li><b>Rubro / Situación:</b> ${l.operacion}</li>` +\n    `<li><b>Mensaje del cliente:</b> ${l.mensaje || 'Sin mensaje adicional'}</li>` +\n    `</ul>` +\n    `<p style=\"color: #666; font-size: 12px;\">Registrado en la base de datos de Nexum el: ${new Date(l.created_at).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}</p>`;\n    \n  return {\n    json: {\n      id: l.id,\n      nombre: l.nombre,\n      empresa: l.empresa,\n      emailCliente: l.email,\n      asunto: `🚨 Nuevo Lead Nexum: ${l.empresa} (${l.nombre})`,\n      mensajeHtml: html\n    }\n  };\n});"
+        "jsCode": "const items = $input.all();\nif (!items || items.length === 0 || !items[0].json || !items[0].json.id) {\n  return [];\n}\n\nreturn items.map(item => {\n  const l = item.json;\n  const telClean = (l.telefono || '').replace(/[^0-9]/g, '');\n  const waLink = telClean ? `https://wa.me/${telClean}` : '#';\n  \n  const html = `<h2>🚨 Nuevo Contacto Recibido en Nexum Trade Consulting</h2>` +\n    `<p>Se ha recibido una nueva solicitud de consulta desde la web:</p>` +\n    `<ul>` +\n    `<li><b>Nombre y Apellido:</b> ${l.nombre}</li>` +\n    `<li><b>Empresa:</b> ${l.empresa}</li>` +\n    `<li><b>Email de contacto:</b> <a href=\"mailto:${l.email}\">${l.email}</a></li>` +\n    `<li><b>Teléfono / WhatsApp:</b> <a href=\"${waLink}\">${l.telefono}</a></li>` +\n    `<li><b>Rubro / Situación:</b> ${l.operacion || l.sector || 'No especificado'}</li>` +\n    `<li><b>Mensaje del cliente:</b> ${l.mensaje || 'Sin mensaje adicional'}</li>` +\n    `</ul>` +\n    `<p style=\"color: #666; font-size: 12px;\">Registrado en la base de datos de Nexum el: ${new Date(l.created_at).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}</p>`;\n    \n  return {\n    json: {\n      id: l.id,\n      nombre: l.nombre,\n      empresa: l.empresa,\n      emailCliente: l.email,\n      asunto: `🚨 Nuevo Lead Nexum: ${l.empresa} (${l.nombre})`,\n      mensajeHtml: html\n    }\n  };\n});"
       },
       "id": "format-lead-message",
       "name": "Formatear Email de Notificación",
@@ -55,40 +55,18 @@
     },
     {
       "parameters": {
-        "sendTo": "info@nexumtc.com.ar",
-        "subject": "={{ $json.asunto }}",
-        "message": "={{ $json.mensajeHtml }}",
-        "options": {
-          "appendAttribution": false,
-          "senderName": "Nexum Trade Consulting"
-        }
-      },
-      "id": "send-email-lead-nexum",
-      "name": "Enviar Email a Carlos e Info",
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [920, 300],
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "IcynwoFSL7ibtgid",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "method": "PATCH",
-        "url": "=https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?id=eq.{{ $('Formatear Email de Notificación').item.json.id }}",
+        "url": "=https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?id=eq.{{ $json.id }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "apikey",
-              "value": "={{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
+              "value": "YOUR_SUPABASE_SERVICE_ROLE_KEY"
             },
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $env.SUPABASE_KEY || 'YOUR_SUPABASE_SERVICE_ROLE_KEY' }}"
+              "value": "Bearer YOUR_SUPABASE_SERVICE_ROLE_KEY"
             },
             {
               "name": "Content-Type",
@@ -105,7 +83,28 @@
       "name": "Marcar Lead como Notificado en Supabase",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1140, 300]
+      "position": [920, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@nexumtc.com.ar",
+        "toEmail": "info@nexumtc.com.ar",
+        "subject": "={{ $('Formatear Email de Notificación').item.json.asunto }}",
+        "emailFormat": "html",
+        "html": "={{ $('Formatear Email de Notificación').item.json.mensajeHtml }}",
+        "options": {}
+      },
+      "id": "send-email-smtp-nexum",
+      "name": "Enviar Email Oficial Nexum",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1140, 300],
+      "credentials": {
+        "smtp": {
+          "id": "NexumHostingerSmtp",
+          "name": "Hostinger SMTP - info@nexumtc.com.ar"
+        }
+      }
     }
   ],
   "connections": {
@@ -135,18 +134,18 @@
       "main": [
         [
           {
-            "node": "Enviar Email a Carlos e Info",
+            "node": "Marcar Lead como Notificado en Supabase",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Enviar Email a Carlos e Info": {
+    "Marcar Lead como Notificado en Supabase": {
       "main": [
         [
           {
-            "node": "Marcar Lead como Notificado en Supabase",
+            "node": "Enviar Email Oficial Nexum",
             "type": "main",
             "index": 0
           }
