@@ -27,3 +27,7 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
 5. **Seguridad Absoluta:**
    - NUNCA commitear claves de servicio de Supabase (`service_role`), credenciales de email o contraseñas en texto plano.
    - Toda credencial privada se almacena en el gestor de credenciales de n8n Cloud.
+
+6. **Gestión de Secretos Centralizada:**
+   - Las claves de API y accesos de Nexum (Supabase `wbcfmanuhotyevquiaht`, etc.) residen en `C:\Users\juano\.secrets\stack.env`.
+
