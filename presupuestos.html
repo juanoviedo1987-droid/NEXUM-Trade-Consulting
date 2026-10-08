@@ -31,13 +31,13 @@
         box-shadow: none !important;
         border: none !important;
         margin: 0 !important;
-        padding: 10mm 14mm !important;
+        padding: 8mm 12mm !important;
         width: 100% !important;
         max-width: 100% !important;
       }
       @page {
         size: A4 portrait;
-        margin: 8mm 10mm;
+        margin: 6mm 8mm;
       }
     }
   </style>
@@ -51,32 +51,79 @@
         <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain">
         <div>
           <h1 class="text-base font-bold text-white font-heading">Generador Oficial de Presupuestos</h1>
-          <p class="text-xs text-slate-400">Completá los datos del cliente y exportá a PDF en 1 clic</p>
+          <p class="text-xs text-slate-400">Numeración correlativa automática y exportación a PDF en 1 clic</p>
         </div>
       </div>
-      <button onclick="window.print()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-sky-500/20 active:scale-95">
-        <i data-lucide="printer" class="w-4 h-4"></i>
-        Exportar / Guardar PDF
-      </button>
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button onclick="nuevoPresupuesto()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition border border-slate-700" title="Generar el siguiente número correlativo">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          Siguiente Nº
+        </button>
+        <button onclick="imprimirYGuardar()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-sky-500/20 active:scale-95">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          Exportar / Guardar PDF
+        </button>
+      </div>
     </div>
 
     <!-- Formulario de Campos Dinámicos -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs mb-3">
+      <!-- Número Automático Bloqueado -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1">Nº de Presupuesto</label>
-        <input type="text" id="inputNum" value="NTC-2026-001" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-400 font-semibold mb-1 flex items-center justify-between">
+          <span>Nº de Presupuesto (Automático)</span>
+          <span class="text-[10px] text-emerald-400">Correlativo</span>
+        </label>
+        <div class="relative">
+          <input type="text" id="inputNum" readonly class="w-full px-3 py-2 bg-slate-950/80 border border-slate-700/80 rounded-lg text-sky-400 font-mono font-bold cursor-not-allowed select-none">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-500 absolute right-3 top-2.5"></i>
+        </div>
       </div>
+
+      <!-- Empresa -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1">Empresa / Razón Social</label>
+        <label class="block text-slate-400 font-semibold mb-1">Empresa / PyME</label>
         <input type="text" id="inputEmpresa" placeholder="Ej: Dulces del Sur S.A." oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
       </div>
+
+      <!-- Contacto -->
       <div>
         <label class="block text-slate-400 font-semibold mb-1">Nombre de Contacto</label>
         <input type="text" id="inputContacto" placeholder="Ej: Martín Gómez (Gerente)" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
       </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+      <!-- Producto -->
       <div>
         <label class="block text-slate-400 font-semibold mb-1">Producto / Rubro</label>
         <input type="text" id="inputProducto" placeholder="Ej: Mermeladas y Frutas al Natural" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+      </div>
+
+      <!-- Modalidad de Tarifa / Bonificación -->
+      <div>
+        <label class="block text-slate-400 font-semibold mb-1">Modalidad de Tarifa</label>
+        <select id="selectTarifa" onchange="cambiarTarifa()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+          <option value="lista">Tarifa Oficial (USD 500)</option>
+          <option value="piloto">Programa Piloto - 50% OFF (USD 250)</option>
+          <option value="custom">Personalizado (Otro monto)</option>
+        </select>
+      </div>
+
+      <!-- Monto Personalizado (oculto por defecto) -->
+      <div id="boxCustomMonto" class="hidden">
+        <label class="block text-slate-400 font-semibold mb-1">Monto en USD</label>
+        <input type="number" id="inputCustomMonto" value="500" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono focus:outline-none focus:border-sky-500">
+      </div>
+
+      <!-- Plazo de Entrega -->
+      <div id="boxPlazo">
+        <label class="block text-slate-400 font-semibold mb-1">Plazo de Entrega</label>
+        <select id="selectPlazo" onchange="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+          <option value="7 a 10 días hábiles (1 a 2 semanas)">7 a 10 días hábiles (1 a 2 semanas)</option>
+          <option value="5 a 7 días hábiles (Entrega exprés)">5 a 7 días hábiles (Entrega exprés)</option>
+          <option value="2 a 3 semanas">2 a 3 semanas</option>
+        </select>
       </div>
     </div>
   </div>
@@ -145,22 +192,24 @@
       <thead>
         <tr style="background: #0f172a; color: #ffffff;">
           <th style="padding: 7px 10px; text-align: left; font-weight: 600;">Concepto del Servicio</th>
-          <th style="width: 130px; text-align: center; font-weight: 600;">Plazo de Entrega</th>
-          <th style="width: 140px; text-align: right; font-weight: 600;">Inversión Total</th>
+          <th style="width: 150px; text-align: center; font-weight: 600;">Plazo de Entrega</th>
+          <th style="width: 150px; text-align: right; font-weight: 600;">Inversión Total</th>
         </tr>
       </thead>
       <tbody>
         <tr style="border-bottom: 1px solid #e2e8f0;">
           <td style="padding: 8px 10px;">
             <strong style="color: #0f172a;">Diagnóstico de Factibilidad Exportadora</strong><br>
-            <span style="font-size: 11px; color: #64748b;">Dedicación profesional integral (20 horas de consultoría técnica).</span>
+            <span id="lblSubDetalle" style="font-size: 11px; color: #64748b;">Dedicación profesional integral (20 horas de consultoría técnica).</span>
           </td>
           <td style="text-align: center; vertical-align: middle; padding: 8px 10px;">
-            <strong>7 a 10 días hábiles</strong><br>
+            <strong id="lblPlazo">7 a 10 días hábiles</strong><br>
             <span style="font-size: 10px; color: #64748b;">(1 a 2 semanas)</span>
           </td>
           <td style="text-align: right; vertical-align: middle; padding: 8px 10px;">
-            <span style="font-size: 16px; font-weight: 800; color: #0074A1;">USD 500</span>
+            <div id="lblMontoBox">
+              <span id="lblMonto" style="font-size: 17px; font-weight: 800; color: #0074A1;">USD 500</span>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -203,22 +252,92 @@
   <script>
     lucide.createIcons();
 
-    // Fecha actual automática en español
+    // Clave para almacenar la secuencia en el navegador
+    const STORAGE_KEY_SEQ = 'nexum_quote_seq';
+    const CURRENT_YEAR = new Date().getFullYear();
+
+    // Obtener correlativo actual o iniciar en 1
+    function getNextSequence() {
+      let current = parseInt(localStorage.getItem(STORAGE_KEY_SEQ) || '0', 10);
+      if (current === 0) {
+        current = 1;
+        localStorage.setItem(STORAGE_KEY_SEQ, current);
+      }
+      return current;
+    }
+
+    function formatQuoteNumber(seq) {
+      const padded = String(seq).padStart(3, '0');
+      return `NTC-${CURRENT_YEAR}-${padded}`;
+    }
+
+    // Inicializar número correlativo
+    let currentSeq = getNextSequence();
+    document.getElementById('inputNum').value = formatQuoteNumber(currentSeq);
+    document.getElementById('lblNum').innerText = formatQuoteNumber(currentSeq);
+
+    // Fecha actual automática
     const hoy = new Date();
     const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
     document.getElementById('lblFecha').innerText = hoy.toLocaleDateString('es-AR', opciones);
 
+    function nuevoPresupuesto() {
+      currentSeq++;
+      localStorage.setItem(STORAGE_KEY_SEQ, currentSeq);
+      const nuevoNum = formatQuoteNumber(currentSeq);
+      document.getElementById('inputNum').value = nuevoNum;
+      document.getElementById('lblNum').innerText = nuevoNum;
+    }
+
+    function cambiarTarifa() {
+      const tarifa = document.getElementById('selectTarifa').value;
+      const boxCustom = document.getElementById('boxCustomMonto');
+      if (tarifa === 'custom') {
+        boxCustom.classList.remove('hidden');
+      } else {
+        boxCustom.classList.add('hidden');
+      }
+      updatePreview();
+    }
+
     function updatePreview() {
-      const num = document.getElementById('inputNum').value.trim() || 'NTC-2026-001';
       const empresa = document.getElementById('inputEmpresa').value.trim() || '[Nombre de la Empresa / PyME]';
       const contacto = document.getElementById('inputContacto').value.trim() || '[Nombre del Contacto]';
       const producto = document.getElementById('inputProducto').value.trim() || '[Línea de productos a evaluar]';
+      const plazo = document.getElementById('selectPlazo').value;
+      const tarifa = document.getElementById('selectTarifa').value;
 
-      document.getElementById('lblNum').innerText = num;
       document.getElementById('lblEmpresa').innerText = empresa;
       document.getElementById('lblContacto').innerText = contacto;
       document.getElementById('lblProducto').innerText = producto;
+      document.getElementById('lblPlazo').innerText = plazo.split('(')[0].trim();
+
+      const lblMontoBox = document.getElementById('lblMontoBox');
+      const lblSubDetalle = document.getElementById('lblSubDetalle');
+
+      if (tarifa === 'lista') {
+        lblSubDetalle.innerText = 'Dedicación profesional integral (20 horas de consultoría técnica).';
+        lblMontoBox.innerHTML = '<span style="font-size: 17px; font-weight: 800; color: #0074A1;">USD 500</span>';
+      } else if (tarifa === 'piloto') {
+        lblSubDetalle.innerHTML = '<strong style="color: #0284c7;">Programa Piloto de Lanzamiento:</strong> 50% de bonificación a cambio de feedback y caso de estudio.';
+        lblMontoBox.innerHTML = `
+          <div style="font-size: 11px; text-decoration: line-through; color: #94a3b8;">USD 500</div>
+          <span style="font-size: 17px; font-weight: 800; color: #10b981;">USD 250</span>
+          <div style="font-size: 9px; font-weight: bold; color: #059669; text-transform: uppercase;">50% OFF Lanzamiento</div>
+        `;
+      } else {
+        const customVal = document.getElementById('inputCustomMonto').value || '500';
+        lblSubDetalle.innerText = 'Consultoría personalizada según alcance convenido.';
+        lblMontoBox.innerHTML = `<span style="font-size: 17px; font-weight: 800; color: #0074A1;">USD ${customVal}</span>`;
+      }
     }
+
+    function imprimirYGuardar() {
+      window.print();
+    }
+
+    // Inicializar estado de vista previa
+    updatePreview();
   </script>
 </body>
 </html>
