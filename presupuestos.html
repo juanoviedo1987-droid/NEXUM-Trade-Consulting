@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Presupuestos | Nexum Trade Consulting</title>
+  
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/logo-3.png">
+
+  <!-- Google Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @media print {
+      /* Ocultar barra de control al imprimir/exportar */
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .page-to-print {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 10mm 14mm !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 8mm 10mm;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-full font-sans antialiased bg-slate-950 text-slate-100 p-4 md:p-8 flex flex-col items-center">
+
+  <!-- ================= BARRA DE CONTROL (SOLO EN PANTALLA) ================= -->
+  <div class="no-print w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-8 shadow-2xl">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain">
+        <div>
+          <h1 class="text-base font-bold text-white font-heading">Generador Oficial de Presupuestos</h1>
+          <p class="text-xs text-slate-400">Completá los datos del cliente y exportá a PDF en 1 clic</p>
+        </div>
+      </div>
+      <button onclick="window.print()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-sky-500/20 active:scale-95">
+        <i data-lucide="printer" class="w-4 h-4"></i>
+        Exportar / Guardar PDF
+      </button>
+    </div>
+
+    <!-- Formulario de Campos Dinámicos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+      <div>
+        <label class="block text-slate-400 font-semibold mb-1">Nº de Presupuesto</label>
+        <input type="text" id="inputNum" value="NTC-2026-001" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono focus:outline-none focus:border-sky-500">
+      </div>
+      <div>
+        <label class="block text-slate-400 font-semibold mb-1">Empresa / Razón Social</label>
+        <input type="text" id="inputEmpresa" placeholder="Ej: Dulces del Sur S.A." oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+      </div>
+      <div>
+        <label class="block text-slate-400 font-semibold mb-1">Nombre de Contacto</label>
+        <input type="text" id="inputContacto" placeholder="Ej: Martín Gómez (Gerente)" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+      </div>
+      <div>
+        <label class="block text-slate-400 font-semibold mb-1">Producto / Rubro</label>
+        <input type="text" id="inputProducto" placeholder="Ej: Mermeladas y Frutas al Natural" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HOJA IMPRIMIBLE A4 (PRESUPUESTO 1 PÁGINA) ================= -->
+  <div class="page-to-print w-full max-w-4xl bg-white text-slate-800 rounded-xl p-8 sm:p-10 shadow-2xl transition-all" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.45;">
+    
+    <!-- Encabezado con Logo Oficial -->
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0074A1; padding-bottom: 12px; margin-bottom: 14px;">
+      <div>
+        <img src="https://nexumtradeconsulting.com.ar/assets/logo-1.png" alt="Nexum Trade Consulting" style="width: 140px; height: auto; display: block;">
+      </div>
+      <div style="text-align: right; font-size: 11px; color: #64748b; line-height: 1.4;">
+        <strong style="color: #0f172a; font-size: 12px;">NEXUM TRADE CONSULTING</strong><br>
+        Presupuesto: <strong id="lblNum" style="color: #0074A1;">NTC-2026-001</strong><br>
+        Fecha: <strong id="lblFecha">08 de Octubre de 2026</strong> &bull; Validez: 15 días
+      </div>
+    </div>
+
+    <!-- Título del Documento -->
+    <h1 style="font-size: 17px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: -0.3px; margin: 0 0 2px 0;">
+      Propuesta de Consultoría Estratégica
+    </h1>
+    <div style="color: #0074A1; font-weight: 700; font-size: 13px; margin: 0 0 12px 0;">
+      Diagnóstico Integral de Factibilidad Exportadora
+    </div>
+
+    <!-- Tarjeta de Datos del Cliente -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; margin-bottom: 14px;">
+      <div><strong style="color: #334155;">Empresa:</strong> <span id="lblEmpresa" style="font-weight: 600; color: #0f172a;">[Nombre de la Empresa / PyME]</span></div>
+      <div><strong style="color: #334155;">Contacto:</strong> <span id="lblContacto" style="font-weight: 600; color: #0f172a;">[Nombre del Contacto]</span></div>
+      <div style="grid-column: span 2;"><strong style="color: #334155;">Producto / Línea:</strong> <span id="lblProducto" style="font-weight: 600; color: #0f172a;">[Línea de productos a evaluar]</span></div>
+    </div>
+
+    <!-- Alcance del Servicio y Entregables -->
+    <div style="font-size: 12px; font-weight: 700; color: #0074A1; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin: 10px 0 8px 0;">
+      Alcance del Servicio y Entregables
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #0074A1; border-radius: 4px; padding: 6px 10px; font-size: 11.5px;">
+        <strong style="display: block; color: #0f172a; font-size: 12px; margin-bottom: 2px;">1. Posición Arancelaria (NCM / HS Code)</strong>
+        Clasificación preliminar técnica oficial, análisis de reintegros y derechos de exportación en Argentina.
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #0074A1; border-radius: 4px; padding: 6px 10px; font-size: 11.5px;">
+        <strong style="display: block; color: #0f172a; font-size: 12px; margin-bottom: 2px;">2. Requisitos y Barreras de Destino</strong>
+        Identificación de aranceles (acuerdos Mercosur/ALADI), normativas sanitarias (GMP, FDA, etc.) y rotulado local.
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #0074A1; border-radius: 4px; padding: 6px 10px; font-size: 11.5px;">
+        <strong style="display: block; color: #0f172a; font-size: 12px; margin-bottom: 2px;">3. Inteligencia y Mapeo de Mercados</strong>
+        Selección del Top 2 o 3 mercados con demanda real (Trade Map), viabilidad logística y cercanía comercial.
+      </div>
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #0074A1; border-radius: 4px; padding: 6px 10px; font-size: 11.5px;">
+        <strong style="display: block; color: #0f172a; font-size: 12px; margin-bottom: 2px;">4. Estructura de Costos & Precios (FOB/EXW)</strong>
+        Planilla de simulación de costos de salida, embalaje de exportación (NIMF-15) y precio exportable en USD.
+      </div>
+    </div>
+
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #10b981; border-radius: 4px; padding: 6px 10px; font-size: 11.5px; margin-bottom: 12px;">
+      <strong style="display: block; color: #0f172a; font-size: 12px; margin-bottom: 2px;">5. Roadmap de Acción (30-90 días) + Videollamada Ejecutiva</strong>
+      Matriz de brechas (semáforo de madurez) y reunión de devolución privada (45 a 60 min) con los socios fundadores para la defensa del informe y resolución de dudas estratégicas.
+    </div>
+
+    <!-- Tabla de Inversión y Plazos -->
+    <table style="width: 100%; border-collapse: collapse; margin: 10px 0 12px 0; font-size: 12px;">
+      <thead>
+        <tr style="background: #0f172a; color: #ffffff;">
+          <th style="padding: 7px 10px; text-align: left; font-weight: 600;">Concepto del Servicio</th>
+          <th style="width: 130px; text-align: center; font-weight: 600;">Plazo de Entrega</th>
+          <th style="width: 140px; text-align: right; font-weight: 600;">Inversión Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 8px 10px;">
+            <strong style="color: #0f172a;">Diagnóstico de Factibilidad Exportadora</strong><br>
+            <span style="font-size: 11px; color: #64748b;">Dedicación profesional integral (20 horas de consultoría técnica).</span>
+          </td>
+          <td style="text-align: center; vertical-align: middle; padding: 8px 10px;">
+            <strong>7 a 10 días hábiles</strong><br>
+            <span style="font-size: 10px; color: #64748b;">(1 a 2 semanas)</span>
+          </td>
+          <td style="text-align: right; vertical-align: middle; padding: 8px 10px;">
+            <span style="font-size: 16px; font-weight: 800; color: #0074A1;">USD 500</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modalidad de Pago y Datos Bancarios -->
+    <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; font-size: 11.5px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 15px; margin-bottom: 12px;">
+      <div>
+        <strong style="color: #0f172a;">Condiciones de Cobro y Facturación:</strong><br>
+        &bull; <strong>100% anticipado</strong> al inicio del relevamiento.<br>
+        &bull; En <strong>USD</strong> directos o en <strong>ARS</strong> al tipo de cambio del día (MEP / cotización pactada).<br>
+        &bull; Emisión de <strong>Factura "C"</strong> electrónica formal a nombre de Juan Manuel Oviedo (CUIT: 20-32674111-7).
+      </div>
+      <div>
+        <strong style="color: #0f172a;">Datos Bancarios Oficiales (Santander):</strong><br>
+        &bull; <strong>Titular:</strong> JUAN MANUEL OVIEDO<br>
+        &bull; <strong>Caja de Ahorro en Pesos:</strong> 454-007107/9<br>
+        &bull; <strong>CBU:</strong> 0720454288000000710790<br>
+        &bull; <strong>Alias:</strong> <code style="font-weight: bold; color: #0074A1;">J.M.OVIEDO</code>
+      </div>
+    </div>
+
+    <!-- Nota de Alcance Legal / Exclusiones -->
+    <div style="background: #fffbeb; border: 1px solid #fef3c7; border-left: 3px solid #f59e0b; padding: 7px 10px; border-radius: 4px; font-size: 10.5px; color: #78350f; margin-bottom: 12px; line-height: 1.35;">
+      <strong>Nota de Alcance:</strong> El servicio comprende el análisis estratégico y asesoramiento previo. No incluye trámites aduaneros operativos ni firma de permisos de embarque (coordinados con despachante matriculado aliado al momento del despacho), tasas oficiales sanitarias ni fletes internacionales vinculantes.
+    </div>
+
+    <!-- Pie de Página -->
+    <div style="border-top: 1px solid #e2e8f0; padding-top: 8px; font-size: 10px; color: #64748b; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <strong>Nexum Trade Consulting</strong> &bull; Buenos Aires, Argentina &bull; WhatsApp: +54 9 11 7237-6197
+      </div>
+      <div>
+        <a href="https://nexumtradeconsulting.com.ar" target="_blank" style="color: #0074A1; text-decoration: none;">nexumtradeconsulting.com.ar</a> &bull; info@nexumtc.com.ar
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Fecha actual automática en español
+    const hoy = new Date();
+    const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+    document.getElementById('lblFecha').innerText = hoy.toLocaleDateString('es-AR', opciones);
+
+    function updatePreview() {
+      const num = document.getElementById('inputNum').value.trim() || 'NTC-2026-001';
+      const empresa = document.getElementById('inputEmpresa').value.trim() || '[Nombre de la Empresa / PyME]';
+      const contacto = document.getElementById('inputContacto').value.trim() || '[Nombre del Contacto]';
+      const producto = document.getElementById('inputProducto').value.trim() || '[Línea de productos a evaluar]';
+
+      document.getElementById('lblNum').innerText = num;
+      document.getElementById('lblEmpresa').innerText = empresa;
+      document.getElementById('lblContacto').innerText = contacto;
+      document.getElementById('lblProducto').innerText = producto;
+    }
+  </script>
+</body>
+</html>
