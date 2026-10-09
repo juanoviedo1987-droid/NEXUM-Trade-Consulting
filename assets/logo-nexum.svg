@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 260" width="100%" height="100%">
+  <defs>
+    <!-- Filtro sutil para realce vectorial -->
+    <linearGradient id="blueGradient" x1="0%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#006596"/>
+      <stop offset="100%" stop-color="#028ac8"/>
+    </linearGradient>
+    <linearGradient id="navyGradient" x1="0%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#0a1d33"/>
+      <stop offset="100%" stop-color="#0f2b4c"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(15, 10)">
+    <!-- ISOTIPO: N estilizada con doble flecha ascendente entrelazada -->
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <!-- Trazo 1: Azul Petróleo Oscuro (Navy) -->
+      <path d="M 50 200 L 125 55 L 185 175 L 240 70" 
+            fill="none" 
+            stroke="url(#navyGradient)" 
+            stroke-width="28"/>
+      <!-- Punta Flecha 1 (Navy) -->
+      <polygon points="240,42 215,80 265,72" fill="#0f2b4c"/>
+
+      <!-- Trazo 2: Azul Océano Vibrante (Cyan/Blue) entrelazado -->
+      <path d="M 95 200 L 160 78 L 220 195 L 285 45" 
+            fill="none" 
+            stroke="url(#blueGradient)" 
+            stroke-width="28"/>
+      <!-- Punta Flecha 2 (Cyan/Blue) -->
+      <polygon points="285,18 260,56 310,48" fill="#028ac8"/>
+    </g>
+
+    <!-- TIPOGRAFÍA: NEXUM TRADE CONSULTING -->
+    <!-- NEXUM -->
+    <text x="350" y="132" 
+          font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" 
+          font-size="108" 
+          font-weight="800" 
+          letter-spacing="-0.02em" 
+          fill="#0a1d33">NEXUM</text>
+    
+    <!-- TRADE CONSULTING perfectamente alineado al ancho -->
+    <text x="354" y="186" 
+          font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" 
+          font-size="28" 
+          font-weight="600" 
+          letter-spacing="0.32em" 
+          fill="#006596">TRADE CONSULTING</text>
+  </g>
+</svg>
