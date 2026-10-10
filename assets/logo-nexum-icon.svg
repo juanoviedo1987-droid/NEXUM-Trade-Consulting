@@ -10,7 +10,8 @@
     </linearGradient>
   </defs>
 
-  <g transform="translate(68, 60) scale(1.35)" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Centrado y encuadrado exacto con márgenes de seguridad para foto de perfil / app icon -->
+  <g transform="translate(48, 55) scale(1.35)" stroke-linecap="round" stroke-linejoin="round">
     <!-- Trazo 1: Navy -->
     <path d="M 45 230 L 120 70 L 180 200 L 235 85" 
           fill="none" 
