@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 576" width="1024" height="576">
+  <defs>
+    <!-- Fondo corporativo degradé profundo -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a192f"/>
+      <stop offset="50%" stop-color="#0b1e36"/>
+      <stop offset="100%" stop-color="#05101d"/>
+    </linearGradient>
+
+    <!-- Gradiente para el trazo celeste luminoso -->
+    <linearGradient id="cyanGradLuminous" x1="0%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+
+    <!-- Efecto resplandor sutil de fondo -->
+    <radialGradient id="cardGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- FONDO 16:9 -->
+  <rect width="1024" height="576" fill="url(#bgGrad)"/>
+  <rect width="1024" height="576" fill="url(#cardGlow)"/>
+
+  <!-- DETALLES GRÁFICOS DECORATIVOS SUTILES (Líneas de comercio exterior) -->
+  <g opacity="0.1" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6 6">
+    <line x1="0" y1="100" x2="1024" y2="100" />
+    <line x1="0" y1="476" x2="1024" y2="476" />
+    <circle cx="920" cy="100" r="4" fill="#38bdf8"/>
+    <circle cx="100" cy="476" r="4" fill="#38bdf8"/>
+  </g>
+
+  <!-- GRUPO LOGO CENTRADO PERFECTAMENTE EN ZONA SEGURA (SAFE AREA) -->
+  <!-- Reducido a escala 0.78 para que entre cómodo sin cortarse por avatar o bordes de pantalla -->
+  <g transform="translate(160, 165) scale(0.8)">
+    
+    <!-- ISOTIPO: N entrelazada Dark Mode -->
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <!-- Trazo 1: Blanco Puro -->
+      <path d="M 50 200 L 125 55 L 185 175 L 240 70" 
+            fill="none" 
+            stroke="#ffffff" 
+            stroke-width="28"/>
+      <polygon points="240,42 215,80 265,72" fill="#ffffff"/>
+
+      <!-- Trazo 2: Celeste Eléctrico Luminoso -->
+      <path d="M 95 200 L 160 78 L 220 195 L 285 45" 
+            fill="none" 
+            stroke="url(#cyanGradLuminous)" 
+            stroke-width="28"/>
+      <polygon points="285,18 260,56 310,48" fill="#38bdf8"/>
+    </g>
+
+    <!-- TIPOGRAFÍA -->
+    <text x="350" y="132" 
+          font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" 
+          font-size="108" 
+          font-weight="800" 
+          letter-spacing="-0.02em" 
+          fill="#ffffff">NEXUM</text>
+    
+    <text x="354" y="186" 
+          font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" 
+          font-size="28" 
+          font-weight="600" 
+          letter-spacing="0.32em" 
+          fill="#38bdf8">TRADE CONSULTING</text>
+  </g>
+
+  <!-- SUBTÍTULO / PROPUESTA DE VALOR INFERIOR EN ZONA SEGURA -->
+  <text x="512" y="395" 
+        text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" 
+        font-size="18" 
+        font-weight="500" 
+        letter-spacing="0.12em" 
+        fill="#94a3b8">CONSULTORÍA ESTRATÉGICA EN COMERCIO EXTERIOR & EXPORTACIÓN</text>
+
+</svg>
