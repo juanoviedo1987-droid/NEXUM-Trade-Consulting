@@ -227,6 +227,26 @@
       <!-- Acciones de Barra Superior -->
       <div class="flex items-center gap-2">
         
+        <!-- Botón Procedimientos & SOP -->
+        <a 
+          href="procedimientos.html" 
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
+          title="Abrir Manual de Procedimientos y SOP"
+        >
+          <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
+          <span class="hidden sm:inline">Manual SOP</span>
+        </a>
+
+        <!-- Botón Presupuestador -->
+        <a 
+          href="presupuestos.html" 
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
+          title="Generador de Presupuestos en 1 Pág. PDF"
+        >
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-sky-500"></i>
+          <span class="hidden sm:inline">Cotizar</span>
+        </a>
+
         <!-- Botón Exportar CSV (Solo con sesión iniciada) -->
         <button 
           onclick="exportToCSV()" 

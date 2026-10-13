@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-100 text-slate-800">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Procedimientos & Operaciones | Nexum Trade Consulting</title>
+  
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/logo-3.png">
+
+  <!-- Google Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              500: '#0074A1',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0f172a',
+              950: '#020617',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full flex flex-col font-sans antialiased text-slate-800 bg-slate-100">
+
+  <!-- ================= BARRA DE NAVEGACIÓN UNIFICADA DE LA SUITE ================= -->
+  <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between gap-3 shrink-0 z-30 shadow-xs">
+    
+    <!-- Brand / Isotipo -->
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-2.5 group" title="Ir a la web principal de Nexum">
+        <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain group-hover:scale-105 transition-transform">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-heading font-extrabold text-base text-brand-900 tracking-tight leading-none">NEXUM</span>
+            <span class="text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 border border-brand-200">Suite Operativa</span>
+          </div>
+          <span class="text-[11px] text-slate-500 leading-tight block">Portal Interno de Operaciones</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Navegación entre Módulos / Apps -->
+    <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+      <a href="crm.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+        <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
+        <span>Pipeline CRM</span>
+      </a>
+      <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+        <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i>
+        <span>Presupuestador</span>
+      </a>
+      <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+        <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
+        <span>Manual & SOP</span>
+      </a>
+    </nav>
+
+    <!-- Botones Rápidos a la Derecha -->
+    <div class="flex items-center gap-2">
+      <a href="crm.html" class="flex md:hidden items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+        <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
+        <span>CRM</span>
+      </a>
+      <a href="presupuestos.html" class="flex md:hidden items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+        <span>Cotizar</span>
+      </a>
+      <a href="https://wa.me/5491172376197" target="_blank" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition">
+        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+        <span>WhatsApp Oficial</span>
+      </a>
+    </div>
+
+  </header>
+
+  <!-- ================= LAYOUT PRINCIPAL DE PROCEDIMIENTOS ================= -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- BARRA LATERAL (Índice y Selector de Secciones) -->
+    <aside class="w-64 sm:w-72 bg-white border-r border-slate-200 flex flex-col shrink-0 z-20">
+      
+      <!-- Buscador Rápido -->
+      <div class="p-3 border-b border-slate-200">
+        <div class="relative">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Buscar procedimiento, NCM, CBU..." 
+            oninput="filtrarContenido()"
+            class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-brand-500 transition"
+          >
+        </div>
+      </div>
+
+      <!-- Menú de Módulos (Scrollable) -->
+      <div class="flex-1 overflow-y-auto p-2 space-y-1 text-xs">
+        
+        <div class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+          Manual de Factibilidad (SOP)
+        </div>
+
+        <button onclick="mostrarSeccion('resumen')" id="nav-resumen" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="compass" class="w-4 h-4 text-brand-500 shrink-0"></i>
+          <span>0. Flujo y Metodología</span>
+        </button>
+
+        <button onclick="mostrarSeccion('mod1')" id="nav-mod1" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="hash" class="w-4 h-4 text-indigo-500 shrink-0"></i>
+          <span>1. Posición NCM & Despachante</span>
+        </button>
+
+        <button onclick="mostrarSeccion('mod2')" id="nav-mod2" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-amber-500 shrink-0"></i>
+          <span>2. Barreras & MacMap</span>
+        </button>
+
+        <button onclick="mostrarSeccion('mod3')" id="nav-mod3" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="globe" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+          <span>3. Mercados Top & Trade Map</span>
+        </button>
+
+        <button onclick="mostrarSeccion('mod4')" id="nav-mod4" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="dollar-sign" class="w-4 h-4 text-sky-500 shrink-0"></i>
+          <span>4. Costos, Incoterms & FOB</span>
+        </button>
+
+        <button onclick="mostrarSeccion('mod5')" id="nav-mod5" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-rose-500 shrink-0"></i>
+          <span>5. Semáforo & Roadmap 90d</span>
+        </button>
+
+        <div class="pt-3 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+          Comercial & Cobranzas
+        </div>
+
+        <button onclick="mostrarSeccion('cobranzas')" id="nav-cobranzas" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+          <span>Datos Bancarios & CBU</span>
+        </button>
+
+        <button onclick="mostrarSeccion('pricing')" id="nav-pricing" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="tags" class="w-4 h-4 text-purple-600 shrink-0"></i>
+          <span>Tarifas Oficiales</span>
+        </button>
+
+        <button onclick="mostrarSeccion('firmas')" id="nav-firmas" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="mail" class="w-4 h-4 text-blue-600 shrink-0"></i>
+          <span>Firmas de Email Oficiales</span>
+        </button>
+
+      </div>
+
+      <!-- Footer Lateral -->
+      <div class="p-3 border-t border-slate-200 bg-slate-50 text-[11px] text-slate-500 flex items-center justify-between">
+        <span>SOP Oficial v1.1</span>
+        <span class="font-bold text-slate-700">Nexum 2026</span>
+      </div>
+
+    </aside>
+
+    <!-- ÁREA DE CONTENIDO (PANTALLA PRINCIPAL) -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50" id="mainContainer">
+      <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- ALERTA TOAST FLOTANTE -->
+        <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 transition-all">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+          <span id="toastMsg">Copiado al portapapeles</span>
+        </div>
+
+        <!-- ================= SECCIÓN 0: RESUMEN / FLUJO ================= -->
+        <section id="sec-resumen" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 border border-brand-200 flex items-center justify-center font-bold">
+              <i data-lucide="compass" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-brand-600 uppercase tracking-wider">Metodología Central</span>
+              <h1 class="text-xl sm:text-2xl font-heading font-extrabold text-slate-900">Diagnóstico de Factibilidad Exportadora</h1>
+            </div>
+          </div>
+
+          <p class="text-slate-600 text-sm leading-relaxed mb-6">
+            Este manual define el procedimiento estándar para elaborar el entregable estrella de Nexum: un informe técnico-comercial riguroso en 5 módulos que responde si una PyME argentina está en condiciones de exportar su producto, a qué país y a qué precio FOB.
+          </p>
+
+          <!-- Flujo Visual de 5 Pasos -->
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 mb-8 text-xs font-semibold text-center">
+            <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900">
+              <div class="font-mono text-[10px] text-indigo-500 uppercase">Paso 1</div>
+              <div class="font-bold mt-1">Posición NCM</div>
+            </div>
+            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
+              <div class="font-mono text-[10px] text-amber-500 uppercase">Paso 2</div>
+              <div class="font-bold mt-1">Barreras Destino</div>
+            </div>
+            <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900">
+              <div class="font-mono text-[10px] text-emerald-500 uppercase">Paso 3</div>
+              <div class="font-bold mt-1">Mercados Top</div>
+            </div>
+            <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-900">
+              <div class="font-mono text-[10px] text-sky-500 uppercase">Paso 4</div>
+              <div class="font-bold mt-1">Costos & FOB</div>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-900">
+              <div class="font-mono text-[10px] text-rose-500 uppercase">Paso 5</div>
+              <div class="font-bold mt-1">Roadmap & Cierre</div>
+            </div>
+          </div>
+
+          <!-- Acciones Rápidas -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2 text-slate-700">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-500 shrink-0"></i>
+              <span>¿Necesitás cotizar este servicio ahora mismo a un cliente?</span>
+            </div>
+            <a href="presupuestos.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white font-bold transition shadow-xs">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+              <span>Abrir Presupuestador PDF</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN 1: MÓDULO 1 (NCM) ================= -->
+        <section id="sec-mod1" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 flex items-center justify-center font-bold">
+              1
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">Módulo 1</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Clasificación Arancelaria (NCM / HS Code)</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <h3 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                <i data-lucide="info" class="w-4 h-4 text-indigo-500"></i>
+                ¿Qué es y para qué sirve?
+              </h3>
+              <p>Es el "código de barras aduanero" universal. Los primeros 6 dígitos corresponden al código armonizado global (HS Code) y los restantes son sufijos regionales (NCM Mercosur / SIM de 8 a 11 dígitos).</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                <span class="text-xs font-bold text-brand-700 uppercase tracking-wider block mb-1">Rol de Nexum</span>
+                <p class="text-xs text-slate-600">Nexum clasifica de forma preliminar y estratégica para modelar costos, reintegros y aranceles en destino.</p>
+              </div>
+              <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-1">Rol del Despachante Aliado</span>
+                <p class="text-xs text-slate-600">El Despachante matriculado valida legalmente la clasificación y firma el Permiso de Embarque al despachar.</p>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <h4 class="font-bold text-slate-900 mb-2">Herramientas de Búsqueda:</h4>
+              <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                <li>Nomenclador Oficial de ARCA / Aduana Argentina.</li>
+                <li>Buscador de Trade Map (búsqueda por palabras clave en inglés y español).</li>
+                <li>Ficha Técnica del Cliente (composición, proceso, forma de empaque y uso final).</li>
+              </ul>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-indigo-50/60 border border-indigo-200 text-indigo-900 font-medium">
+              🎯 <strong>Entregable en el informe:</strong> Código NCM sugerido (a 8/11 dígitos) + descripción de mercadería + porcentaje de derechos de exportación (retenciones) y reintegros vigentes en Argentina.
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN 2: MÓDULO 2 (BARRERAS & MACMAP) ================= -->
+        <section id="sec-mod2" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold">
+              2
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Módulo 2</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Requisitos y Barreras de Acceso en Destino</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p>
+              Evita el peor error de una PyME: fabricar y despachar para enterarse en la aduana de destino que la mercadería fue decomisada o frenada por falta de un sello, certificado o rótulo local.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div class="p-3.5 rounded-xl bg-amber-50/50 border border-amber-200">
+                <span class="font-bold text-amber-900 block mb-1">Barreras Arancelarias</span>
+                <p class="text-xs text-amber-800">Arancel aduanero de importación (Ad-valorem). Los acuerdos Mercosur o ALADI permiten ingresar a países vecinos con <strong>0% de arancel</strong> mediante Certificado de Origen.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50/50 border border-amber-200">
+                <span class="font-bold text-amber-900 block mb-1">Barreras No Arancelarias (Técnicas)</span>
+                <p class="text-xs text-amber-800">Buenas Prácticas de Manufactura (GMP/BPM), registros sanitarios (SENASA, FDA, ANVISA, ISP) y rotulado local (octógonos negros, idiomas obligatorios).</p>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <h4 class="font-bold text-slate-900 mb-1">Plataforma Clave: MacMap (Market Access Map)</h4>
+              <p class="text-xs text-slate-600">Acceso gratuito en <a href="https://www.macmap.org" target="_blank" class="text-brand-600 font-bold underline">macmap.org</a> para consultar requisitos regulatorios cruzando NCM argentino y país de destino.</p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-medium">
+              🎯 <strong>Entregable en el informe:</strong> Checklist de adecuación sanitaria/técnica + exigencia de GMP + cambios obligatorios de packaging + arancel efectivo con y sin acuerdo comercial.
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN 3: MÓDULO 3 (TRADE MAP) ================= -->
+        <section id="sec-mod3" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold">
+              3
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Módulo 3</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Selección de Mercados Potenciales (Inteligencia Comercial)</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p>
+              Filtramos con estadísticas duras de comercio internacional cuáles son los 2 o 3 mercados con demanda real comprobada para el producto específico de la empresa.
+            </p>
+
+            <div class="p-4 rounded-xl bg-emerald-50/50 border border-emerald-200 text-emerald-950 text-xs space-y-2">
+              <span class="font-bold text-emerald-900 block text-sm">Criterio PyME de Nexum:</span>
+              <p>Priorizar <strong>mercados regionales y limítrofes</strong> (Paraguay, Bolivia, Uruguay, Chile, Brasil). Menor flete terrestre en camión, tiempos de tránsito cortos, idioma común y cercanía cultural para resolución de contingencias.</p>
+            </div>
+
+            <div class="pt-2">
+              <h4 class="font-bold text-slate-900 mb-1">Métricas que analizamos en Trade Map (<a href="https://www.trademap.org" target="_blank" class="text-brand-600 underline">trademap.org</a>):</h4>
+              <ul class="list-disc pl-5 space-y-1 text-slate-600 text-xs">
+                <li>Volumen total importado en USD y toneladas.</li>
+                <li>Cuota de mercado que ya le compran a la República Argentina.</li>
+                <li>Tasa de crecimiento anual del mercado en los últimos 3 a 5 años.</li>
+                <li>Precio unitario promedio de importación (USD / kg o unidad).</li>
+              </ul>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 font-medium">
+              🎯 <strong>Entregable en el informe:</strong> Matriz comparativa de 2 mercados: <em>Mercado Inmediato</em> (bajo riesgo, frontera) vs. <em>Mercado de Expansión</em> (mayor volumen o mayor margen unitario).
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN 4: MÓDULO 4 (COSTOS & FOB) ================= -->
+        <section id="sec-mod4" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 border border-sky-200 flex items-center justify-center font-bold">
+              4
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Módulo 4</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Estructura de Costos, Incoterms y Precio FOB</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p>
+              Construimos el precio exportable en Dólares Estadounidenses (USD) asegurando rentabilidad y contemplando todos los gastos de salida.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="p-3 rounded-xl border border-slate-200 bg-white">
+                <span class="font-bold text-slate-900 block font-mono text-sm">EXW</span>
+                <span class="text-slate-500 text-[11px]">En Fábrica</span>
+                <p class="mt-1 text-slate-600">El comprador retira en la planta del cliente. Mínimo riesgo para la PyME.</p>
+              </div>
+              <div class="p-3 rounded-xl border border-brand-300 bg-brand-50/50">
+                <span class="font-bold text-brand-900 block font-mono text-sm">FOB / FCA</span>
+                <span class="text-brand-700 text-[11px]">Puesto a Bordo (Estándar)</span>
+                <p class="mt-1 text-brand-800">La PyME asume flete local y aduana argentina. Puesto en camión o barco.</p>
+              </div>
+              <div class="p-3 rounded-xl border border-slate-200 bg-white">
+                <span class="font-bold text-slate-900 block font-mono text-sm">CIF / CIP</span>
+                <span class="text-slate-500 text-[11px]">Puesto en Destino</span>
+                <p class="mt-1 text-slate-600">Incluye flete internacional y póliza de seguro de transporte.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-xs">
+              <span class="font-bold text-slate-800 block mb-1">Costos de Exportación a considerar en la fórmula:</span>
+              <p class="text-slate-600">Embalaje exportación (pallets NIMF-15 fumigados) + Flete interno planta-frontera/puerto + Honorarios despachante matriculado + Gastos bancarios de liquidación Comex + Reintegro a la exportación a favor.</p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 font-medium">
+              🎯 <strong>Entregable en el informe:</strong> Planilla simuladora con Precio EXW, Precio FOB de referencia en USD y punto de equilibrio por lote mínimo.
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN 5: MÓDULO 5 (ROADMAP & SEMÁFORO) ================= -->
+        <section id="sec-mod5" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center font-bold">
+              5
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-rose-600 uppercase tracking-wider">Módulo 5</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Diagnóstico Interno, Semáforo y Hoja de Ruta (Roadmap)</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p>
+              Evaluación sincera de la capacidad de la empresa y entrega del plan de acción cronológico para llegar al primer embarque.
+            </p>
+
+            <!-- Semáforo de Brechas -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900">
+                <span class="font-bold flex items-center gap-1.5 text-sm mb-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  Verde (Listas)
+                </span>
+                <p>Fortalezas de la PyME listas para salir a vender al exterior de inmediato.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
+                <span class="font-bold flex items-center gap-1.5 text-sm mb-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  Amarillo (Ajustes)
+                </span>
+                <p>Modificaciones menores: traducción de rótulos, cuenta bancaria comex o packaging.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900">
+                <span class="font-bold flex items-center gap-1.5 text-sm mb-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                  Rojo (Bloqueantes)
+                </span>
+                <p>Falta de habilitación de planta, certificación GMP o capacidad ociosa insuficiente.</p>
+              </div>
+            </div>
+
+            <!-- Roadmap 30-60-90 Días -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2 text-xs">
+              <span class="font-bold text-slate-900 block text-sm">Cronograma Típico a 90 Días:</span>
+              <div class="flex items-start gap-2">
+                <span class="font-bold font-mono text-brand-700 shrink-0">Días 1-30:</span>
+                <span>Adecuación interna, alta de exportador en ARCA, cuenta en USD y diseño de rótulos.</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="font-bold font-mono text-brand-700 shrink-0">Días 31-60:</span>
+                <span>Envío de muestras sin valor comercial, trámites sanitarios y prospección B2B.</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="font-bold font-mono text-brand-700 shrink-0">Días 61-90:</span>
+                <span>Emisión de factura proforma oficial, cobranza anticipada y primer despacho coordinado.</span>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 font-medium">
+              🎯 <strong>Cierre del Servicio:</strong> Videollamada ejecutiva de devolución (45-60 min) con los socios para presentar el informe y proponer el fee mensual de acompañamiento en la ejecución.
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN: DATOS BANCARIOS & COBRANZAS ================= -->
+        <section id="sec-cobranzas" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold">
+              <i data-lucide="credit-card" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Tesorería & Cobros</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Ficha de Facturación y Datos Bancarios</h2>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Datos Bancarios con Copiado en 1 Clic -->
+          <div class="p-5 rounded-2xl bg-slate-900 text-white shadow-lg mb-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                <span class="font-bold text-sm">Banco Santander Argentina</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">Cuenta en Pesos & USD</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <span class="text-slate-400 block mb-0.5">Titular:</span>
+                <strong class="text-white text-sm">JUAN MANUEL OVIEDO</strong>
+              </div>
+              <div>
+                <span class="text-slate-400 block mb-0.5">CUIT:</span>
+                <strong class="text-white text-sm">20-32674111-7</strong>
+              </div>
+              <div class="sm:col-span-2 p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-between">
+                <div>
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Alias Oficial</span>
+                  <span class="font-mono font-bold text-emerald-400 text-sm">J.M.OVIEDO</span>
+                </div>
+                <button onclick="copiarTexto('J.M.OVIEDO', 'Alias')" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs transition flex items-center gap-1.5 active:scale-95">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copiar</span>
+                </button>
+              </div>
+              <div class="sm:col-span-2 p-2.5 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-between">
+                <div>
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider block">CBU (22 dígitos)</span>
+                  <span class="font-mono text-slate-200 text-xs break-all">0720454288000000710790</span>
+                </div>
+                <button onclick="copiarTexto('0720454288000000710790', 'CBU')" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs transition flex items-center gap-1.5 active:scale-95 shrink-0 ml-2">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copiar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensaje Prearmado para WhatsApp -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-slate-900 text-xs sm:text-sm">Script de Mensaje para WhatsApp / Mail:</h3>
+              <button onclick="copiarScriptWhatsApp()" class="text-xs font-semibold text-brand-600 hover:text-brand-800 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>Copiar Mensaje Completo</span>
+              </button>
+            </div>
+            <div id="scriptBox" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-mono leading-relaxed select-all">
+¡Hola [Nombre]! Te comparto los detalles para iniciar el Diagnóstico de Factibilidad Exportadora:
+
+Analizamos posición arancelaria (NCM), normativas y certificaciones en destino, selección de mercados con demanda real, costos FOB/EXW y el plan de acción a 30-90 días.
+Entrega: Informe ejecutivo en 1 a 2 semanas + reunión de devolución de 60 minutos.
+Honorarios profesionales: USD 500 (o tarifa programa piloto pactada, pagadera en USD o en ARS al tipo de cambio del día).
+
+Datos para la transferencia:
+• Banco Santander | Titular: Juan Manuel Oviedo
+• CUIT: 20-32674111-7
+• Alias: J.M.OVIEDO
+• CBU: 0720454288000000710790
+
+Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y coordinar la ficha técnica inicial. ¡Avanzamos!
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN: TARIFAS & PRICING ================= -->
+        <section id="sec-pricing" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center font-bold">
+              <i data-lucide="tags" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-purple-600 uppercase tracking-wider">Estructura Tarifaria</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Precios y Política Comercial Oficial</h2>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="p-5 rounded-2xl border-2 border-slate-200 bg-white">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Precio de Lista Oficial</span>
+              <div class="text-3xl font-extrabold text-slate-900 font-heading mb-1">USD 500</div>
+              <p class="text-xs text-slate-500 mb-4">Base estándar para PyMEs elaboradoras</p>
+              <ul class="text-xs text-slate-600 space-y-1.5 border-t border-slate-100 pt-3">
+                <li>• <strong>20 horas profesionales</strong> de análisis.</li>
+                <li>• Valor hora equivalente: <strong>USD 25 / h</strong>.</li>
+                <li>• Factura C de exportación / servicios.</li>
+              </ul>
+            </div>
+
+            <div class="p-5 rounded-2xl border-2 border-brand-500 bg-brand-50/30 relative overflow-hidden">
+              <span class="absolute top-3 right-3 px-2 py-0.5 rounded text-[10px] font-extrabold bg-brand-500 text-white uppercase">50% Bonificado</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-brand-600 block mb-1">Programa Piloto / Lanzamiento</span>
+              <div class="text-3xl font-extrabold text-brand-900 font-heading mb-1">USD 250</div>
+              <p class="text-xs text-slate-500 mb-4">Tarifa de apertura para primeros 5 casos testigo</p>
+              <ul class="text-xs text-slate-700 space-y-1.5 border-t border-brand-200/60 pt-3">
+                <li>• Mismo alcance y 5 módulos completos.</li>
+                <li>• A cambio de testimonio / caso de éxito.</li>
+                <li>• Pago 100% anticipado vía transferencia.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= SECCIÓN: FIRMAS DE EMAIL OFICIALES ================= -->
+        <section id="sec-firmas" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center font-bold">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">Identidad Corporativa</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Firmas de Email Institucionales</h2>
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 mb-6">
+            Estas son las firmas HTML oficiales para configurar en Gmail, Hostinger Webmail u Outlook. Tocá en "Copiar Firma" para pegarla directamente en la configuración de correo:
+          </p>
+
+          <div class="space-y-6">
+            
+            <!-- Firma Juan Oviedo -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-bold text-xs text-slate-900">Firma 1: Juan Manuel Oviedo (Co-Fundador)</span>
+                <button onclick="copiarFirmaHTML('firma-juan')" class="px-3 py-1 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold flex items-center gap-1 transition">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                  <span>Copiar Firma</span>
+                </button>
+              </div>
+              <div id="firma-juan" class="p-4 bg-white rounded-lg border border-slate-200 shadow-2xs">
+                <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 13px; color: #334155;">
+                  <tr>
+                    <td style="vertical-align: top; padding-right: 14px; border-right: 2px solid #0074A1;">
+                      <img src="https://nexumtradeconsulting.com.ar/assets/logo-3.png" alt="Nexum" width="55" height="55" style="display: block;">
+                    </td>
+                    <td style="vertical-align: top; padding-left: 14px; line-height: 1.4;">
+                      <strong style="color: #0f172a; font-size: 14px;">Juan Manuel Oviedo</strong><br>
+                      <span style="color: #0074A1; font-size: 11px; font-weight: bold; text-transform: uppercase;">Co-Fundador &bull; Nexum Trade Consulting</span><br>
+                      <span style="font-size: 11px; color: #64748b;">Consultoría Estratégica en Comercio Exterior para PyMEs</span><br>
+                      <span style="font-size: 11px; color: #475569;">📱 +54 9 11 7237-6197 &bull; 🌐 <a href="https://nexumtradeconsulting.com.ar" style="color: #0074A1; text-decoration: none;">nexumtradeconsulting.com.ar</a></span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- Firma Facundo Oviedo -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-bold text-xs text-slate-900">Firma 2: Facundo Oviedo (Co-Fundador)</span>
+                <button onclick="copiarFirmaHTML('firma-facu')" class="px-3 py-1 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold flex items-center gap-1 transition">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                  <span>Copiar Firma</span>
+                </button>
+              </div>
+              <div id="firma-facu" class="p-4 bg-white rounded-lg border border-slate-200 shadow-2xs">
+                <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 13px; color: #334155;">
+                  <tr>
+                    <td style="vertical-align: top; padding-right: 14px; border-right: 2px solid #0074A1;">
+                      <img src="https://nexumtradeconsulting.com.ar/assets/logo-3.png" alt="Nexum" width="55" height="55" style="display: block;">
+                    </td>
+                    <td style="vertical-align: top; padding-left: 14px; line-height: 1.4;">
+                      <strong style="color: #0f172a; font-size: 14px;">Facundo Oviedo</strong><br>
+                      <span style="color: #0074A1; font-size: 11px; font-weight: bold; text-transform: uppercase;">Co-Fundador &bull; Nexum Trade Consulting</span><br>
+                      <span style="font-size: 11px; color: #64748b;">Consultoría Estratégica en Comercio Exterior para PyMEs</span><br>
+                      <span style="font-size: 11px; color: #475569;">📱 +54 9 11 7237-6197 &bull; 🌐 <a href="https://nexumtradeconsulting.com.ar" style="color: #0074A1; text-decoration: none;">nexumtradeconsulting.com.ar</a></span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- SCRIPT DE INTERACTIVIDAD -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) window.lucide.createIcons();
+      mostrarSeccion('resumen');
+    });
+
+    function mostrarSeccion(secId) {
+      // Ocultar todas las secciones
+      document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("hidden"));
+      // Mostrar la seleccionada
+      const target = document.getElementById("sec-" + secId);
+      if (target) {
+        target.classList.remove("hidden");
+        // Scroll suave al inicio
+        document.getElementById("mainContainer").scrollTop = 0;
+      }
+
+      // Marcar activo en el sidebar
+      document.querySelectorAll(".nav-item").forEach(item => {
+        item.classList.remove("bg-brand-50", "text-brand-700", "font-bold", "border", "border-brand-200");
+      });
+      const activeNav = document.getElementById("nav-" + secId);
+      if (activeNav) {
+        activeNav.classList.add("bg-brand-50", "text-brand-700", "font-bold", "border", "border-brand-200");
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMsg");
+      toastMsg.textContent = msg;
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 2500);
+    }
+
+    function copiarTexto(texto, etiqueta) {
+      navigator.clipboard.writeText(texto).then(() => {
+        showToast(`${etiqueta} copiado al portapapeles`);
+      }).catch(() => {
+        showToast(`No se pudo copiar`);
+      });
+    }
+
+    function copiarScriptWhatsApp() {
+      const texto = document.getElementById("scriptBox").innerText.trim();
+      copiarTexto(texto, "Script de WhatsApp");
+    }
+
+    function copiarFirmaHTML(elementId) {
+      const container = document.getElementById(elementId);
+      if (!container) return;
+      
+      // Copiar el HTML formateado para que al pegar en el mail conserve el diseño gráfico
+      const range = document.createRange();
+      range.selectNode(container);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      
+      try {
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        showToast("Firma copiada (lista para pegar en Gmail/Hostinger)");
+      } catch (err) {
+        navigator.clipboard.writeText(container.innerHTML).then(() => {
+          showToast("Código HTML de firma copiado");
+        });
+      }
+    }
+
+    function filtrarContenido() {
+      const query = document.getElementById("searchInput").value.toLowerCase().trim();
+      if (!query) {
+        document.querySelectorAll(".content-section").forEach(s => s.classList.add("hidden"));
+        mostrarSeccion('resumen');
+        return;
+      }
+
+      // Si busca algo específico, mostrar todas las secciones que coincidan
+      let foundFirst = false;
+      document.querySelectorAll(".content-section").forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        if (text.includes(query)) {
+          sec.classList.remove("hidden");
+          if (!foundFirst) {
+            sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            foundFirst = true;
+          }
+        } else {
+          sec.classList.add("hidden");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
