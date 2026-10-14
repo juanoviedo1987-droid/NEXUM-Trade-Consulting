@@ -45,11 +45,18 @@
 <body class="min-h-full font-sans antialiased bg-slate-950 text-slate-100 p-4 md:p-8 flex flex-col items-center">
 
   <!-- ================= BARRA DE CONTROL (SOLO EN PANTALLA) ================= -->
-  <div class="no-print w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-8 shadow-2xl">
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
-      <div class="flex items-center gap-3">
-        <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain">
+  <div class="no-print w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 mb-6 sm:mb-8 shadow-2xl">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-800 pb-3 mb-3 sm:pb-4 sm:mb-4">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <img src="assets/logo-3.png" alt="Nexum" class="w-7 h-7 sm:w-8 sm:h-8 object-contain">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-heading font-extrabold text-sm sm:text-base text-white tracking-tight leading-none">NEXUM</span>
+              <span class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">Cotizador</span>
+            </div>
           </div>
+        </a>
       </div>
 
       <!-- SWITCH DE APLICACIONES UNIFICADO (CENTRO) -->
@@ -143,8 +150,18 @@
     </div>
   </div>
 
-  <!-- ================= HOJA IMPRIMIBLE A4 (PRESUPUESTO 1 PÁGINA) ================= -->
-  <div class="page-to-print w-full max-w-4xl bg-white text-slate-800 rounded-xl p-8 sm:p-10 shadow-2xl transition-all" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.45;">
+  <!-- AVISO MÓVIL DE VISTA PREVIA A4 -->
+  <div class="no-print w-full max-w-4xl px-2 mb-2 flex items-center justify-between text-[11px] text-slate-400 sm:hidden">
+    <span class="flex items-center gap-1">
+      <i data-lucide="eye" class="w-3.5 h-3.5 text-sky-400"></i>
+      <span>Vista previa de hoja A4 (deslizá horizontalmente)</span>
+    </span>
+  </div>
+
+  <!-- CONTENEDOR CON SCROLL HORIZONTAL FLUIDO PARA MÓVILES -->
+  <div class="w-full max-w-4xl overflow-x-auto pb-8 flex justify-center">
+    <!-- ================= HOJA IMPRIMIBLE A4 (PRESUPUESTO 1 PÁGINA) ================= -->
+    <div class="page-to-print w-full min-w-[700px] max-w-4xl bg-white text-slate-800 rounded-xl p-6 sm:p-10 shadow-2xl transition-all" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.45;">
     
     <!-- Encabezado con Logo Oficial -->
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0074A1; padding-bottom: 12px; margin-bottom: 14px;">
@@ -262,6 +279,7 @@
       </div>
     </div>
 
+    </div>
   </div>
 
   <script>

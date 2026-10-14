@@ -182,18 +182,18 @@
   <div id="crmApp" class="h-full flex flex-col hidden select-none bg-slate-100">
     
     <!-- Header Institucional Elegante (Fondo Blanco Puro con Borde Limpio) -->
-    <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between gap-3 shrink-0 z-30 shadow-sm">
+    <header class="bg-white border-b border-slate-200 px-2.5 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-3 shrink-0 z-30 shadow-sm">
       
       <!-- Brand & Usuario Activo -->
-      <div class="flex items-center gap-3">
-        <a href="index.html" class="flex items-center gap-2.5 group" title="Ir a la web de Nexum">
-          <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain group-hover:scale-105 transition-transform">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="index.html" class="flex items-center gap-1.5 sm:gap-2.5 group" title="Ir a la web de Nexum">
+          <img src="assets/logo-3.png" alt="Nexum" class="w-7 h-7 sm:w-8 sm:h-8 object-contain group-hover:scale-105 transition-transform">
           <div>
-            <div class="flex items-center gap-2">
-              <span class="font-heading font-extrabold text-base text-brand-900 tracking-tight leading-none">NEXUM</span>
-              <span class="text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 border border-brand-200">CRM 2.0</span>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <span class="font-heading font-extrabold text-sm sm:text-base text-brand-900 tracking-tight leading-none">NEXUM</span>
+              <span class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-1 sm:px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 border border-brand-200">CRM</span>
             </div>
-            <span class="text-[11px] text-slate-500 leading-tight block">Pipeline & Gestión Comercial</span>
+            <span class="text-[10px] sm:text-[11px] text-slate-500 leading-tight hidden lg:block">Pipeline & Gestión Comercial</span>
           </div>
         </a>
 
@@ -247,7 +247,7 @@
         <button 
           onclick="exportToCSV()" 
           id="btnExportCsv"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
+          class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
           title="Exportar todos los prospectos a CSV (formato Excel seguro)"
         >
           <i data-lucide="download" class="w-3.5 h-3.5 text-brand-500"></i>
@@ -258,25 +258,26 @@
         <button 
           onclick="fetchLeads(true)" 
           id="btnRefresh" 
-          class="p-2 rounded-lg bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-300 transition shadow-2xs"
+          class="p-1.5 sm:p-2 rounded-lg bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 border border-slate-300 transition shadow-2xs shrink-0"
           title="Refrescar lista desde Supabase"
         >
-          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          <i data-lucide="refresh-cw" class="w-3.5 sm:w-4 h-3.5 sm:h-4"></i>
         </button>
 
         <!-- Botón + Nuevo Prospecto -->
         <button 
           onclick="openNewLeadModal()" 
-          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-500 hover:bg-brand-600 text-white transition shadow-md shadow-brand-500/20 active:scale-95"
+          class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-500 hover:bg-brand-600 text-white transition shadow-md shadow-brand-500/20 active:scale-95 shrink-0"
         >
-          <i data-lucide="user-plus" class="w-4 h-4"></i>
-          <span>+ Nuevo Prospecto</span>
+          <i data-lucide="user-plus" class="w-3.5 sm:w-4 h-3.5 sm:h-4"></i>
+          <span class="hidden sm:inline">+ Nuevo Prospecto</span>
+          <span class="sm:hidden font-bold">+ Nuevo</span>
         </button>
 
         <!-- Botón Cerrar Sesión -->
         <button 
           onclick="handleLogout()" 
-          class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200 transition"
+          class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200 transition shrink-0"
           title="Cerrar sesión de Supabase Auth"
         >
           <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
