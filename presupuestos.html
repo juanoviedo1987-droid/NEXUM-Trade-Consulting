@@ -27,6 +27,13 @@
         padding: 0 !important;
         margin: 0 !important;
       }
+      #a4Wrapper {
+        height: auto !important;
+        padding-bottom: 0 !important;
+      }
+      #a4Scaler {
+        transform: none !important;
+      }
       .page-to-print {
         box-shadow: none !important;
         border: none !important;
@@ -61,27 +68,27 @@
       </a>
     </div>
 
-    <!-- Navegación entre Módulos / Apps (Desktop & Mobile Segmented Switch - MISMA UBICACIÓN EXACTA) -->
-    <nav class="flex items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-[11px] sm:text-xs font-semibold">
-      <a href="procedimientos.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+    <!-- Navegación entre Módulos / Apps (Desktop Segmented Switch - En mobile está en la Bottom Bar) -->
+    <nav class="hidden sm:flex items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+      <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
         <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
         <span>1. SOP</span>
       </a>
-      <a href="crm.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+      <a href="crm.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
         <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
         <span>2. CRM</span>
       </a>
-      <a href="presupuestos.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+      <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
         <i data-lucide="calculator" class="w-3.5 h-3.5 text-brand-500"></i>
         <span>3. Cotizar</span>
       </a>
     </nav>
 
-    <!-- Botones Rápidos a la Derecha -->
+    <!-- Botones Rápidos a la Derecha (WhatsApp) -->
     <div class="flex items-center gap-1.5">
       <a href="https://wa.me/5491172376197" target="_blank" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition" title="WhatsApp Oficial">
         <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
-        <span class="hidden lg:inline">WhatsApp</span>
+        <span class="hidden md:inline">WhatsApp</span>
       </a>
     </div>
 
@@ -428,10 +435,21 @@
         const scale = Math.min(1, availableWidth / 720);
         scaler.style.transform = `scale(${scale})`;
         scaler.style.transformOrigin = 'top center';
+        
+        // Ajustar altura del wrapper para que coincida con la escala y no cree espacio fantasma ni superposiciones
+        const scaledHeight = Math.round(scaler.offsetHeight * scale);
+        const wrapper = document.getElementById('a4Wrapper');
+        if (wrapper && scaledHeight > 0) {
+          wrapper.style.height = `${scaledHeight + 30}px`;
+        }
+
         if (btnFit) btnFit.className = 'px-2 py-0.5 rounded bg-brand-50 text-brand-700';
         if (btnFull) btnFull.className = 'px-2 py-0.5 rounded text-slate-600 hover:text-slate-900';
       } else {
         scaler.style.transform = 'none';
+        const wrapper = document.getElementById('a4Wrapper');
+        if (wrapper) wrapper.style.height = 'auto';
+
         if (btnFit) btnFit.className = 'px-2 py-0.5 rounded text-slate-600 hover:text-slate-900';
         if (btnFull) btnFull.className = 'px-2 py-0.5 rounded bg-brand-50 text-brand-700';
       }
