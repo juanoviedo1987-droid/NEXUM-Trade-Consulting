@@ -42,38 +42,58 @@
     }
   </style>
 </head>
-<body class="min-h-full font-sans antialiased bg-slate-950 text-slate-100 p-4 md:p-8 flex flex-col items-center">
+<body class="min-h-full font-sans antialiased bg-slate-950 text-slate-100 flex flex-col items-center">
 
-  <!-- ================= BARRA DE CONTROL (SOLO EN PANTALLA) ================= -->
-  <div class="no-print w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 mb-6 sm:mb-8 shadow-2xl">
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-800 pb-3 mb-3 sm:pb-4 sm:mb-4">
-      <div class="flex items-center gap-2 sm:gap-3">
-        <a href="index.html" class="flex items-center gap-2 group">
-          <img src="assets/logo-3.png" alt="Nexum" class="w-7 h-7 sm:w-8 sm:h-8 object-contain">
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="font-heading font-extrabold text-sm sm:text-base text-white tracking-tight leading-none">NEXUM</span>
-              <span class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">Cotizador</span>
-            </div>
+  <!-- ================= BARRA DE NAVEGACIÓN UNIFICADA DE LA SUITE (IDÉNTICA EN LAS 3 APPS) ================= -->
+  <header class="w-full bg-white border-b border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shrink-0 z-30 shadow-xs text-slate-800 no-print">
+    
+    <!-- Brand / Isotipo -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="index.html" class="flex items-center gap-2 group" title="Ir a la web principal de Nexum">
+        <img src="assets/logo-3.png" alt="Nexum" class="w-7 h-7 sm:w-8 sm:h-8 object-contain group-hover:scale-105 transition-transform">
+        <div>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="font-heading font-extrabold text-sm sm:text-base text-brand-900 tracking-tight leading-none">NEXUM</span>
+            <span class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-sky-50 text-sky-600 border border-sky-200">Cotizador</span>
           </div>
-        </a>
-      </div>
+          <span class="text-[10px] sm:text-[11px] text-slate-500 leading-tight hidden xs:block">Portal de Operaciones</span>
+        </div>
+      </a>
+    </div>
 
-      <!-- SWITCH DE APLICACIONES UNIFICADO (CENTRO) -->
-      <nav class="flex items-center gap-1 bg-slate-950/80 p-0.5 sm:p-1 rounded-xl border border-slate-800 text-[11px] sm:text-xs font-semibold">
-        <a href="procedimientos.html" class="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
-          <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>1. SOP</span>
-        </a>
-        <a href="crm.html" class="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
-          <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>2. CRM</span>
-        </a>
-        <a href="presupuestos.html" class="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-sky-500 text-slate-950 shadow-xs font-bold">
-          <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-950"></i>
-          <span>3. Cotizar</span>
-        </a>
-      </nav>
+    <!-- Navegación entre Módulos / Apps (Desktop & Mobile Segmented Switch - MISMA UBICACIÓN EXACTA) -->
+    <nav class="flex items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-[11px] sm:text-xs font-semibold">
+      <a href="procedimientos.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+        <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
+        <span>1. SOP</span>
+      </a>
+      <a href="crm.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+        <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
+        <span>2. CRM</span>
+      </a>
+      <a href="presupuestos.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+        <i data-lucide="calculator" class="w-3.5 h-3.5 text-brand-500"></i>
+        <span>3. Cotizar</span>
+      </a>
+    </nav>
+
+    <!-- Botones Rápidos a la Derecha -->
+    <div class="flex items-center gap-1.5">
+      <a href="https://wa.me/5491172376197" target="_blank" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition" title="WhatsApp Oficial">
+        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+        <span class="hidden lg:inline">WhatsApp</span>
+      </a>
+    </div>
+
+  </header>
+
+  <!-- ================= BARRA DE CONTROL DE PRESUPUESTOS (DEBAJO DEL HEADER) ================= -->
+  <div class="no-print w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 my-4 sm:my-6 shadow-2xl mx-4">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3 mb-3 sm:pb-4 sm:mb-4">
+      <div>
+        <h1 class="text-base font-bold text-white font-heading">Generador Oficial de Presupuestos</h1>
+        <p class="text-xs text-slate-400">Numeración correlativa automática y exportación a PDF en 1 clic</p>
+      </div>
 
       <!-- Botones de Acción -->
       <div class="flex items-center gap-2 w-full sm:w-auto">
