@@ -309,14 +309,33 @@
         </button>
       </div>
 
-      <!-- Filtros Dropdown -->
-      <div class="flex items-center flex-wrap gap-2 text-xs">
+      <!-- Botón Desplegable de Filtros en Mobile + Contador -->
+      <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+        <button 
+          type="button" 
+          onclick="toggleMobileFilters()" 
+          id="btnMobileFilters"
+          class="sm:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-300 shadow-2xs hover:bg-slate-200 transition"
+        >
+          <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-brand-600"></i>
+          <span>Filtros Avanzados</span>
+          <span id="activeFiltersBadge" class="hidden w-2 h-2 rounded-full bg-brand-500"></span>
+        </button>
+
+        <!-- Contador Filtrados -->
+        <div class="text-[11px] text-slate-500 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-200 font-medium">
+          <span id="filteredCount" class="font-bold text-slate-900">0</span> prospectos
+        </div>
+      </div>
+
+      <!-- Filtros Dropdown (Ocultos en celular hasta abrir, Visibles en escritorio) -->
+      <div id="filtersContainer" class="hidden sm:flex items-center flex-wrap gap-2 text-xs w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
         
         <!-- Filtro Etapa -->
         <select 
           id="filterStage" 
           onchange="applyFilters()" 
-          class="bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
         >
           <option value="all">Etapa: Todas</option>
           <option value="nuevo">Leads Web (Nuevo)</option>
@@ -333,7 +352,7 @@
         <select 
           id="filterSector" 
           onchange="applyFilters()" 
-          class="bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
         >
           <option value="all">Sector: Todos</option>
           <option value="Alimentos">Alimentos & Bebidas</option>
@@ -348,7 +367,7 @@
         <select 
           id="filterResponsible" 
           onchange="applyFilters()" 
-          class="bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
         >
           <option value="all">Responsable: Todos</option>
           <option value="Juan Oviedo">Juan Oviedo</option>
@@ -361,7 +380,7 @@
         <select 
           id="filterPriority" 
           onchange="applyFilters()" 
-          class="bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
         >
           <option value="all">Prioridad: Todas</option>
           <option value="A">Prioridad A (Alta)</option>
@@ -369,11 +388,13 @@
           <option value="C">Prioridad C (Baja)</option>
         </select>
 
-        <!-- Contador Filtrados -->
-        <div class="text-[11px] text-slate-500 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-200 font-medium">
-          <span id="filteredCount" class="font-bold text-slate-900">0</span> prospectos
-        </div>
-
+        <button 
+          type="button" 
+          onclick="resetFilters()" 
+          class="w-full sm:w-auto text-center px-2 py-1 text-slate-500 hover:text-slate-800 text-[11px] font-medium"
+        >
+          Limpiar
+        </button>
       </div>
 
     </div>
@@ -381,7 +402,7 @@
     <!-- ======================================================================= -->
     <!-- 3. VISTA DE TABLA PRINCIPAL (BLANCA, LIMPIA Y DE ALTO CONTRASTE)       -->
     <!-- ======================================================================= -->
-    <main class="flex-1 overflow-y-auto p-4 sm:p-5">
+    <main class="flex-1 overflow-y-auto p-4 sm:p-5 pb-24 sm:pb-5">
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <!-- VISTA DE TABLA (ESCRITORIO / PANTALLAS MEDIANAS Y GRANDES) -->
         <div class="hidden md:block overflow-x-auto">
@@ -423,6 +444,26 @@
         </div>
       </div>
     </main>
+
+    <!-- ================= BOTTOM NAVIGATION BAR FIJA PARA CELULARES ================= -->
+    <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 px-4 py-2 flex items-center justify-around shadow-lg">
+      <a href="procedimientos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
+        <i data-lucide="book-open" class="w-4 h-4"></i>
+        <span class="text-[10px] font-semibold">1. SOP</span>
+      </a>
+      <a href="crm.html" class="flex flex-col items-center gap-1 text-brand-600 font-bold">
+        <i data-lucide="kanban" class="w-4 h-4 text-brand-500"></i>
+        <span class="text-[10px]">2. CRM</span>
+      </a>
+      <a href="presupuestos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
+        <i data-lucide="calculator" class="w-4 h-4"></i>
+        <span class="text-[10px] font-semibold">3. Cotizar</span>
+      </a>
+      <button onclick="openNewLeadModal()" class="flex flex-col items-center gap-1 text-brand-600 font-semibold">
+        <i data-lucide="user-plus" class="w-4 h-4"></i>
+        <span class="text-[10px]">+ Lead</span>
+      </button>
+    </nav>
   </div>
 
   <!-- ========================================================================= -->
@@ -1204,11 +1245,41 @@
       });
     }
 
+    function toggleMobileFilters() {
+      const container = document.getElementById("filtersContainer");
+      if (!container) return;
+      container.classList.toggle("hidden");
+      container.classList.toggle("flex");
+    }
+
+    function resetFilters() {
+      if (document.getElementById("filterStage")) document.getElementById("filterStage").value = "all";
+      if (document.getElementById("filterSector")) document.getElementById("filterSector").value = "all";
+      if (document.getElementById("filterResponsible")) document.getElementById("filterResponsible").value = "all";
+      if (document.getElementById("filterPriority")) document.getElementById("filterPriority").value = "all";
+      applyFilters();
+      if (window.innerWidth < 640) {
+        toggleMobileFilters();
+      }
+    }
+
     function applyFilters() {
       const val = document.getElementById("searchInput").value;
       const clearBtn = document.getElementById("clearSearchBtn");
       if (val) clearBtn.classList.remove("hidden");
       else clearBtn.classList.add("hidden");
+
+      // Actualizar badge de filtros activos
+      const st = document.getElementById("filterStage")?.value || "all";
+      const sec = document.getElementById("filterSector")?.value || "all";
+      const resp = document.getElementById("filterResponsible")?.value || "all";
+      const prio = document.getElementById("filterPriority")?.value || "all";
+      const hasActive = (st !== "all" || sec !== "all" || resp !== "all" || prio !== "all");
+      const badge = document.getElementById("activeFiltersBadge");
+      if (badge) {
+        if (hasActive) badge.classList.remove("hidden");
+        else badge.classList.add("hidden");
+      }
 
       renderTable();
     }

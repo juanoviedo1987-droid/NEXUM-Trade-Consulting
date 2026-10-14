@@ -170,18 +170,23 @@
     </div>
   </div>
 
-  <!-- AVISO MÓVIL DE VISTA PREVIA A4 -->
+  <!-- AVISO MÓVIL Y SELECTOR DE ESCALA A4 -->
   <div class="no-print w-full max-w-4xl px-4 mb-2 flex items-center justify-between text-xs text-slate-500 sm:hidden">
     <span class="flex items-center gap-1.5 font-medium">
-      <i data-lucide="eye" class="w-4 h-4 text-brand-500"></i>
-      <span>Hoja A4 lista para PDF (deslizá horizontalmente)</span>
+      <i data-lucide="file-text" class="w-4 h-4 text-brand-500"></i>
+      <span>Hoja A4 Oficial</span>
     </span>
+    <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-lg p-0.5 shadow-2xs text-[11px] font-semibold">
+      <button type="button" onclick="setA4Zoom(true)" id="btnZoomFit" class="px-2 py-0.5 rounded bg-brand-50 text-brand-700">Ajustar Pantalla</button>
+      <button type="button" onclick="setA4Zoom(false)" id="btnZoomFull" class="px-2 py-0.5 rounded text-slate-600 hover:text-slate-900">100% Real</button>
+    </div>
   </div>
 
-  <!-- CONTENEDOR CON SCROLL HORIZONTAL FLUIDO PARA MÓVILES -->
-  <div class="w-full max-w-4xl overflow-x-auto pb-8 flex justify-center">
-    <!-- ================= HOJA IMPRIMIBLE A4 (PRESUPUESTO 1 PÁGINA) ================= -->
-    <div class="page-to-print w-full min-w-[700px] max-w-4xl bg-white text-slate-800 rounded-xl p-6 sm:p-10 shadow-2xl transition-all" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.45;">
+  <!-- CONTENEDOR CON ZOOM ADAPTATIVO / SCROLL HORIZONTAL FLUIDO PARA MÓVILES -->
+  <div id="a4Wrapper" class="w-full max-w-4xl overflow-x-auto pb-20 sm:pb-8 flex justify-center transition-all">
+    <div id="a4Scaler" class="origin-top transition-transform duration-200">
+      <!-- ================= HOJA IMPRIMIBLE A4 (PRESUPUESTO 1 PÁGINA) ================= -->
+      <div class="page-to-print w-full min-w-[700px] max-w-4xl bg-white text-slate-800 rounded-xl p-6 sm:p-10 shadow-xl transition-all" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.45;">
     
     <!-- Encabezado con Logo Oficial -->
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0074A1; padding-bottom: 12px; margin-bottom: 14px;">
@@ -302,6 +307,26 @@
     </div>
   </div>
 
+  <!-- ================= BOTTOM NAVIGATION BAR FIJA PARA CELULARES ================= -->
+  <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-50 px-4 py-2 flex items-center justify-around shadow-lg no-print">
+    <a href="procedimientos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
+      <i data-lucide="book-open" class="w-4 h-4"></i>
+      <span class="text-[10px] font-semibold">1. SOP</span>
+    </a>
+    <a href="crm.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
+      <i data-lucide="kanban" class="w-4 h-4"></i>
+      <span class="text-[10px] font-semibold">2. CRM</span>
+    </a>
+    <a href="presupuestos.html" class="flex flex-col items-center gap-1 text-brand-600 font-bold">
+      <i data-lucide="calculator" class="w-4 h-4 text-brand-500"></i>
+      <span class="text-[10px]">3. Cotizar</span>
+    </a>
+    <button onclick="imprimirYGuardar()" class="flex flex-col items-center gap-1 text-slate-700 hover:text-brand-600">
+      <i data-lucide="printer" class="w-4 h-4"></i>
+      <span class="text-[10px] font-semibold">PDF</span>
+    </button>
+  </nav>
+
   <script>
     lucide.createIcons();
 
@@ -389,8 +414,40 @@
       window.print();
     }
 
-    // Inicializar estado de vista previa
+    // Control de Escala / Zoom Móvil Adaptativo
+    let fitScreenMode = true;
+    function setA4Zoom(fit) {
+      fitScreenMode = fit;
+      const scaler = document.getElementById('a4Scaler');
+      const btnFit = document.getElementById('btnZoomFit');
+      const btnFull = document.getElementById('btnZoomFull');
+      if (!scaler) return;
+
+      if (fit && window.innerWidth < 768) {
+        const availableWidth = window.innerWidth - 24; // margen lateral
+        const scale = Math.min(1, availableWidth / 720);
+        scaler.style.transform = `scale(${scale})`;
+        scaler.style.transformOrigin = 'top center';
+        if (btnFit) btnFit.className = 'px-2 py-0.5 rounded bg-brand-50 text-brand-700';
+        if (btnFull) btnFull.className = 'px-2 py-0.5 rounded text-slate-600 hover:text-slate-900';
+      } else {
+        scaler.style.transform = 'none';
+        if (btnFit) btnFit.className = 'px-2 py-0.5 rounded text-slate-600 hover:text-slate-900';
+        if (btnFull) btnFull.className = 'px-2 py-0.5 rounded bg-brand-50 text-brand-700';
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      if (fitScreenMode && window.innerWidth < 768) {
+        setA4Zoom(true);
+      }
+    });
+
+    // Inicializar estado de vista previa y escala
     updatePreview();
+    if (window.innerWidth < 768) {
+      setA4Zoom(true);
+    }
   </script>
 </body>
 </html>
