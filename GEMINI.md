@@ -31,3 +31,8 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
 6. **Gestión de Secretos Centralizada:**
    - Las claves de API y accesos de Nexum (Supabase `wbcfmanuhotyevquiaht`, etc.) residen en `C:\Users\juano\.secrets\stack.env`.
 
+7. **Estándar de Diseño Mobile-First Obligatorio:**
+   - Todo desarrollo, pantalla o componente web se diseña y prueba **Mobile-First** (resoluciones de 360px a 430px) y luego se expande armónicamente a pantallas de escritorio (`sm:`, `md:`, `lg:`, `xl:`).
+   - Ergonomía táctil obligatoria (zonas de toque >= 44px, navegación al alcance del pulgar, formularios adaptativos, sin scrolls laterales accidentales).
+   - En PC se garantiza la vista ejecutiva de pantalla completa sin comprometer la base móvil.
+
