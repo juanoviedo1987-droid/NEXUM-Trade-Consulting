@@ -816,10 +816,8 @@
         userBadge.textContent = session.user.email || "Usuario Autenticado";
         if (window.lucide) window.lucide.createIcons();
         
-        // Disparar carga de prospectos de forma segura (sin solapamiento)
-        if (!isFetchingLeads && allLeads.length === 0) {
-          fetchLeads();
-        }
+        // Disparar carga de prospectos de inmediato
+        fetchLeads();
       } else {
         // SIN SESIÓN: Ocultar CRM por completo, no consultar datos
         crmApp.classList.add("hidden");
@@ -883,8 +881,21 @@
 
     // --- CONSULTA DE DATOS (SOLO CON SESIÓN ACTIVA) ---
     async function fetchLeads(showFeedback = false) {
-      if (!currentSession) return;
       if (isFetchingLeads) return;
+
+      // Si currentSession aún no se sincronizó, obtenerla directamente
+      if (!currentSession) {
+        try {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          if (session) {
+            currentSession = session;
+          } else {
+            return;
+          }
+        } catch (e) {
+          return;
+        }
+      }
 
       isFetchingLeads = true;
       const refreshBtn = document.getElementById("btnRefresh");
