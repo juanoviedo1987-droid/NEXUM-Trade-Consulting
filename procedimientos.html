@@ -47,8 +47,8 @@
   <!-- ================= BARRA DE NAVEGACIÓN UNIFICADA DE LA SUITE ================= -->
   <header class="bg-white border-b border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shrink-0 z-30 shadow-xs">
     
-    <!-- Brand / Isotipo + Botón Menú Móvil -->
-    <div class="flex items-center gap-2 sm:gap-3">
+    <!-- Brand / Isotipo + Botón Menú Móvil (Mismo ancho sm:w-64 para centrado perfecto) -->
+    <div class="flex items-center gap-2 sm:gap-3 sm:w-64">
       <button onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition" title="Abrir Menú de Módulos">
         <i data-lucide="menu" class="w-5 h-5"></i>
       </button>
@@ -65,7 +65,7 @@
       </a>
     </div>
 
-    <!-- Navegación entre Módulos / Apps (Desktop Segmented Switch - En mobile está en la Bottom Bar) -->
+    <!-- Navegación entre Módulos / Apps (Desktop Segmented Switch - CENTRADA EXACTA) -->
     <nav class="hidden sm:flex items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-xs font-semibold">
       <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
         <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
@@ -81,8 +81,8 @@
       </a>
     </nav>
 
-    <!-- Botones Rápidos a la Derecha (WhatsApp) -->
-    <div class="flex items-center gap-1.5">
+    <!-- Botones Rápidos a la Derecha (Mismo ancho sm:w-64 justify-end para equilibrar el centro) -->
+    <div class="flex items-center justify-end gap-1.5 sm:w-64">
       <a href="https://wa.me/5491172376197" target="_blank" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition" title="WhatsApp Oficial">
         <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
         <span class="hidden md:inline">WhatsApp</span>
