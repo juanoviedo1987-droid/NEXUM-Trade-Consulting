@@ -61,19 +61,19 @@
       </a>
     </div>
 
-    <!-- Navegación entre Módulos / Apps -->
+    <!-- Navegación entre Módulos / Apps (Orden Lógico Oficial) -->
     <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+      <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+        <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
+        <span>1. Procedimientos & SOP</span>
+      </a>
       <a href="crm.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
         <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
-        <span>Pipeline CRM</span>
+        <span>2. Pipeline CRM</span>
       </a>
       <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
         <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i>
-        <span>Presupuestador</span>
-      </a>
-      <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
-        <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
-        <span>Manual & SOP</span>
+        <span>3. Presupuestador</span>
       </a>
     </nav>
 
@@ -127,6 +127,11 @@
           <span>0. Flujo y Metodología</span>
         </button>
 
+        <button onclick="mostrarSeccion('onboarding')" id="nav-onboarding" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="user-check" class="w-4 h-4 text-teal-600 shrink-0"></i>
+          <span>Checklist Onboarding PyME</span>
+        </button>
+
         <button onclick="mostrarSeccion('mod1')" id="nav-mod1" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
           <i data-lucide="hash" class="w-4 h-4 text-indigo-500 shrink-0"></i>
           <span>1. Posición NCM & Despachante</span>
@@ -150,6 +155,11 @@
         <button onclick="mostrarSeccion('mod5')" id="nav-mod5" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
           <i data-lucide="check-circle-2" class="w-4 h-4 text-rose-500 shrink-0"></i>
           <span>5. Semáforo & Roadmap 90d</span>
+        </button>
+
+        <button onclick="mostrarSeccion('entrega')" id="nav-entrega" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="presentation" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+          <span>Entrega & Cierre (Videollamada)</span>
         </button>
 
         <div class="pt-3 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
@@ -241,6 +251,95 @@
               <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
               <span>Abrir Presupuestador PDF</span>
             </a>
+          </div>
+        </section>
+
+        <!-- ================= PROTOCOLO: ONBOARDING & DOCUMENTACIÓN PYME ================= -->
+        <section id="sec-onboarding" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 border border-teal-200 flex items-center justify-center font-bold">
+              <i data-lucide="user-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-teal-600 uppercase tracking-wider">Protocolo de Inicio</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Checklist de Onboarding & Documentación PyME</h2>
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            Este protocolo se activa <strong>inmediatamente después de acreditado el pago anticipado</strong>. Define cómo dar la bienvenida oficial a la empresa y qué documentación técnica exacta solicitar para no demorar la entrega del diagnóstico.
+          </p>
+
+          <!-- 1. Script de Bienvenida WhatsApp / Email -->
+          <div class="mb-6">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-1.5">
+                <i data-lucide="message-square" class="w-4 h-4 text-teal-600"></i>
+                1. Script Oficial de Bienvenida (WhatsApp / Email):
+              </h3>
+              <button onclick="copiarTexto(document.getElementById('scriptOnboarding').innerText, 'Script de Onboarding')" class="text-xs font-semibold text-brand-600 hover:text-brand-800 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>Copiar Script</span>
+              </button>
+            </div>
+            <div id="scriptOnboarding" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-mono leading-relaxed select-all">
+¡Excelente, [Nombre]! Pago confirmado con éxito. 🚀
+
+Damos inicio formal al Diagnóstico de Factibilidad Exportadora de [Nombre de la Empresa].
+A partir de hoy corre nuestro plazo de 7 a 10 días hábiles para la entrega del informe ejecutivo completo.
+
+Para que nuestro equipo técnico (Juan, Facundo y Carlos Oviedo) comience a procesar la posición arancelaria y los mercados, necesitamos que nos compartas:
+
+1. Ficha técnica o catálogo del producto principal a evaluar (ingredientes / composición, peso, tipo de envase).
+2. Foto del rótulo actual o packaging comercial (frente y dorso).
+3. ¿Cuentan con habilitación de planta nacional vigente? (SENASA, ANMAT, RNE/RNPA según corresponda).
+4. Volumen productivo mensual aproximado o lote que tendrían disponible para destinar al exterior.
+
+Podés adjuntarlo directamente por acá o enviarlo a info@nexumtc.com.ar.
+¡Cualquier duda estamos en contacto permanente y avanzamos con el relevamiento!
+            </div>
+          </div>
+
+          <!-- 2. Checklist de Relevamiento Documental -->
+          <div class="space-y-3 pt-2">
+            <h3 class="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-1.5">
+              <i data-lucide="check-square" class="w-4 h-4 text-teal-600"></i>
+              2. Checklist Interno de Nexum (Qué verificar apenas ingresan los datos):
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3.5 rounded-xl border border-slate-200 bg-white space-y-1">
+                <span class="font-bold text-slate-900 block flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-teal-500"></span> Ficha Técnica del Producto
+                </span>
+                <p class="text-slate-600">Vital para que el Despachante Aliado determine la posición NCM exacta a 8/11 dígitos sin ambigüedades.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl border border-slate-200 bg-white space-y-1">
+                <span class="font-bold text-slate-900 block flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-teal-500"></span> Habilitaciones de Planta
+                </span>
+                <p class="text-slate-600">Verificar número de establecimiento (SENASA, ANMAT, RNE). Si no tienen planta habilitada, es semáforo ROJO inmediato.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl border border-slate-200 bg-white space-y-1">
+                <span class="font-bold text-slate-900 block flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-teal-500"></span> Packaging & Palletizado
+                </span>
+                <p class="text-slate-600">Dimensiones de caja, peso bruto por bulto y cantidad de cajas por pallet. Necesario para cotizar flete terrestre o marítimo.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl border border-slate-200 bg-white space-y-1">
+                <span class="font-bold text-slate-900 block flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-teal-500"></span> Estado Registral ARCA / CUIT
+                </span>
+                <p class="text-slate-600">Constatar si ya están inscriptos como Exportadores/Importadores o si debemos incluir el trámite en el Roadmap inicial.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 p-3.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-xs font-medium">
+            💡 <strong>Regla de Oro:</strong> Los 7 a 10 días hábiles de plazo de entrega se computan <em>a partir de la recepción completa de la ficha técnica</em>. Si la PyME demora en enviar los datos, se notifica amablemente para no comprometer el cronograma.
           </div>
         </section>
 
@@ -476,6 +575,98 @@
             <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 font-medium">
               🎯 <strong>Cierre del Servicio:</strong> Videollamada ejecutiva de devolución (45-60 min) con los socios para presentar el informe y proponer el fee mensual de acompañamiento en la ejecución.
             </div>
+          </div>
+        </section>
+
+        <!-- ================= PROTOCOLO: ENTREGA & CIERRE COMERCIAL (VIDEOLLAMADA) ================= -->
+        <section id="sec-entrega" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold">
+              <i data-lucide="presentation" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Protocolo de Cierre</span>
+              <h2 class="text-xl font-heading font-extrabold text-slate-900">Protocolo de Entrega & Cierre (Videollamada de Devolución)</h2>
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+            El informe técnico no se manda por email "frío". Se entrega en una <strong>reunión ejecutiva privada por videollamada de 45 a 60 minutos</strong> (Google Meet). Este es el momento de mayor valor percibido, donde transformamos un diagnóstico en un <strong>contrato mensual de acompañamiento comex recurrente (fee mensual)</strong>.
+          </p>
+
+          <!-- Estructura de la Reunión en 4 Tiempos -->
+          <div class="space-y-4 mb-6">
+            <h3 class="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-1.5">
+              <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i>
+              Estructura Cronológica de la Reunión (45 - 60 min):
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-slate-900 text-sm">1. Apertura & Hallazgos</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">10 min</span>
+                </div>
+                <p class="text-slate-600">Agradecer el compromiso del cliente, repasar los objetivos iniciales y confirmar la posición arancelaria oficial determinada con el despachante aliado.</p>
+              </div>
+
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-slate-900 text-sm">2. Oportunidades & Mercados</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">15 min</span>
+                </div>
+                <p class="text-slate-600">Mostrar las estadísticas de Trade Map: los 2 mercados recomendados, volúmenes de compra y el precio FOB sugerido que les deja margen neto.</p>
+              </div>
+
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-slate-900 text-sm">3. Semáforo & Brechas</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">15 min</span>
+                </div>
+                <p class="text-slate-600">Presentar el semáforo con honestidad técnica brutal: qué tienen perfecto (verde), qué exige ajustes rápidos (amarillo) y qué bloqueos deben destrabar (rojo).</p>
+              </div>
+
+              <div class="p-4 rounded-xl border border-emerald-300 bg-emerald-50/50">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-emerald-950 text-sm">4. Transición Comercial (Pitch Fee)</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-600 text-white">15 min</span>
+                </div>
+                <p class="text-emerald-900">Presentar el Roadmap a 90 días y ofrecer el servicio de ejecución: Nexum asume la gestión como su departamento comex tercerizado.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guion de Cierre de Cierre (WhatsApp / Cierre Verbal) -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-1.5">
+                <i data-lucide="mic" class="w-4 h-4 text-emerald-600"></i>
+                Guion Verbal de Transición hacia el Fee Mensual:
+              </h3>
+              <button onclick="copiarTexto(document.getElementById('guionCierreBox').innerText, 'Guion de Cierre')" class="text-xs font-semibold text-brand-600 hover:text-brand-800 flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>Copiar Guion</span>
+              </button>
+            </div>
+            <div id="guionCierreBox" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 font-mono leading-relaxed select-all">
+"[Nombre], el informe demuestra con números que el mercado de [País Seleccionado] tiene demanda y que su precio FOB es competitivo. La factibilidad es positiva.
+
+Ahora tienen dos caminos claros:
+1. Tomar este informe ejecutivo y que su equipo interno intente ejecutar los 5 hitos del Roadmap por su cuenta.
+2. O que desde Nexum asumamos la dirección y ejecución operativa integral durante los próximos 3 a 6 meses: nos encargamos de destrabar los registros, coordinar con el despachante aliado la logística y salir a tocar a los importadores calificados en destino.
+
+Básicamente, funcionamos como su departamento de Comercio Exterior tercerizado, sin que ustedes tengan que sumar costos fijos de personal ni cometer errores costosos en la aduana. ¿Les gustaría que les preparemos la propuesta para acompañarlos en la ejecución?"
+            </div>
+          </div>
+
+          <div class="mt-6 p-4 rounded-xl bg-slate-900 text-white text-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>
+              <span class="font-bold block text-sm">Envío del Entregable</span>
+              <span class="text-slate-400">Finalizada la llamada, se despacha el PDF oficial por email con copia a los socios presentes.</span>
+            </div>
+            <a href="crm.html" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition shrink-0">
+              Actualizar Estado en CRM ➔
+            </a>
           </div>
         </section>
 

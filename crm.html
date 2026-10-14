@@ -227,24 +227,30 @@
       <!-- Acciones de Barra Superior -->
       <div class="flex items-center gap-2">
         
-        <!-- Botón Procedimientos & SOP -->
+        <!-- 1. Procedimientos & SOP -->
         <a 
           href="procedimientos.html" 
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
           title="Abrir Manual de Procedimientos y SOP"
         >
           <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
-          <span class="hidden sm:inline">Manual SOP</span>
+          <span class="hidden sm:inline">1. Procedimientos</span>
         </a>
 
-        <!-- Botón Presupuestador -->
+        <!-- 2. Pipeline CRM (Indicador actual) -->
+        <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 shadow-2xs">
+          <i data-lucide="kanban" class="w-3.5 h-3.5 text-brand-600"></i>
+          <span>2. Pipeline CRM</span>
+        </div>
+
+        <!-- 3. Presupuestador -->
         <a 
           href="presupuestos.html" 
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
           title="Generador de Presupuestos en 1 Pág. PDF"
         >
           <i data-lucide="calculator" class="w-3.5 h-3.5 text-sky-500"></i>
-          <span class="hidden sm:inline">Cotizar</span>
+          <span class="hidden sm:inline">3. Presupuestador</span>
         </a>
 
         <!-- Botón Exportar CSV (Solo con sesión iniciada) -->
