@@ -248,6 +248,12 @@
           <span class="sm:hidden font-bold">+ Nuevo</span>
         </button>
 
+        <!-- Badge de Usuario Activo -->
+        <div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 text-xs font-medium">
+          <i data-lucide="user-check" class="w-3.5 h-3.5 text-brand-600"></i>
+          <span id="userEmailBadge" class="truncate max-w-[150px]">Cargando...</span>
+        </div>
+
         <!-- Botón Cerrar Sesión -->
         <button 
           onclick="handleLogout()" 
@@ -811,17 +817,17 @@
 
       if (session && session.user) {
         // SESIÓN ACTIVA: Mostrar CRM y cargar datos
-        authScreen.classList.add("hidden");
-        crmApp.classList.remove("hidden");
-        userBadge.textContent = session.user.email || "Usuario Autenticado";
+        if (authScreen) authScreen.classList.add("hidden");
+        if (crmApp) crmApp.classList.remove("hidden");
+        if (userBadge) userBadge.textContent = session.user.email || "Usuario Autenticado";
         if (window.lucide) window.lucide.createIcons();
         
         // Disparar carga de prospectos de inmediato
         fetchLeads();
       } else {
         // SIN SESIÓN: Ocultar CRM por completo, no consultar datos
-        crmApp.classList.add("hidden");
-        authScreen.classList.remove("hidden");
+        if (crmApp) crmApp.classList.add("hidden");
+        if (authScreen) authScreen.classList.remove("hidden");
         allLeads = [];
       }
     }
