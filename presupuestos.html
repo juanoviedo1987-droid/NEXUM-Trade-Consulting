@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-900 text-slate-100">
+<html lang="es" class="h-full bg-slate-100 text-slate-800">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
 
   <!-- Google Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -42,7 +42,7 @@
     }
   </style>
 </head>
-<body class="min-h-full font-sans antialiased bg-slate-950 text-slate-100 flex flex-col items-center">
+<body class="min-h-full font-sans antialiased bg-slate-100 text-slate-800 flex flex-col items-center">
 
   <!-- ================= BARRA DE NAVEGACIÓN UNIFICADA DE LA SUITE (IDÉNTICA EN LAS 3 APPS) ================= -->
   <header class="w-full bg-white border-b border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shrink-0 z-30 shadow-xs text-slate-800 no-print">
@@ -88,20 +88,20 @@
   </header>
 
   <!-- ================= BARRA DE CONTROL DE PRESUPUESTOS (DEBAJO DEL HEADER) ================= -->
-  <div class="no-print w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-5 my-4 sm:my-6 shadow-2xl mx-4">
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3 mb-3 sm:pb-4 sm:mb-4">
+  <div class="no-print w-full max-w-4xl bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 my-4 sm:my-6 shadow-sm mx-4">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-3 mb-3 sm:pb-4 sm:mb-4">
       <div>
-        <h1 class="text-base font-bold text-white font-heading">Generador Oficial de Presupuestos</h1>
-        <p class="text-xs text-slate-400">Numeración correlativa automática y exportación a PDF en 1 clic</p>
+        <h1 class="text-base font-bold text-slate-900 font-heading">Generador Oficial de Presupuestos</h1>
+        <p class="text-xs text-slate-500">Numeración correlativa automática y exportación a PDF en 1 clic</p>
       </div>
 
       <!-- Botones de Acción -->
       <div class="flex items-center gap-2 w-full sm:w-auto">
-        <button onclick="nuevoPresupuesto()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition border border-slate-700" title="Generar el siguiente número correlativo">
+        <button onclick="nuevoPresupuesto()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200" title="Generar el siguiente número correlativo">
           <i data-lucide="plus" class="w-3.5 h-3.5"></i>
           <span>Siguiente Nº</span>
         </button>
-        <button onclick="imprimirYGuardar()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-sky-500/20 active:scale-95">
+        <button onclick="imprimirYGuardar()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider transition shadow-sm active:scale-95">
           <i data-lucide="printer" class="w-4 h-4"></i>
           <span>Exportar PDF</span>
         </button>
@@ -112,40 +112,40 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs mb-3">
       <!-- Número Automático Bloqueado -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1 flex items-center justify-between">
+        <label class="block text-slate-600 font-semibold mb-1 flex items-center justify-between">
           <span>Nº de Presupuesto (Automático)</span>
-          <span class="text-[10px] text-emerald-400">Correlativo</span>
+          <span class="text-[10px] text-emerald-600 font-bold">Correlativo</span>
         </label>
         <div class="relative">
-          <input type="text" id="inputNum" readonly class="w-full px-3 py-2 bg-slate-950/80 border border-slate-700/80 rounded-lg text-sky-400 font-mono font-bold cursor-not-allowed select-none">
-          <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-500 absolute right-3 top-2.5"></i>
+          <input type="text" id="inputNum" readonly class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-brand-600 font-mono font-bold cursor-not-allowed select-none">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400 absolute right-3 top-2.5"></i>
         </div>
       </div>
 
       <!-- Empresa -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1">Empresa / PyME</label>
-        <input type="text" id="inputEmpresa" placeholder="Ej: Dulces del Sur S.A." oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-600 font-semibold mb-1">Empresa / PyME</label>
+        <input type="text" id="inputEmpresa" placeholder="Ej: Dulces del Sur S.A." oninput="updatePreview()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-brand-500">
       </div>
 
       <!-- Contacto -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1">Nombre de Contacto</label>
-        <input type="text" id="inputContacto" placeholder="Ej: Martín Gómez" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-600 font-semibold mb-1">Nombre de Contacto</label>
+        <input type="text" id="inputContacto" placeholder="Ej: Martín Gómez" oninput="updatePreview()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-brand-500">
       </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
       <!-- Producto -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1">Producto a Evaluar</label>
-        <input type="text" id="inputProducto" placeholder="Ej: Mermeladas y Frutas al Natural" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-600 font-semibold mb-1">Producto a Evaluar</label>
+        <input type="text" id="inputProducto" placeholder="Ej: Mermeladas y Frutas al Natural" oninput="updatePreview()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-brand-500">
       </div>
 
       <!-- Modalidad de Tarifa / Bonificación -->
       <div>
-        <label class="block text-slate-400 font-semibold mb-1">Tarifa / Modalidad</label>
-        <select id="selectTarifa" onchange="cambiarTarifa()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-600 font-semibold mb-1">Tarifa / Modalidad</label>
+        <select id="selectTarifa" onchange="cambiarTarifa()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-brand-500">
           <option value="lista">Tarifa Oficial (USD 500)</option>
           <option value="piloto">Programa Piloto (USD 250 - 50% OFF)</option>
           <option value="custom">Personalizado (Otro monto)</option>
@@ -154,14 +154,14 @@
 
       <!-- Monto Personalizado (oculto por defecto) -->
       <div id="boxCustomMonto" class="hidden">
-        <label class="block text-slate-400 font-semibold mb-1">Monto en USD</label>
-        <input type="number" id="inputCustomMonto" value="500" oninput="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-600 font-semibold mb-1">Monto en USD</label>
+        <input type="number" id="inputCustomMonto" value="500" oninput="updatePreview()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono focus:outline-none focus:border-brand-500">
       </div>
 
       <!-- Plazo de Entrega -->
       <div id="boxPlazo">
-        <label class="block text-slate-400 font-semibold mb-1">Plazo de Entrega</label>
-        <select id="selectPlazo" onchange="updatePreview()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-sky-500">
+        <label class="block text-slate-600 font-semibold mb-1">Plazo de Entrega</label>
+        <select id="selectPlazo" onchange="updatePreview()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-brand-500">
           <option value="7 a 10 días hábiles (1 a 2 semanas)">7 a 10 días hábiles (1 a 2 semanas)</option>
           <option value="5 a 7 días hábiles (Exprés)">5 a 7 días hábiles (Exprés)</option>
           <option value="2 a 3 semanas">2 a 3 semanas</option>
@@ -171,10 +171,10 @@
   </div>
 
   <!-- AVISO MÓVIL DE VISTA PREVIA A4 -->
-  <div class="no-print w-full max-w-4xl px-2 mb-2 flex items-center justify-between text-[11px] text-slate-400 sm:hidden">
-    <span class="flex items-center gap-1">
-      <i data-lucide="eye" class="w-3.5 h-3.5 text-sky-400"></i>
-      <span>Vista previa de hoja A4 (deslizá horizontalmente)</span>
+  <div class="no-print w-full max-w-4xl px-4 mb-2 flex items-center justify-between text-xs text-slate-500 sm:hidden">
+    <span class="flex items-center gap-1.5 font-medium">
+      <i data-lucide="eye" class="w-4 h-4 text-brand-500"></i>
+      <span>Hoja A4 lista para PDF (deslizá horizontalmente)</span>
     </span>
   </div>
 
