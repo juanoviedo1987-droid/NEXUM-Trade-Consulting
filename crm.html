@@ -182,9 +182,9 @@
   <div id="crmApp" class="h-full flex flex-col hidden select-none bg-slate-100">
     
     <!-- Header Institucional Elegante (Fondo Blanco Puro con Borde Limpio) -->
-    <header class="bg-white border-b border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shrink-0 z-30 shadow-xs">
+    <header class="relative bg-white border-b border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shrink-0 z-30 shadow-xs">
       
-      <!-- Brand & Usuario Activo (Mismo ancho sm:w-64 para centrado perfecto) -->
+      <!-- Brand & Usuario Activo (sm:w-64 para centrado perfecto) -->
       <div class="flex items-center gap-2 sm:gap-3 sm:w-64">
         <a href="index.html" class="flex items-center gap-1.5 sm:gap-2 group" title="Ir a la web de Nexum">
           <img src="assets/logo-3.png" alt="Nexum" class="w-7 h-7 sm:w-8 sm:h-8 object-contain group-hover:scale-105 transition-transform">
@@ -198,8 +198,8 @@
         </a>
       </div>
 
-      <!-- SWITCH DE APLICACIONES UNIFICADO (DESKTOP - En mobile está en la Bottom Bar) -->
-      <nav class="hidden sm:flex items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+      <!-- SWITCH DE APLICACIONES UNIFICADO (DESKTOP - Centrado Absoluto Matemático) -->
+      <nav class="hidden sm:flex sm:absolute sm:left-1/2 sm:-translate-x-1/2 items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-xs font-semibold z-10">
         <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
           <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
           <span>1. SOP</span>
@@ -215,7 +215,7 @@
       </nav>
 
       <!-- Métricas Resumen (Desktop) -->
-      <div class="hidden xl:flex items-center gap-2.5 text-xs">
+      <div class="hidden 2xl:flex items-center gap-2.5 text-xs">
         <div class="flex items-center gap-2 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">
           <span class="text-slate-500 font-medium">Total:</span>
           <span id="kpiTotal" class="font-bold text-slate-900">0</span>
@@ -234,8 +234,8 @@
         </div>
       </div>
 
-      <!-- Acciones de Barra Superior -->
-      <div class="flex items-center gap-2">
+      <!-- Acciones de Barra Superior (Derecha) -->
+      <div class="flex items-center justify-end gap-1.5 sm:gap-2">
         
         <!-- Botón Exportar CSV (Solo con sesión iniciada) -->
         <button 
@@ -329,7 +329,7 @@
         <select 
           id="filterStage" 
           onchange="applyFilters()" 
-          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto h-11 sm:h-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-xl sm:rounded-lg px-3 py-2 sm:py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium cursor-pointer"
         >
           <option value="all">Etapa: Todas</option>
           <option value="nuevo">Leads Web (Nuevo)</option>
@@ -346,7 +346,7 @@
         <select 
           id="filterSector" 
           onchange="applyFilters()" 
-          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto h-11 sm:h-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-xl sm:rounded-lg px-3 py-2 sm:py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium cursor-pointer"
         >
           <option value="all">Sector: Todos</option>
           <option value="Alimentos">Alimentos & Bebidas</option>
@@ -361,7 +361,7 @@
         <select 
           id="filterResponsible" 
           onchange="applyFilters()" 
-          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto h-11 sm:h-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-xl sm:rounded-lg px-3 py-2 sm:py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium cursor-pointer"
         >
           <option value="all">Responsable: Todos</option>
           <option value="Juan Oviedo">Juan Oviedo</option>
@@ -374,7 +374,7 @@
         <select 
           id="filterPriority" 
           onchange="applyFilters()" 
-          class="w-full sm:w-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium"
+          class="w-full sm:w-auto h-11 sm:h-auto bg-white border border-slate-300 text-slate-700 text-xs rounded-xl sm:rounded-lg px-3 py-2 sm:py-1.5 focus:outline-none focus:border-brand-500 shadow-2xs font-medium cursor-pointer"
         >
           <option value="all">Prioridad: Todas</option>
           <option value="A">Prioridad A (Alta)</option>
@@ -385,9 +385,9 @@
         <button 
           type="button" 
           onclick="resetFilters()" 
-          class="w-full sm:w-auto text-center px-2 py-1 text-slate-500 hover:text-slate-800 text-[11px] font-medium"
+          class="w-full sm:w-auto h-10 sm:h-auto flex items-center justify-center text-center px-3 py-1.5 text-slate-500 hover:text-slate-800 text-xs font-medium rounded-lg hover:bg-slate-100 transition"
         >
-          Limpiar
+          Limpiar Filtros
         </button>
       </div>
 
@@ -596,11 +596,11 @@
 
       </div>
 
-      <!-- Modal Footer -->
-      <div class="p-3.5 sm:p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+      <!-- Modal Footer (Sticky en Celulares y Teclado Táctil) -->
+      <div class="sticky bottom-0 p-3.5 sm:p-4 border-t border-slate-200 bg-white/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0 z-10">
         <button 
           onclick="deleteCurrentLead()" 
-          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200 transition"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200 transition active:scale-95"
         >
           <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           <span>Eliminar</span>
@@ -616,7 +616,7 @@
           <button 
             onclick="saveLeadChanges()" 
             id="modalSaveBtn" 
-            class="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold text-white bg-brand-500 hover:bg-brand-600 transition shadow-sm"
+            class="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold text-white bg-brand-500 hover:bg-brand-600 transition shadow-sm active:scale-95"
           >
             <i data-lucide="save" class="w-3.5 h-3.5"></i>
             <span>Guardar Cambios</span>
@@ -631,9 +631,9 @@
   <!-- 5. MODAL NUEVO PROSPECTO EXPRESS (BLANCO & ELEGANTE)                      -->
   <!-- ========================================================================= -->
   <div id="newLeadModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs hidden" onclick="handleModalBackdropClick(event, 'newLeadModal')">
-    <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-lg shadow-2xl animate-modal overflow-hidden text-xs" onclick="event.stopPropagation()">
+    <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-lg max-h-[92vh] flex flex-col shadow-2xl animate-modal overflow-hidden text-xs" onclick="event.stopPropagation()">
       
-      <div class="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+      <div class="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/70 shrink-0">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 border border-brand-200 flex items-center justify-center">
             <i data-lucide="user-plus" class="w-4 h-4"></i>
@@ -648,9 +648,10 @@
         </button>
       </div>
 
-      <form id="newLeadForm" onsubmit="event.preventDefault(); submitNewLead();" class="p-4 sm:p-5 space-y-3.5">
+      <form id="newLeadForm" onsubmit="event.preventDefault(); submitNewLead();" class="flex flex-col flex-1 overflow-hidden">
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="p-4 sm:p-5 space-y-3.5 overflow-y-auto flex-1">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Empresa *</label>
             <input type="text" id="newLeadCompany" required placeholder="Ej: Laboratorios Austral S.A." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-900">
@@ -726,17 +727,19 @@
           <label class="block text-[11px] font-medium text-slate-700 mb-1">Primeras Notas Comerciales</label>
           <textarea id="newLeadNotes" rows="2" placeholder="Información de interés comercial del prospecto..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-900"></textarea>
         </div>
+      </div>
 
-        <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeNewLeadModal()" class="px-4 py-2 rounded-lg text-xs text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-300">Cancelar</button>
-          <button type="submit" id="btnSubmitNewLead" class="px-5 py-2 rounded-lg text-xs font-bold text-white bg-brand-500 hover:bg-brand-600 transition shadow-sm">
-            Crear Prospecto
-          </button>
-        </div>
-      </form>
+      <!-- Footer Sticky del Formulario en Móviles -->
+      <div class="p-3 sm:p-4 border-t border-slate-200 bg-white/95 backdrop-blur-md flex items-center justify-end gap-2 shrink-0">
+        <button type="button" onclick="closeNewLeadModal()" class="px-4 py-2 rounded-lg text-xs text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-300">Cancelar</button>
+        <button type="submit" id="btnSubmitNewLead" class="px-5 py-2 rounded-lg text-xs font-bold text-white bg-brand-500 hover:bg-brand-600 transition shadow-sm active:scale-95">
+          Crear Prospecto
+        </button>
+      </div>
+    </form>
 
-    </div>
   </div>
+</div>
 
   <!-- Contenedor Toasts -->
   <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
