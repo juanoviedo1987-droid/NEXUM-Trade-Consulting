@@ -214,26 +214,6 @@
         </a>
       </nav>
 
-      <!-- Métricas Resumen (Desktop) -->
-      <div class="hidden 2xl:flex items-center gap-2.5 text-xs">
-        <div class="flex items-center gap-2 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">
-          <span class="text-slate-500 font-medium">Total:</span>
-          <span id="kpiTotal" class="font-bold text-slate-900">0</span>
-        </div>
-        <div class="flex items-center gap-2 bg-amber-50/70 px-2.5 py-1 rounded-lg border border-amber-200/80">
-          <span class="text-amber-800 font-medium">Reuniones:</span>
-          <span id="kpiMeetings" class="font-bold text-amber-700">0</span>
-        </div>
-        <div class="flex items-center gap-2 bg-sky-50/70 px-2.5 py-1 rounded-lg border border-sky-200/80">
-          <span class="text-sky-800 font-medium">Presupuestos:</span>
-          <span id="kpiProposals" class="font-bold text-sky-700">0</span>
-        </div>
-        <div class="flex items-center gap-2 bg-emerald-50/70 px-2.5 py-1 rounded-lg border border-emerald-200/80">
-          <span class="text-emerald-800 font-medium">Clientes:</span>
-          <span id="kpiWon" class="font-bold text-emerald-700">0</span>
-        </div>
-      </div>
-
       <!-- Acciones de Barra Superior (Derecha) -->
       <div class="flex items-center justify-end gap-1.5 sm:gap-2">
         
@@ -281,17 +261,17 @@
       </div>
     </header>
 
-    <!-- Sub-Barra de Búsqueda y Filtros en Tiempo Real -->
-    <div class="bg-white border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-2.5 shrink-0 z-20">
+    <!-- Sub-Barra de Búsqueda, KPIs y Filtros en Tiempo Real -->
+    <div class="bg-white border-b border-slate-200 px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2.5 shrink-0 z-20">
       
       <!-- Buscador en Vivo -->
-      <div class="relative flex-1 min-w-[240px] max-w-md">
+      <div class="relative flex-1 min-w-[200px] max-w-sm">
         <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
         <input 
           type="text" 
           id="searchInput" 
           oninput="applyFilters()" 
-          placeholder="Buscar empresa, contacto, cargo, notas, próxima acción..." 
+          placeholder="Buscar empresa, contacto, cargo, notas..." 
           class="w-full pl-9 pr-8 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand-500 transition"
         >
         <button 
@@ -301,6 +281,26 @@
         >
           <i data-lucide="x" class="w-3.5 h-3.5"></i>
         </button>
+      </div>
+
+      <!-- Métricas Resumen / Insights del Pipeline (Ubicadas debajo del header, sin invadir la botonera) -->
+      <div class="hidden lg:flex items-center gap-2 text-xs">
+        <div class="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs" title="Total de prospectos registrados">
+          <span class="text-slate-500 font-medium">Total:</span>
+          <span id="kpiTotal" class="font-bold text-slate-900">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-amber-50/70 px-2.5 py-1 rounded-lg border border-amber-200/80" title="Prospectos en etapa de Reunión Agendada">
+          <span class="text-amber-800 font-medium">Reuniones:</span>
+          <span id="kpiMeetings" class="font-bold text-amber-700">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-sky-50/70 px-2.5 py-1 rounded-lg border border-sky-200/80" title="Diagnósticos Presupuestados">
+          <span class="text-sky-800 font-medium">Presupuestos:</span>
+          <span id="kpiProposals" class="font-bold text-sky-700">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-emerald-50/70 px-2.5 py-1 rounded-lg border border-emerald-200/80" title="Cerrados Ganados / Clientes">
+          <span class="text-emerald-800 font-medium">Clientes:</span>
+          <span id="kpiWon" class="font-bold text-emerald-700">0</span>
+        </div>
       </div>
 
       <!-- Botón Desplegable de Filtros en Mobile + Contador -->
@@ -784,6 +784,8 @@
     };
 
     // --- INICIALIZACIÓN Y CICLO DE AUTENTICACIÓN ---
+    let isFetchingLeads = false;
+
     document.addEventListener("DOMContentLoaded", async () => {
       if (window.lucide) window.lucide.createIcons();
 
@@ -793,8 +795,12 @@
       });
 
       // Chequear sesión inicial
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      handleAuthState(session);
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        handleAuthState(session);
+      } catch (err) {
+        console.warn("Error verificando sesión Supabase:", err);
+      }
     });
 
     function handleAuthState(session) {
@@ -809,7 +815,11 @@
         crmApp.classList.remove("hidden");
         userBadge.textContent = session.user.email || "Usuario Autenticado";
         if (window.lucide) window.lucide.createIcons();
-        fetchLeads();
+        
+        // Disparar carga de prospectos de forma segura (sin solapamiento)
+        if (!isFetchingLeads && allLeads.length === 0) {
+          fetchLeads();
+        }
       } else {
         // SIN SESIÓN: Ocultar CRM por completo, no consultar datos
         crmApp.classList.add("hidden");
@@ -874,10 +884,13 @@
     // --- CONSULTA DE DATOS (SOLO CON SESIÓN ACTIVA) ---
     async function fetchLeads(showFeedback = false) {
       if (!currentSession) return;
+      if (isFetchingLeads) return;
 
+      isFetchingLeads = true;
       const refreshBtn = document.getElementById("btnRefresh");
       const tableLoading = document.getElementById("tableLoading");
       if (refreshBtn) refreshBtn.classList.add("animate-spin");
+      if (tableLoading && allLeads.length === 0) tableLoading.classList.remove("hidden");
 
       try {
         const { data, error } = await supabaseClient
@@ -896,6 +909,7 @@
         console.error("Error al obtener leads:", err);
         showToast(`Error al consultar datos: ${err.message}`, "error");
       } finally {
+        isFetchingLeads = false;
         if (refreshBtn) refreshBtn.classList.remove("animate-spin");
         if (tableLoading) tableLoading.classList.add("hidden");
       }
