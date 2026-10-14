@@ -204,21 +204,37 @@
         </div>
       </div>
 
+      <!-- SWITCH DE APLICACIONES UNIFICADO (CENTRO) -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+        <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+          <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>1. Procedimientos & SOP</span>
+        </a>
+        <a href="crm.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+          <i data-lucide="kanban" class="w-3.5 h-3.5 text-brand-500"></i>
+          <span>2. Pipeline CRM</span>
+        </a>
+        <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>3. Presupuestador</span>
+        </a>
+      </nav>
+
       <!-- Métricas Resumen (Desktop) -->
-      <div class="hidden lg:flex items-center gap-3 text-xs">
-        <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">
-          <span class="text-slate-500 font-medium">Total Leads:</span>
+      <div class="hidden xl:flex items-center gap-2.5 text-xs">
+        <div class="flex items-center gap-2 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">
+          <span class="text-slate-500 font-medium">Total:</span>
           <span id="kpiTotal" class="font-bold text-slate-900">0</span>
         </div>
-        <div class="flex items-center gap-2 bg-amber-50/70 px-3 py-1.5 rounded-lg border border-amber-200/80">
+        <div class="flex items-center gap-2 bg-amber-50/70 px-2.5 py-1 rounded-lg border border-amber-200/80">
           <span class="text-amber-800 font-medium">Reuniones:</span>
           <span id="kpiMeetings" class="font-bold text-amber-700">0</span>
         </div>
-        <div class="flex items-center gap-2 bg-sky-50/70 px-3 py-1.5 rounded-lg border border-sky-200/80">
+        <div class="flex items-center gap-2 bg-sky-50/70 px-2.5 py-1 rounded-lg border border-sky-200/80">
           <span class="text-sky-800 font-medium">Presupuestos:</span>
           <span id="kpiProposals" class="font-bold text-sky-700">0</span>
         </div>
-        <div class="flex items-center gap-2 bg-emerald-50/70 px-3 py-1.5 rounded-lg border border-emerald-200/80">
+        <div class="flex items-center gap-2 bg-emerald-50/70 px-2.5 py-1 rounded-lg border border-emerald-200/80">
           <span class="text-emerald-800 font-medium">Clientes:</span>
           <span id="kpiWon" class="font-bold text-emerald-700">0</span>
         </div>
@@ -227,32 +243,6 @@
       <!-- Acciones de Barra Superior -->
       <div class="flex items-center gap-2">
         
-        <!-- 1. Procedimientos & SOP -->
-        <a 
-          href="procedimientos.html" 
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
-          title="Abrir Manual de Procedimientos y SOP"
-        >
-          <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
-          <span class="hidden sm:inline">1. Procedimientos</span>
-        </a>
-
-        <!-- 2. Pipeline CRM (Indicador actual) -->
-        <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200 shadow-2xs">
-          <i data-lucide="kanban" class="w-3.5 h-3.5 text-brand-600"></i>
-          <span>2. Pipeline CRM</span>
-        </div>
-
-        <!-- 3. Presupuestador -->
-        <a 
-          href="presupuestos.html" 
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 transition shadow-2xs"
-          title="Generador de Presupuestos en 1 Pág. PDF"
-        >
-          <i data-lucide="calculator" class="w-3.5 h-3.5 text-sky-500"></i>
-          <span class="hidden sm:inline">3. Presupuestador</span>
-        </a>
-
         <!-- Botón Exportar CSV (Solo con sesión iniciada) -->
         <button 
           onclick="exportToCSV()" 
