@@ -49,42 +49,34 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
       <div class="flex items-center gap-3">
         <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain">
-        <div>
-          <h1 class="text-base font-bold text-white font-heading">Generador Oficial de Presupuestos</h1>
-          <p class="text-xs text-slate-400">Numeración correlativa automática y exportación a PDF en 1 clic</p>
+          </div>
+      </div>
+
       <!-- SWITCH DE APLICACIONES UNIFICADO (CENTRO) -->
-      <nav class="hidden md:flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
-        <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+      <nav class="flex items-center gap-1 bg-slate-950/80 p-0.5 sm:p-1 rounded-xl border border-slate-800 text-[11px] sm:text-xs font-semibold">
+        <a href="procedimientos.html" class="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
           <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>1. Procedimientos & SOP</span>
+          <span>1. SOP</span>
         </a>
-        <a href="crm.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+        <a href="crm.html" class="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
           <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>2. Pipeline CRM</span>
+          <span>2. CRM</span>
         </a>
-        <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 shadow-xs font-bold">
+        <a href="presupuestos.html" class="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-sky-500 text-slate-950 shadow-xs font-bold">
           <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-950"></i>
-          <span>3. Presupuestador</span>
+          <span>3. Cotizar</span>
         </a>
       </nav>
 
       <!-- Botones de Acción -->
       <div class="flex items-center gap-2 w-full sm:w-auto">
-        <a href="procedimientos.html" class="flex md:hidden items-center gap-1 px-2.5 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200 border border-slate-700">
-          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-          <span>SOP</span>
-        </a>
-        <a href="crm.html" class="flex md:hidden items-center gap-1 px-2.5 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-200 border border-slate-700">
-          <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
-          <span>CRM</span>
-        </a>
-        <button onclick="nuevoPresupuesto()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition border border-slate-700" title="Generar el siguiente número correlativo">
+        <button onclick="nuevoPresupuesto()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition border border-slate-700" title="Generar el siguiente número correlativo">
           <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-          Siguiente Nº
+          <span>Siguiente Nº</span>
         </button>
-        <button onclick="imprimirYGuardar()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-sky-500/20 active:scale-95">
+        <button onclick="imprimirYGuardar()" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-sky-500/20 active:scale-95">
           <i data-lucide="printer" class="w-4 h-4"></i>
-          Exportar / Guardar PDF
+          <span>Exportar PDF</span>
         </button>
       </div>
     </div>

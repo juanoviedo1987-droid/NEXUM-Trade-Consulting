@@ -45,62 +45,69 @@
 <body class="h-full flex flex-col font-sans antialiased text-slate-800 bg-slate-100">
 
   <!-- ================= BARRA DE NAVEGACIÓN UNIFICADA DE LA SUITE ================= -->
-  <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between gap-3 shrink-0 z-30 shadow-xs">
+  <header class="bg-white border-b border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shrink-0 z-30 shadow-xs">
     
-    <!-- Brand / Isotipo -->
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="flex items-center gap-2.5 group" title="Ir a la web principal de Nexum">
-        <img src="assets/logo-3.png" alt="Nexum" class="w-8 h-8 object-contain group-hover:scale-105 transition-transform">
+    <!-- Brand / Isotipo + Botón Menú Móvil -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button onclick="toggleMobileSidebar()" class="md:hidden p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition" title="Abrir Menú de Módulos">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+
+      <a href="index.html" class="flex items-center gap-2 group" title="Ir a la web principal de Nexum">
+        <img src="assets/logo-3.png" alt="Nexum" class="w-7 h-7 sm:w-8 sm:h-8 object-contain group-hover:scale-105 transition-transform">
         <div>
-          <div class="flex items-center gap-2">
-            <span class="font-heading font-extrabold text-base text-brand-900 tracking-tight leading-none">NEXUM</span>
-            <span class="text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 border border-brand-200">Suite Operativa</span>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="font-heading font-extrabold text-sm sm:text-base text-brand-900 tracking-tight leading-none">NEXUM</span>
+            <span class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 border border-brand-200">Suite</span>
           </div>
-          <span class="text-[11px] text-slate-500 leading-tight block">Portal Interno de Operaciones</span>
+          <span class="text-[10px] sm:text-[11px] text-slate-500 leading-tight hidden xs:block">Portal de Operaciones</span>
         </div>
       </a>
     </div>
 
-    <!-- Navegación entre Módulos / Apps (Orden Lógico Oficial) -->
-    <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
-      <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+    <!-- Navegación entre Módulos / Apps (Desktop & Mobile Segmented Switch) -->
+    <nav class="flex items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-[11px] sm:text-xs font-semibold">
+      <a href="procedimientos.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
         <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
-        <span>1. Procedimientos & SOP</span>
+        <span>1. SOP</span>
       </a>
-      <a href="crm.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+      <a href="crm.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
         <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
-        <span>2. Pipeline CRM</span>
+        <span>2. CRM</span>
       </a>
-      <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+      <a href="presupuestos.html" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
         <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i>
-        <span>3. Presupuestador</span>
+        <span>3. Cotizar</span>
       </a>
     </nav>
 
     <!-- Botones Rápidos a la Derecha -->
-    <div class="flex items-center gap-2">
-      <a href="crm.html" class="flex md:hidden items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-        <i data-lucide="kanban" class="w-3.5 h-3.5"></i>
-        <span>CRM</span>
-      </a>
-      <a href="presupuestos.html" class="flex md:hidden items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-        <span>Cotizar</span>
-      </a>
-      <a href="https://wa.me/5491172376197" target="_blank" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition">
+    <div class="flex items-center gap-1.5">
+      <a href="https://wa.me/5491172376197" target="_blank" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition" title="WhatsApp Oficial">
         <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
-        <span>WhatsApp Oficial</span>
+        <span class="hidden lg:inline">WhatsApp</span>
       </a>
     </div>
 
   </header>
 
   <!-- ================= LAYOUT PRINCIPAL DE PROCEDIMIENTOS ================= -->
-  <div class="flex-1 flex overflow-hidden">
+  <div class="flex-1 flex overflow-hidden relative">
     
+    <!-- BACKDROP MÓVIL PARA SIDEBAR -->
+    <div id="sidebarBackdrop" onclick="toggleMobileSidebar(false)" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden transition-opacity"></div>
+
     <!-- BARRA LATERAL (Índice y Selector de Secciones) -->
-    <aside class="w-64 sm:w-72 bg-white border-r border-slate-200 flex flex-col shrink-0 z-20">
+    <aside id="sidebarMenu" class="fixed md:static inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col shrink-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
       
+      <!-- Encabezado Sidebar Mobile -->
+      <div class="p-3 border-b border-slate-200 flex md:hidden items-center justify-between bg-slate-50">
+        <span class="font-heading font-bold text-xs text-slate-900">Módulos & Procedimientos</span>
+        <button onclick="toggleMobileSidebar(false)" class="p-1 rounded-lg text-slate-500 hover:text-slate-900">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
       <!-- Buscador Rápido -->
       <div class="p-3 border-b border-slate-200">
         <div class="relative">
@@ -874,6 +881,23 @@ Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y
       mostrarSeccion('resumen');
     });
 
+    function toggleMobileSidebar(open = null) {
+      const sidebar = document.getElementById("sidebarMenu");
+      const backdrop = document.getElementById("sidebarBackdrop");
+      if (!sidebar || !backdrop) return;
+
+      const isClosed = sidebar.classList.contains("-translate-x-full");
+      const shouldOpen = open !== null ? open : isClosed;
+
+      if (shouldOpen) {
+        sidebar.classList.remove("-translate-x-full");
+        backdrop.classList.remove("hidden");
+      } else {
+        sidebar.classList.add("-translate-x-full");
+        backdrop.classList.add("hidden");
+      }
+    }
+
     function mostrarSeccion(secId) {
       // Ocultar todas las secciones
       document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("hidden"));
@@ -883,6 +907,11 @@ Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y
         target.classList.remove("hidden");
         // Scroll suave al inicio
         document.getElementById("mainContainer").scrollTop = 0;
+      }
+
+      // Si estamos en mobile, cerrar el drawer tras seleccionar
+      if (window.innerWidth < 768) {
+        toggleMobileSidebar(false);
       }
 
       // Marcar activo en el sidebar
