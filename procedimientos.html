@@ -297,6 +297,11 @@
           <span>Firmas de Email Oficiales</span>
         </button>
 
+        <button onclick="mostrarSeccion('plantillas')" id="nav-plantillas" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="send" class="w-4 h-4 text-brand-500 shrink-0"></i>
+          <span>Plantillas de Prospección</span>
+        </button>
+
         <a href="brand.html" target="_blank" class="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 hover:text-brand-600 transition group">
           <span class="flex items-center gap-2.5">
             <i data-lucide="palette" class="w-4 h-4 text-sky-500 shrink-0 group-hover:text-brand-600"></i>
@@ -992,6 +997,82 @@ Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y
           </div>
         </section>
 
+        <!-- SECCIÓN: PLANTILLAS DE PROSPECCIÓN & GUIONES COMERCIALES B2B -->
+        <section id="sec-plantillas" class="content-section hidden space-y-6">
+          <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+            <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
+              <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0">
+                <i data-lucide="send" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h2 class="font-heading font-bold text-lg text-slate-900">Plantillas de Prospección & Guiones B2B</h2>
+                <p class="text-xs text-slate-500">Estructura oficial para contactar prospectos del CRM con alta tasa de respuesta.</p>
+              </div>
+            </div>
+
+            <!-- Plantilla Base Modular -->
+            <div class="space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <div>
+                  <h3 class="font-bold text-xs text-slate-800">Estructura Modular Oficial (Email)</h3>
+                  <p class="text-[11px] text-slate-500">Personalizable en 30 segundos cambiando producto y dolores técnicos.</p>
+                </div>
+                <button 
+                  onclick="copiarPlantillaProspeccion()" 
+                  class="px-3 py-1.5 bg-brand-500 hover:bg-brand-600 active:scale-95 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5 shrink-0 shadow-xs"
+                >
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copiar Plantilla</span>
+                </button>
+              </div>
+
+              <!-- Vista previa del formato -->
+              <div class="bg-slate-900 text-slate-100 p-4 rounded-xl text-xs font-mono leading-relaxed space-y-3 overflow-x-auto" id="plantillaTextoCode">
+                <p class="text-slate-400 font-sans text-[11px] border-b border-slate-700 pb-2">
+                  <strong class="text-white">Asunto:</strong> Nexum Trade Consulting / Expansión internacional y COMEX para [Nombre Empresa]
+                </p>
+                <p>Estimado equipo de [Nombre Empresa], Dirección Comercial o Nuevos Proyectos:</p>
+                <p>Mi nombre es Juan Oviedo, socio de <span class="text-brand-300 font-bold">Nexum Trade Consulting</span>. Somos una consultora especializada en comercio exterior y gestión técnica para empresas y laboratorios argentinos.</p>
+                <p>Me pongo en contacto con ustedes porque seguimos de cerca la trayectoria e innovación de sus líneas de <span class="text-amber-300">[producto / especialidad]</span>. Nuestro objetivo es acompañar a empresas nacionales a abrir y consolidar mercados internacionales, resolviendo los puntos críticos del sector: <span class="text-amber-300">[mencionar 1 o 2 dolores: ej. auditoría regulatoria, aranceles, logística o distribuidores]</span>.</p>
+                <p>Me gustaría proponerles una breve charla de 15 a 20 minutos (ya sea por llamada telefónica, videollamada o incluso intercambiando unas breves preguntas por este medio) para hacer un diagnóstico inicial y ver si podemos colaborar con ustedes.</p>
+                <p>Quedo a disposición por si les interesa coordinar o si consideran oportuno que hablemos más adelante.</p>
+              </div>
+
+              <!-- Las 5 Preguntas Clave del Relevamiento -->
+              <div class="mt-6 border-t border-slate-100 pt-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <i data-lucide="help-circle" class="w-4 h-4 text-brand-500"></i>
+                  <h4 class="font-bold text-xs text-slate-900 uppercase tracking-wider">Machete de Relevamiento: Las 5 Preguntas Clave (20 min)</h4>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <span class="font-bold text-brand-600">1. Oferta Exportable:</span>
+                    <p class="text-slate-600 mt-1">¿Qué producto o línea consideran con mayor ventaja competitiva o diferenciación frente a competidores externos?</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <span class="font-bold text-brand-600">2. Estatus Regulatorio:</span>
+                    <p class="text-slate-600 mt-1">¿Cuentan con certificados sanitarios / técnicos de planta al día (SENASA, ANMAT, INAL, GMP)?</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <span class="font-bold text-brand-600">3. Historial COMEX:</span>
+                    <p class="text-slate-600 mt-1">¿Tuvieron alguna experiencia exportando en el pasado o recibieron pedidos puntuales del exterior?</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <span class="font-bold text-brand-600">4. Capacidad Ociosa:</span>
+                    <p class="text-slate-600 mt-1">¿Disponen de capacidad productiva disponible para abastecer pedidos externos sin descuidar el mercado local?</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 md:col-span-2">
+                    <span class="font-bold text-brand-600">5. Toma de Decisiones:</span>
+                    <p class="text-slate-600 mt-1">¿Quiénes intervienen en la decisión de abrir una nueva unidad de negocios o presupuesto COMEX en la empresa?</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
       </div>
     </main>
 
@@ -1197,6 +1278,26 @@ Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y
           showToast("Código HTML de firma copiado");
         });
       }
+    }
+
+    function copiarPlantillaProspeccion() {
+      const texto = `Asunto: Nexum Trade Consulting / Expansión internacional y COMEX para [Nombre Empresa]
+
+Estimado equipo de [Nombre Empresa], Dirección Comercial o Nuevos Proyectos:
+
+Mi nombre es Juan Oviedo, socio de Nexum Trade Consulting. Somos una consultora especializada en comercio exterior y gestión técnica para empresas y laboratorios argentinos.
+
+Me pongo en contacto con ustedes porque seguimos de cerca la trayectoria e innovación de sus líneas de [producto / especialidad]. Nuestro objetivo es acompañar a empresas nacionales a abrir y consolidar mercados internacionales, resolviendo los puntos críticos del sector: [mencionar 1 o 2 dolores: ej. auditoría regulatoria, aranceles, logística o distribuidores].
+
+Me gustaría proponerles una breve charla de 15 a 20 minutos (ya sea por llamada telefónica, videollamada o incluso intercambiando unas breves preguntas por este medio) para hacer un diagnóstico inicial y ver si podemos colaborar con ustedes.
+
+Quedo a disposición por si les interesa coordinar o si consideran oportuno que hablemos más adelante.`;
+
+      navigator.clipboard.writeText(texto).then(() => {
+        showToast("Plantilla de prospección copiada al portapapeles");
+      }).catch(err => {
+        showToast("Error al copiar texto");
+      });
     }
 
     function filtrarContenido() {
