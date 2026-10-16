@@ -1029,47 +1029,71 @@
           tdNextAction.appendChild(spanEmptyAction);
         }
 
-        // 7. Columna Contacto Rápido (WhatsApp directo y copiado rápido)
+        // 7. Columna Contacto Rápido (Multi-teléfono y Multi-email inteligente)
         const tdContact = document.createElement("td");
         tdContact.className = "py-3.5 px-4";
         const divActions = document.createElement("div");
-        divActions.className = "flex items-center gap-2";
+        divActions.className = "flex items-center gap-2 flex-wrap";
 
-        // Teléfono: copiado rápido al portapapeles en 1 clic
-        const phoneClean = (lead.telefono || "").trim();
-        if (phoneClean) {
+        // Teléfonos: Parsear lista de teléfonos/WhatsApp
+        const rawPhones = (lead.telefono || "").trim();
+        const phoneList = parsePhoneList(rawPhones);
+        if (phoneList.length > 0) {
+          phoneList.forEach((pObj, idx) => {
+            const btnPhone = document.createElement("button");
+            btnPhone.type = "button";
+            btnPhone.className = "text-slate-700 hover:text-brand-600 flex items-center gap-1 font-mono text-[11px] font-semibold p-1 hover:bg-slate-100 rounded transition cursor-pointer";
+            btnPhone.title = `Clic para copiar: ${pObj.label}`;
+            btnPhone.onclick = (e) => {
+              e.stopPropagation();
+              copyToClipboard(pObj.label, `Teléfono copiado: ${pObj.label}`);
+            };
+            const iconName = pObj.isWa ? "message-circle" : "phone";
+            const iconColor = pObj.isWa ? "text-emerald-600" : "text-slate-500";
+            btnPhone.innerHTML = `<i data-lucide="${iconName}" class="w-3.5 h-3.5 ${iconColor}"></i>`;
+            const spanPhone = document.createElement("span");
+            spanPhone.className = "truncate max-w-[140px]";
+            spanPhone.textContent = pObj.label;
+            btnPhone.appendChild(spanPhone);
+            divActions.appendChild(btnPhone);
+          });
+        } else if (rawPhones) {
+          // Fallback para string libre de teléfono
           const btnPhone = document.createElement("button");
           btnPhone.type = "button";
           btnPhone.className = "text-slate-700 hover:text-brand-600 flex items-center gap-1 font-mono text-[11px] font-semibold p-1 hover:bg-slate-100 rounded transition cursor-pointer";
           btnPhone.title = "Clic para copiar teléfono";
           btnPhone.onclick = (e) => {
             e.stopPropagation();
-            copyToClipboard(phoneClean, "Teléfono copiado al portapapeles");
+            copyToClipboard(rawPhones, "Teléfono copiado al portapapeles");
           };
           btnPhone.innerHTML = `<i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i>`;
           const spanPhone = document.createElement("span");
-          spanPhone.textContent = phoneClean;
+          spanPhone.textContent = rawPhones;
           btnPhone.appendChild(spanPhone);
           divActions.appendChild(btnPhone);
         }
 
-        // Email: copiado rápido al portapapeles en 1 clic
-        const emailClean = (lead.email || "").trim();
-        if (emailClean && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailClean)) {
-          const btnMail = document.createElement("button");
-          btnMail.type = "button";
-          btnMail.className = "text-slate-600 hover:text-brand-600 flex items-center gap-1 text-[11px] font-medium p-1 hover:bg-slate-100 rounded transition cursor-pointer";
-          btnMail.title = "Clic para copiar email";
-          btnMail.onclick = (e) => {
-            e.stopPropagation();
-            copyToClipboard(emailClean, "Email copiado al portapapeles");
-          };
-          btnMail.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-brand-500"></i>`;
-          const spanMail = document.createElement("span");
-          spanMail.className = "truncate max-w-[120px]";
-          spanMail.textContent = emailClean;
-          btnMail.appendChild(spanMail);
-          divActions.appendChild(btnMail);
+        // Emails: Parsear lista de emails (admite múltiples separados por barra, coma o punto y coma)
+        const rawEmails = (lead.email || "").trim();
+        const emailList = parseEmailList(rawEmails);
+        if (emailList.length > 0) {
+          emailList.forEach((emailItem, idx) => {
+            const btnMail = document.createElement("button");
+            btnMail.type = "button";
+            btnMail.className = "text-slate-600 hover:text-brand-600 flex items-center gap-1 text-[11px] font-medium p-1 hover:bg-slate-100 rounded transition cursor-pointer";
+            btnMail.title = `Clic para copiar email: ${emailItem}`;
+            btnMail.onclick = (e) => {
+              e.stopPropagation();
+              copyToClipboard(emailItem, `Email copiado: ${emailItem}`);
+            };
+            btnMail.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-brand-500"></i>`;
+            const spanMail = document.createElement("span");
+            spanMail.className = "truncate max-w-[130px]";
+            spanMail.textContent = emailItem;
+            btnMail.appendChild(spanMail);
+            divActions.appendChild(btnMail);
+          });
         }
 
         if (divActions.children.length === 0) {
@@ -1191,32 +1215,44 @@
           const cardContactBtns = document.createElement("div");
           cardContactBtns.className = "flex items-center gap-1.5 flex-wrap";
 
-          if (phoneClean) {
+          if (phoneList.length > 0) {
+            phoneList.forEach(pObj => {
+              if (pObj.isWa) {
+                const btnWa = document.createElement("a");
+                btnWa.href = `https://wa.me/${pObj.digits}`;
+                btnWa.target = "_blank";
+                btnWa.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition shadow-xs";
+                btnWa.innerHTML = `<i data-lucide="message-circle" class="w-3.5 h-3.5"></i><span>WhatsApp</span>`;
+                btnWa.onclick = (e) => e.stopPropagation();
+                cardContactBtns.appendChild(btnWa);
+              } else {
+                const btnCall = document.createElement("a");
+                btnCall.href = `tel:${pObj.digits}`;
+                btnCall.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold hover:bg-emerald-100 transition";
+                btnCall.innerHTML = `<i data-lucide="phone-call" class="w-3.5 h-3.5 text-emerald-600"></i><span>Llamar</span>`;
+                btnCall.onclick = (e) => e.stopPropagation();
+                cardContactBtns.appendChild(btnCall);
+              }
+            });
+          } else if (rawPhones) {
             const btnCall = document.createElement("a");
-            btnCall.href = `tel:${phoneClean.replace(/[^0-9+]/g, '')}`;
+            btnCall.href = `tel:${rawPhones.replace(/[^0-9+]/g, '')}`;
             btnCall.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold hover:bg-emerald-100 transition";
             btnCall.innerHTML = `<i data-lucide="phone-call" class="w-3.5 h-3.5 text-emerald-600"></i><span>Llamar</span>`;
             btnCall.onclick = (e) => e.stopPropagation();
-
-            const btnWa = document.createElement("a");
-            const waNum = phoneClean.replace(/[^0-9]/g, '');
-            btnWa.href = `https://wa.me/${waNum}`;
-            btnWa.target = "_blank";
-            btnWa.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition shadow-xs";
-            btnWa.innerHTML = `<i data-lucide="message-circle" class="w-3.5 h-3.5"></i><span>WhatsApp</span>`;
-            btnWa.onclick = (e) => e.stopPropagation();
-
-            cardContactBtns.appendChild(btnWa);
             cardContactBtns.appendChild(btnCall);
           }
 
-          if (emailClean) {
-            const btnMailDirect = document.createElement("a");
-            btnMailDirect.href = `mailto:${emailClean}`;
-            btnMailDirect.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200 text-xs font-medium hover:bg-slate-200 transition";
-            btnMailDirect.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-slate-600"></i>`;
-            btnMailDirect.onclick = (e) => e.stopPropagation();
-            cardContactBtns.appendChild(btnMailDirect);
+          if (emailList.length > 0) {
+            emailList.forEach(eItem => {
+              const btnMailDirect = document.createElement("a");
+              btnMailDirect.href = `mailto:${eItem}`;
+              btnMailDirect.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200 text-xs font-medium hover:bg-slate-200 transition";
+              btnMailDirect.title = eItem;
+              btnMailDirect.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-slate-600"></i>`;
+              btnMailDirect.onclick = (e) => e.stopPropagation();
+              cardContactBtns.appendChild(btnMailDirect);
+            });
           }
 
           const btnCardOpen = document.createElement("button");
@@ -1367,9 +1403,12 @@
         copyPhoneBtn.classList.add("opacity-50", "pointer-events-none");
       }
 
-      const emailClean = (lead.email || "").trim();
-      if (emailClean && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailClean)) {
+      const emailListModal = parseEmailList(lead.email || "");
+      if (emailListModal.length > 0 || (lead.email && lead.email.trim())) {
         copyMailBtn.classList.remove("opacity-50", "pointer-events-none");
+        if (emailListModal.length > 1) {
+          if (mailLabel) mailLabel.textContent = `Copiar Emails (${emailListModal.length})`;
+        }
       } else {
         copyMailBtn.classList.add("opacity-50", "pointer-events-none");
       }
@@ -1616,6 +1655,47 @@
         str = "'" + str;
       }
       return `"${str.replace(/"/g, '""')}"`;
+    }
+
+    // --- PARSERS INTELIGENTES MULTI-CONTACTO (BARRAS, COMAS, ESPACIOS) ---
+    function parseEmailList(raw) {
+      if (!raw || typeof raw !== 'string') return [];
+      // Dividir por barras, comas, punto y coma, o saltos de línea
+      const parts = raw.split(/[\/;,\n\r]+/);
+      const emails = [];
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+      for (const p of parts) {
+        const matches = p.match(emailRegex);
+        if (matches) {
+          for (const m of matches) {
+            const cleaned = m.trim().toLowerCase();
+            if (cleaned && !emails.includes(cleaned)) {
+              emails.push(cleaned);
+            }
+          }
+        }
+      }
+      return emails;
+    }
+
+    function parsePhoneList(raw) {
+      if (!raw || typeof raw !== 'string') return [];
+      const parts = raw.split(/[\/;,\n\r]+/).map(p => p.trim()).filter(Boolean);
+      const list = [];
+      for (const p of parts) {
+        // Detectar si está etiquetado como WhatsApp
+        const isWa = /wa|whatsapp|wapp|cel|m[oó]vil/i.test(p);
+        // Extraer dígitos (y opcionalmente signo + inicial)
+        const digits = p.replace(/[^0-9]/g, '');
+        if (digits.length >= 6) {
+          list.push({
+            label: p,
+            digits: digits,
+            isWa: isWa || digits.startsWith('549')
+          });
+        }
+      }
+      return list;
     }
 
     // --- ACCIONES DIRECTAS: COPIADO AL PORTAPAPELES EN 1 CLIC ---
