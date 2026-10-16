@@ -1031,18 +1031,20 @@
 
         // 7. Columna Contacto Rápido (Multi-teléfono y Multi-email inteligente)
         const tdContact = document.createElement("td");
-        tdContact.className = "py-3.5 px-4";
+        tdContact.className = "py-3.5 px-4 min-w-[240px]";
         const divActions = document.createElement("div");
-        divActions.className = "flex items-center gap-2 flex-wrap";
+        divActions.className = "flex flex-col gap-1";
 
-        // Teléfonos: Parsear lista de teléfonos/WhatsApp
+        // Fila 1: Teléfonos
         const rawPhones = (lead.telefono || "").trim();
         const phoneList = parsePhoneList(rawPhones);
         if (phoneList.length > 0) {
-          phoneList.forEach((pObj, idx) => {
+          const rowPhones = document.createElement("div");
+          rowPhones.className = "flex items-center gap-1.5 flex-wrap";
+          phoneList.forEach((pObj) => {
             const btnPhone = document.createElement("button");
             btnPhone.type = "button";
-            btnPhone.className = "text-slate-700 hover:text-brand-600 flex items-center gap-1 font-mono text-[11px] font-semibold p-1 hover:bg-slate-100 rounded transition cursor-pointer";
+            btnPhone.className = "text-slate-700 hover:text-brand-600 flex items-center gap-1 font-mono text-[11px] font-semibold px-1.5 py-0.5 hover:bg-slate-100 rounded transition cursor-pointer border border-transparent hover:border-slate-200";
             btnPhone.title = `Clic para copiar: ${pObj.label}`;
             btnPhone.onclick = (e) => {
               e.stopPropagation();
@@ -1052,16 +1054,18 @@
             const iconColor = pObj.isWa ? "text-emerald-600" : "text-slate-500";
             btnPhone.innerHTML = `<i data-lucide="${iconName}" class="w-3.5 h-3.5 ${iconColor}"></i>`;
             const spanPhone = document.createElement("span");
-            spanPhone.className = "truncate max-w-[140px]";
+            spanPhone.className = "truncate max-w-[150px]";
             spanPhone.textContent = pObj.label;
             btnPhone.appendChild(spanPhone);
-            divActions.appendChild(btnPhone);
+            rowPhones.appendChild(btnPhone);
           });
+          divActions.appendChild(rowPhones);
         } else if (rawPhones) {
-          // Fallback para string libre de teléfono
+          const rowPhones = document.createElement("div");
+          rowPhones.className = "flex items-center gap-1.5 flex-wrap";
           const btnPhone = document.createElement("button");
           btnPhone.type = "button";
-          btnPhone.className = "text-slate-700 hover:text-brand-600 flex items-center gap-1 font-mono text-[11px] font-semibold p-1 hover:bg-slate-100 rounded transition cursor-pointer";
+          btnPhone.className = "text-slate-700 hover:text-brand-600 flex items-center gap-1 font-mono text-[11px] font-semibold px-1.5 py-0.5 hover:bg-slate-100 rounded transition cursor-pointer border border-transparent hover:border-slate-200";
           btnPhone.title = "Clic para copiar teléfono";
           btnPhone.onclick = (e) => {
             e.stopPropagation();
@@ -1071,29 +1075,33 @@
           const spanPhone = document.createElement("span");
           spanPhone.textContent = rawPhones;
           btnPhone.appendChild(spanPhone);
-          divActions.appendChild(btnPhone);
+          rowPhones.appendChild(btnPhone);
+          divActions.appendChild(rowPhones);
         }
 
-        // Emails: Parsear lista de emails (admite múltiples separados por barra, coma o punto y coma)
+        // Fila 2: Emails
         const rawEmails = (lead.email || "").trim();
         const emailList = parseEmailList(rawEmails);
         if (emailList.length > 0) {
-          emailList.forEach((emailItem, idx) => {
+          const rowEmails = document.createElement("div");
+          rowEmails.className = "flex items-center gap-1.5 flex-wrap";
+          emailList.forEach((emailItem) => {
             const btnMail = document.createElement("button");
             btnMail.type = "button";
-            btnMail.className = "text-slate-600 hover:text-brand-600 flex items-center gap-1 text-[11px] font-medium p-1 hover:bg-slate-100 rounded transition cursor-pointer";
-            btnMail.title = `Clic para copiar email: ${emailItem}`;
+            btnMail.className = "text-slate-600 hover:text-brand-600 flex items-center gap-1 text-[11px] font-medium px-1.5 py-0.5 hover:bg-slate-100 rounded transition cursor-pointer border border-transparent hover:border-slate-200";
+            btnMail.title = `Clic para copiar: ${emailItem}`;
             btnMail.onclick = (e) => {
               e.stopPropagation();
               copyToClipboard(emailItem, `Email copiado: ${emailItem}`);
             };
             btnMail.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5 text-brand-500"></i>`;
             const spanMail = document.createElement("span");
-            spanMail.className = "truncate max-w-[130px]";
+            spanMail.className = "truncate max-w-[140px]";
             spanMail.textContent = emailItem;
             btnMail.appendChild(spanMail);
-            divActions.appendChild(btnMail);
+            rowEmails.appendChild(btnMail);
           });
+          divActions.appendChild(rowEmails);
         }
 
         if (divActions.children.length === 0) {
