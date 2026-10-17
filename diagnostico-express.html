@@ -279,15 +279,15 @@
       <!-- Formulario de Campos Dinámicos -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs mb-3">
         <div>
-          <label class="block text-slate-600 font-semibold mb-1">Empresa *</label>
+          <label id="lblFieldEmpresa" class="block text-slate-600 font-semibold mb-1">Empresa *</label>
           <input type="text" id="txtEmpresa" oninput="updatePreview()" placeholder="Ej: Laboratorios Argos S.R.L." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 focus:bg-white focus:border-brand-500 font-semibold">
         </div>
         <div>
-          <label class="block text-slate-600 font-semibold mb-1">Contacto / Cargo</label>
+          <label id="lblFieldContacto" class="block text-slate-600 font-semibold mb-1">Contacto / Cargo</label>
           <input type="text" id="txtContacto" oninput="updatePreview()" placeholder="Ej: Ing. Martín Rossi (Dir. Técnico)" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 focus:bg-white focus:border-brand-500">
         </div>
         <div>
-          <label class="block text-slate-600 font-semibold mb-1">Producto / Línea Clave *</label>
+          <label id="lblFieldProducto" class="block text-slate-600 font-semibold mb-1">Producto / Línea Clave *</label>
           <input type="text" id="txtProducto" oninput="updatePreview()" placeholder="Ej: Ectoparasiticidas y Antiparasitarios" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 focus:bg-white focus:border-brand-500 font-medium text-brand-700">
         </div>
       </div>
@@ -299,7 +299,7 @@
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-800 flex items-center gap-1.5">
               <span class="w-5 h-5 rounded-full bg-brand-50 text-brand-600 border border-brand-200 inline-flex items-center justify-center text-[10px]">1</span>
-              NCM Preliminar & Aranceles
+              <span id="lblFormPilar1Title">NCM Preliminar & Aranceles</span>
             </span>
           </div>
           <input type="text" id="txtNcm" oninput="updatePreview()" placeholder="NCM sugerida (ej: 3004.90.99)" class="w-full bg-white border border-slate-300 rounded p-1.5 font-mono text-[11px] font-semibold">
@@ -311,7 +311,7 @@
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-800 flex items-center gap-1.5">
               <span class="w-5 h-5 rounded-full bg-brand-50 text-brand-600 border border-brand-200 inline-flex items-center justify-center text-[10px]">2</span>
-              Top Mercados Objetivo Inmediatos
+              <span id="lblFormPilar2Title">Top Mercados Objetivo Inmediatos</span>
             </span>
           </div>
           <input type="text" id="txtMercados" oninput="updatePreview()" placeholder="Top mercados (ej: Paraguay & Uruguay)" class="w-full bg-white border border-slate-300 rounded p-1.5 font-semibold text-[11px] text-brand-700">
@@ -323,7 +323,7 @@
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-800 flex items-center gap-1.5">
               <span class="w-5 h-5 rounded-full bg-brand-50 text-brand-600 border border-brand-200 inline-flex items-center justify-center text-[10px]">3</span>
-              Normativa & Barreras Técnicas
+              <span id="lblFormPilar3Title">Normativa & Barreras Técnicas</span>
             </span>
           </div>
           <input type="text" id="txtNormas" oninput="updatePreview()" placeholder="Organismos (ej: SENACSA / SENASA / GMP)" class="w-full bg-white border border-slate-300 rounded p-1.5 text-[11px] font-semibold">
@@ -335,7 +335,7 @@
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-800 flex items-center gap-1.5">
               <span class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 inline-flex items-center justify-center text-[10px]">4</span>
-              Roadmap Propuesto & Agenda Meet
+              <span id="lblFormPilar4Title">Roadmap Propuesto & Agenda Meet</span>
             </span>
           </div>
           <input type="text" id="txtMeetFecha" oninput="updatePreview()" placeholder="Ej: Videollamada de Devolución (20 min)" class="w-full bg-white border border-slate-300 rounded p-1.5 text-[11px] font-semibold text-emerald-700">
@@ -358,7 +358,7 @@
             </div>
             <div style="text-align: right; font-size: 11px; color: #64748b; line-height: 1.4;">
               <strong style="color: #0f172a; font-size: 12px;">NEXUM TRADE CONSULTING</strong><br>
-              Informe: <strong id="lblCodigoDoc" style="color: #0074A1;">NEXUM-DIAG-2026</strong><br>
+              <span id="lblTipoDocHeader">Informe:</span> <strong id="lblCodigoDoc" style="color: #0074A1;">NEXUM-DIAG-2026</strong><br>
               Fecha: <strong id="lblFechaActual">17 de Octubre de 2026</strong> &bull; Carácter: <span style="color: #0074A1; font-weight: 700;">Privado y Confidencial</span>
             </div>
           </div>
@@ -366,10 +366,10 @@
           <!-- Título del Documento -->
           <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
             <div>
-              <h1 style="font-size: 18px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: -0.3px; margin: 0;">
+              <h1 id="lblDocTitulo" style="font-size: 18px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: -0.3px; margin: 0;">
                 Diagnóstico de Factibilidad Exportadora
               </h1>
-              <div style="color: #0074A1; font-weight: 700; font-size: 12.5px; margin-top: 2px;">
+              <div id="lblDocSubtitulo" style="color: #0074A1; font-weight: 700; font-size: 12.5px; margin-top: 2px;">
                 Evaluación Técnica Inicial & Hoja de Ruta para PyMEs
               </div>
             </div>
@@ -378,20 +378,20 @@
             </div>
           </div>
 
-          <!-- Ficha Resumen de la Empresa Evaluada -->
+          <!-- Ficha Resumen de la Empresa / Entidad Evaluada -->
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px; font-size: 12px; margin-bottom: 14px;">
-            <div><strong style="color: #334155;">Empresa Evaluada:</strong> <span id="lblEmpresa" style="font-weight: 700; color: #0f172a;">[Nombre de la Empresa / PyME]</span></div>
-            <div><strong style="color: #334155;">Interlocutor:</strong> <span id="lblContacto" style="font-weight: 600; color: #0f172a;">[Nombre del Contacto / Cargo]</span></div>
-            <div style="grid-column: span 2;"><strong style="color: #334155;">Línea de Productos Analizada:</strong> <span id="lblProducto" style="font-weight: 700; color: #0074A1;">[Línea de productos a evaluar]</span></div>
+            <div><strong id="lblFichaLabel1" style="color: #334155;">Empresa Evaluada:</strong> <span id="lblEmpresa" style="font-weight: 700; color: #0f172a;">[Nombre de la Empresa / PyME]</span></div>
+            <div><strong id="lblFichaLabel2" style="color: #334155;">Interlocutor:</strong> <span id="lblContacto" style="font-weight: 600; color: #0f172a;">[Nombre del Contacto / Cargo]</span></div>
+            <div style="grid-column: span 2;"><strong id="lblFichaLabel3" style="color: #334155;">Línea de Productos Analizada:</strong> <span id="lblProducto" style="font-weight: 700; color: #0074A1;">[Línea de productos a evaluar]</span></div>
           </div>
 
-          <!-- Bloques de Análisis Técnico (4 Pilares) -->
+          <!-- Bloques de Análisis Técnico / Convenio (4 Pilares) -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
             
             <!-- Pilar 1 -->
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #0074A1; border-radius: 6px; padding: 8px 12px; font-size: 11.5px;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                <strong style="color: #0f172a; font-size: 12px;">1. Posición Arancelaria & Tratamiento</strong>
+                <strong id="lblPilar1Titulo" style="color: #0f172a; font-size: 12px;">1. Posición Arancelaria & Tratamiento</strong>
                 <span id="lblNcmBadge" style="font-family: monospace; font-weight: 700; background: #e0f2fe; color: #0369a1; padding: 1px 6px; border-radius: 3px; font-size: 10.5px;">NCM: 3004.90.99</span>
               </div>
               <p id="lblArancelesTexto" style="color: #475569; margin: 0; line-height: 1.4;">
@@ -402,7 +402,7 @@
             <!-- Pilar 2 -->
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #0074A1; border-radius: 6px; padding: 8px 12px; font-size: 11.5px;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                <strong style="color: #0f172a; font-size: 12px;">2. Mercados de Oportunidad Inmediata</strong>
+                <strong id="lblPilar2Titulo" style="color: #0f172a; font-size: 12px;">2. Mercados de Oportunidad Inmediata</strong>
                 <span id="lblMercadosBadge" style="font-weight: 700; background: #f0fdf4; color: #166534; padding: 1px 6px; border-radius: 3px; font-size: 10.5px;">Paraguay & Uruguay</span>
               </div>
               <p id="lblMercadosTexto" style="color: #475569; margin: 0; line-height: 1.4;">
@@ -413,7 +413,7 @@
             <!-- Pilar 3 -->
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #f59e0b; border-radius: 6px; padding: 8px 12px; font-size: 11.5px;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                <strong style="color: #0f172a; font-size: 12px;">3. Barreras Técnicas & Regulatorias</strong>
+                <strong id="lblPilar3Titulo" style="color: #0f172a; font-size: 12px;">3. Barreras Técnicas & Regulatorias</strong>
                 <span id="lblNormasBadge" style="font-weight: 700; background: #fef3c7; color: #92400e; padding: 1px 6px; border-radius: 3px; font-size: 10.5px;">Requisitos Sanitarios</span>
               </div>
               <p id="lblNormasTexto" style="color: #475569; margin: 0; line-height: 1.4;">
@@ -424,7 +424,7 @@
             <!-- Pilar 4 -->
             <div style="background: #ffffff; border: 1px solid #e2e8f0; border-left: 3px solid #10b981; border-radius: 6px; padding: 8px 12px; font-size: 11.5px;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                <strong style="color: #0f172a; font-size: 12px;">4. Próxima Etapa Operativa Sugerida</strong>
+                <strong id="lblPilar4Titulo" style="color: #0f172a; font-size: 12px;">4. Próxima Etapa Operativa Sugerida</strong>
                 <span id="lblMeetBadge" style="font-weight: 700; background: #ecfdf5; color: #047857; padding: 1px 6px; border-radius: 3px; font-size: 10.5px;">Reunión de 20 min</span>
               </div>
               <p id="lblMeetTexto" style="color: #475569; margin: 0; line-height: 1.4;">
@@ -436,18 +436,18 @@
 
           <!-- Caja de Valor Agregado: Acompañamiento NEXUM -->
           <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 9px 12px; font-size: 11.5px; margin-bottom: 14px; line-height: 1.4;">
-            <strong style="color: #0369a1; display: block; margin-bottom: 2px;">Metodología de Implementación NEXUM:</strong>
-            Este diagnóstico preliminar forma parte del protocolo de pre-factibilidad de NEXUM Trade Consulting. Nuestro servicio integral acompaña a la PyME desde la clasificación arancelaria y homologaciones técnicas hasta el cierre del primer contrato de distribución internacional y cobro de divisas.
+            <strong id="lblMetodologiaTitulo" style="color: #0369a1; display: block; margin-bottom: 2px;">Metodología de Implementación NEXUM:</strong>
+            <span id="lblMetodologiaTexto">Este diagnóstico preliminar forma parte del protocolo de pre-factibilidad de NEXUM Trade Consulting. Nuestro servicio integral acompaña a la PyME desde la clasificación arancelaria y homologaciones técnicas hasta el cierre del primer contrato de distribución internacional y cobro de divisas.</span>
           </div>
 
           <!-- Bloque de Cierre y Llamado a la Acción -->
           <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; font-size: 11.5px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div>
               <strong style="color: #0f172a;">Próximo Paso Coordinado:</strong><br>
-              <span style="color: #475569;">Presentación técnica y respuesta de consultas en reunión privada por Google Meet (20-30 min).</span>
+              <span id="lblCierreTexto" style="color: #475569;">Presentación técnica y respuesta de consultas en reunión privada por Google Meet (20-30 min).</span>
             </div>
             <div style="text-align: right;">
-              <span style="display: inline-block; background: #0074A1; color: #ffffff; font-weight: 700; font-size: 11px; padding: 5px 12px; border-radius: 5px;">
+              <span id="lblCtaBoton" style="display: inline-block; background: #0074A1; color: #ffffff; font-weight: 700; font-size: 11px; padding: 5px 12px; border-radius: 5px;">
                 Agendá con NEXUM
               </span>
             </div>
@@ -624,27 +624,46 @@
       if (window.lucide) window.lucide.createIcons();
     }
 
-    // Cargar leads desde Supabase para autocompletar
+    let currentLeadType = 'pyme'; // 'pyme' | 'alianza'
+
+    // Cargar leads desde Supabase para autocompletar con optgroups
     async function fetchLeadsParaDiagnostico() {
       try {
         const { data, error } = await supabaseClient
           .from("leads_nexum")
-          .select("id, empresa, nombre, cargo, sector, email, telefono, status, notas")
+          .select("id, empresa, nombre, cargo, sector, email, telefono, status, notas, origen")
           .order("empresa", { ascending: true });
 
         if (error) throw error;
         leadsCache = data || [];
 
         const select = document.getElementById("selectLeadCrm");
-        select.innerHTML = '<option value="">-- Seleccionar prospecto registrado para autocompletar --</option>';
+        select.innerHTML = '<option value="">-- Seleccionar cuenta para autocompletar --</option>';
+
+        const optGroupPymes = document.createElement("optgroup");
+        optGroupPymes.label = "📂 PyMEs Manufactureras (Comerciales - 24)";
+        const optGroupAlianzas = document.createElement("optgroup");
+        optGroupAlianzas.label = "🏛️ Cámaras & Alianzas Institucionales (11)";
 
         leadsCache.forEach(lead => {
+          const isAlianza = lead.origen === 'alianza_institucional' || 
+                            (lead.sector && lead.sector.toLowerCase().includes('alianza')) ||
+                            (lead.sector && lead.sector.toLowerCase().includes('cámara'));
           const opt = document.createElement("option");
           opt.value = lead.id;
           const hasAiDiag = lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:");
-          opt.textContent = `${lead.empresa} (${lead.sector || 'General'}) [${lead.status}] ${hasAiDiag ? '🌟 [IA Verificado]' : ''}`;
-          select.appendChild(opt);
+
+          if (isAlianza) {
+            opt.textContent = `🏛️ ${lead.empresa} (${lead.sector || 'Entidad'})`;
+            optGroupAlianzas.appendChild(opt);
+          } else {
+            opt.textContent = `📦 ${lead.empresa} (${lead.sector || 'PyME'}) ${hasAiDiag ? '🌟 [IA Verificado]' : ''}`;
+            optGroupPymes.appendChild(opt);
+          }
         });
+
+        select.appendChild(optGroupPymes);
+        select.appendChild(optGroupAlianzas);
 
         // Soporte para apertura directa desde CRM con URL param (?lead=<leadId>)
         const urlParams = new URLSearchParams(window.location.search);
@@ -666,81 +685,192 @@
       const lead = leadsCache.find(l => l.id == leadId);
       if (!lead) return;
 
+      const isAlianza = lead.origen === 'alianza_institucional' || 
+                        (lead.sector && lead.sector.toLowerCase().includes('alianza')) ||
+                        (lead.sector && lead.sector.toLowerCase().includes('cámara'));
+      currentLeadType = isAlianza ? 'alianza' : 'pyme';
+
       document.getElementById("txtEmpresa").value = lead.empresa || "";
       document.getElementById("txtContacto").value = `${lead.nombre || ""}${lead.cargo ? ' (' + lead.cargo + ')' : ''}`;
-      
-      // 1. Verificar si tiene diagnóstico técnico real enriquecido con IA en Supabase
-      let comexDiag = null;
-      if (lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:")) {
-        try {
-          const match = lead.notas.match(/<!-- COMEX_DIAGNOSTICO:\s*(\{[\s\S]*?\})\s*-->/);
-          if (match) {
-            comexDiag = JSON.parse(match[1]);
-          }
-        } catch (e) {
-          console.warn("Error parseando COMEX_DIAGNOSTICO:", e);
-        }
-      }
 
       const aiBadge = document.getElementById("aiEnrichmentBadge");
 
-      if (comexDiag) {
-        // Datos 100% reales investigados con Gemini y Grounding
-        document.getElementById("txtProducto").value = comexDiag.producto_estrella || "";
-        document.getElementById("txtNcm").value = comexDiag.ncm_codigo || "";
-        document.getElementById("txtArancelesDesc").value = comexDiag.aranceles_info || "";
-        document.getElementById("txtMercados").value = comexDiag.mercados_sugeridos || "";
-        document.getElementById("txtMercadosDesc").value = comexDiag.mercados_desc || "";
-        document.getElementById("txtNormas").value = comexDiag.normativas_clave || "";
-        document.getElementById("txtNormasDesc").value = comexDiag.normativas_desc || "";
-        document.getElementById("txtMeetFecha").value = "Reunión Técnica Meet (20 min)";
-        document.getElementById("txtMeetDesc").value = comexDiag.meet_desc || "Cálculo de precio FOB/EXW sugerido y validación de homologaciones en destino.";
-        
+      // ==========================================
+      // CASO A: ALIANZA / CÁMARA EMPRESARIAL
+      // ==========================================
+      if (isAlianza) {
+        // 1. Adaptar Etiquetas del Formulario
+        document.getElementById("lblFieldEmpresa").textContent = "Cámara / Entidad *";
+        document.getElementById("lblFieldContacto").textContent = "Autoridad / Interlocutor";
+        document.getElementById("lblFieldProducto").textContent = "Alcance / Perfil de Socios *";
+        document.getElementById("lblFormPilar1Title").textContent = "Beneficios Directos para Socios";
+        document.getElementById("lblFormPilar2Title").textContent = "Rol de NEXUM con la Cámara";
+        document.getElementById("lblFormPilar3Title").textContent = "Capacitación & Co-Branding";
+        document.getElementById("lblFormPilar4Title").textContent = "Próximo Paso Institucional";
+
+        // 2. Pre-cargar Propuesta Institucional
+        document.getElementById("txtProducto").value = "Programa de Internacionalización para Empresas Asociadas";
+        document.getElementById("txtNcm").value = "Convenio Marco Institucional";
+        document.getElementById("txtArancelesDesc").value = "Diagnósticos de Factibilidad Inicial 100% bonificados para las PyMEs socias de la entidad. Descuento preferencial del 20% en estudios integrales de factibilidad y apertura de mercados.";
+        document.getElementById("txtMercados").value = "Brazo Técnico Comex";
+        document.getElementById("txtMercadosDesc").value = "NEXUM actúa como consultorio comex externo de la Cámara, respondiendo consultas técnicas, operativas y arancelarias de las empresas asociadas.";
+        document.getElementById("txtNormas").value = "Webinars & Capacitación";
+        document.getElementById("txtNormasDesc").value = "Coordinación de talleres virtuales conjuntos, ciclos de formación en acceso a mercados de la región y difusión cruzada en canales institucionales.";
+        document.getElementById("txtMeetFecha").value = "Reunión Institucional (20 min)";
+        document.getElementById("txtMeetDesc").value = "Reunión con la Gerencia / Comisión Directiva para formalizar la carta de intención y fijar la fecha del primer taller de sensibilización exportadora.";
+
+        // 3. Banner Informativo
+        aiBadge.className = "p-2.5 mb-3 bg-sky-50 border border-sky-200 rounded-xl text-sky-900 text-xs flex flex-wrap items-center justify-between gap-2";
+        aiBadge.innerHTML = `
+          <div class="flex items-center gap-2">
+            <i data-lucide="landmark" class="w-4 h-4 text-sky-600 shrink-0"></i>
+            <span><strong>Modo Alianza Institucional:</strong> Generando Propuesta de Convenio y Derivación para Socios.</span>
+          </div>
+          <span class="text-[11px] font-semibold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <i data-lucide="handshake" class="w-3 h-3"></i>
+            <span>Convenio Marco</span>
+          </span>
+        `;
         aiBadge.classList.remove("hidden");
+
+        // 4. Adaptar Hoja A4
+        document.getElementById("lblTipoDocHeader").textContent = "Propuesta:";
+        document.getElementById("lblDocTitulo").textContent = "Propuesta de Alianza & Convenio Institucional";
+        document.getElementById("lblDocSubtitulo").textContent = "Programa de Asistencia y Desarrollo de Comercio Exterior para Asociados";
+        
         const statusAuditoria = document.getElementById("lblStatusAuditoria");
         if (statusAuditoria) {
-          statusAuditoria.innerHTML = `<i data-lucide="shield-check" class="w-3 h-3 inline mr-1 text-emerald-600"></i>Auditoría Verificada con IA`;
-          statusAuditoria.style.background = "#ecfdf5";
-          statusAuditoria.style.borderColor = "#a7f3d0";
-          statusAuditoria.style.color = "#065f46";
+          statusAuditoria.innerHTML = `<i data-lucide="landmark" class="w-3 h-3 inline mr-1 text-sky-600"></i>Convenio Institucional • 1 Pág.`;
+          statusAuditoria.style.background = "#eff6ff";
+          statusAuditoria.style.borderColor = "#bfdbfe";
+          statusAuditoria.style.color = "#1e40af";
         }
+
+        document.getElementById("lblFichaLabel1").textContent = "Cámara / Entidad:";
+        document.getElementById("lblFichaLabel2").textContent = "Autoridad / Contacto:";
+        document.getElementById("lblFichaLabel3").textContent = "Alcance Institucional:";
+
+        document.getElementById("lblPilar1Titulo").textContent = "1. Beneficios Directos para Socios";
+        document.getElementById("lblPilar2Titulo").textContent = "2. Brazo Técnico de Comercio Exterior";
+        document.getElementById("lblPilar3Titulo").textContent = "3. Capacitación & Co-Branding";
+        document.getElementById("lblPilar4Titulo").textContent = "4. Modalidad de Articulación y Próximo Paso";
+
+        document.getElementById("lblMetodologiaTitulo").textContent = "Articulación Público-Privada & Gremial Empresaria:";
+        document.getElementById("lblMetodologiaTexto").textContent = "NEXUM Trade Consulting promueve la articulación público-privada con cámaras sectoriales y binacionales. Nuestro objetivo es sumar valor tangible a la propuesta de la Cámara para sus asociados, transformando intenciones de exportación en operaciones reales sin costo operativo para la entidad.";
+
+        document.getElementById("lblCierreTexto").textContent = "Reunión privada por Google Meet con la Dirección Ejecutiva / Comisión de Comercio Exterior (20 min).";
+        document.getElementById("lblCtaBoton").textContent = "Coordinar Reunión";
+
       } else {
-        // Fallback a Presets heurísticos por sector
-        aiBadge.classList.add("hidden");
-        const sectorLower = (lead.sector || lead.operacion || "").toLowerCase();
-        let preset = SECTOR_PRESETS.veterinaria;
-        let productoSugerido = "Fármacos & Especialidades Veterinarias";
+        // ==========================================
+        // CASO B: PYME INDUSTRIAL (PRODUCTO FÍSICO)
+        // ==========================================
+        // 1. Restaurar Etiquetas del Formulario
+        document.getElementById("lblFieldEmpresa").textContent = "Empresa *";
+        document.getElementById("lblFieldContacto").textContent = "Contacto / Cargo";
+        document.getElementById("lblFieldProducto").textContent = "Producto / Línea Clave *";
+        document.getElementById("lblFormPilar1Title").textContent = "NCM Preliminar & Aranceles";
+        document.getElementById("lblFormPilar2Title").textContent = "Top Mercados Objetivo Inmediatos";
+        document.getElementById("lblFormPilar3Title").textContent = "Normativa & Barreras Técnicas";
+        document.getElementById("lblFormPilar4Title").textContent = "Roadmap Propuesto & Agenda Meet";
 
-        if (sectorLower.includes("maquinaria") || sectorLower.includes("agrícola") || sectorLower.includes("agtech")) {
-          preset = SECTOR_PRESETS.maquinaria;
-          productoSugerido = "Maquinaria Agrícola & Equipamiento de Siembra/Fertilización";
-        } else if (sectorLower.includes("médica") || sectorLower.includes("salud") || sectorLower.includes("odontol") || sectorLower.includes("hospital")) {
-          preset = SECTOR_PRESETS.tecnologia_medica;
-          productoSugerido = "Tecnología & Equipamiento Médico";
-        } else if (sectorLower.includes("alimento") || sectorLower.includes("gourmet") || sectorLower.includes("infusion") || sectorLower.includes("dulce")) {
-          preset = SECTOR_PRESETS.alimentos;
-          productoSugerido = "Alimentos Procesados con Valor Agregado";
-        } else if (sectorLower.includes("cosmética") || sectorLower.includes("dermo")) {
-          preset = SECTOR_PRESETS.veterinaria;
-          productoSugerido = "Línea Dermocosmética & Cuidado Personal";
+        // 2. Restaurar Hoja A4
+        document.getElementById("lblTipoDocHeader").textContent = "Informe:";
+        document.getElementById("lblDocTitulo").textContent = "Diagnóstico de Factibilidad Exportadora";
+        document.getElementById("lblDocSubtitulo").textContent = "Evaluación Técnica Inicial & Hoja de Ruta para PyMEs";
+        document.getElementById("lblFichaLabel1").textContent = "Empresa Evaluada:";
+        document.getElementById("lblFichaLabel2").textContent = "Interlocutor:";
+        document.getElementById("lblFichaLabel3").textContent = "Línea de Productos Analizada:";
+        document.getElementById("lblPilar1Titulo").textContent = "1. Posición Arancelaria & Tratamiento";
+        document.getElementById("lblPilar2Titulo").textContent = "2. Mercados de Oportunidad Inmediata";
+        document.getElementById("lblPilar3Titulo").textContent = "3. Barreras Técnicas & Regulatorias";
+        document.getElementById("lblPilar4Titulo").textContent = "4. Próxima Etapa Operativa Sugerida";
+        document.getElementById("lblMetodologiaTitulo").textContent = "Metodología de Implementación NEXUM:";
+        document.getElementById("lblMetodologiaTexto").textContent = "Este diagnóstico preliminar forma parte del protocolo de pre-factibilidad de NEXUM Trade Consulting. Nuestro servicio integral acompaña a la PyME desde la clasificación arancelaria y homologaciones técnicas hasta el cierre del primer contrato de distribución internacional y cobro de divisas.";
+        document.getElementById("lblCierreTexto").textContent = "Presentación técnica y respuesta de consultas en reunión privada por Google Meet (20-30 min).";
+        document.getElementById("lblCtaBoton").textContent = "Agendá con NEXUM";
+
+        // 3. Verificar si tiene diagnóstico técnico real enriquecido con IA
+        let comexDiag = null;
+        if (lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:")) {
+          try {
+            const match = lead.notas.match(/<!-- COMEX_DIAGNOSTICO:\s*(\{[\s\S]*?\})\s*-->/);
+            if (match) {
+              comexDiag = JSON.parse(match[1]);
+            }
+          } catch (e) {
+            console.warn("Error parseando COMEX_DIAGNOSTICO:", e);
+          }
         }
 
-        document.getElementById("txtProducto").value = productoSugerido;
-        document.getElementById("txtNcm").value = preset.ncm;
-        document.getElementById("txtArancelesDesc").value = preset.aranceles;
-        document.getElementById("txtMercados").value = preset.mercados;
-        document.getElementById("txtMercadosDesc").value = preset.mercadosDesc;
-        document.getElementById("txtNormas").value = preset.normas;
-        document.getElementById("txtNormasDesc").value = preset.normasDesc;
-        document.getElementById("txtMeetFecha").value = preset.meet;
-        document.getElementById("txtMeetDesc").value = preset.meetDesc;
+        if (comexDiag) {
+          document.getElementById("txtProducto").value = comexDiag.producto_estrella || "";
+          document.getElementById("txtNcm").value = comexDiag.ncm_codigo || "";
+          document.getElementById("txtArancelesDesc").value = comexDiag.aranceles_info || "";
+          document.getElementById("txtMercados").value = comexDiag.mercados_sugeridos || "";
+          document.getElementById("txtMercadosDesc").value = comexDiag.mercados_desc || "";
+          document.getElementById("txtNormas").value = comexDiag.normativas_clave || "";
+          document.getElementById("txtNormasDesc").value = comexDiag.normativas_desc || "";
+          document.getElementById("txtMeetFecha").value = "Reunión Técnica Meet (20 min)";
+          document.getElementById("txtMeetDesc").value = comexDiag.meet_desc || "Cálculo de precio FOB/EXW sugerido y validación de homologaciones en destino.";
+          
+          aiBadge.className = "p-2.5 mb-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex flex-wrap items-center justify-between gap-2";
+          aiBadge.innerHTML = `
+            <div class="flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+              <span><strong>Auditoría Comex Verificada con IA</strong> (Gemini 2.5 Flash + Web Grounding oficial)</span>
+            </div>
+            <span id="aiSourcesBadge" class="text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <i data-lucide="shield-check" class="w-3 h-3"></i>
+              <span>NCM & Catálogo Real</span>
+            </span>
+          `;
+          aiBadge.classList.remove("hidden");
 
-        const statusAuditoria = document.getElementById("lblStatusAuditoria");
-        if (statusAuditoria) {
-          statusAuditoria.textContent = "Relevamiento Express • 1 Pág.";
-          statusAuditoria.style.background = "#f0fdf4";
-          statusAuditoria.style.borderColor = "#bbf7d0";
-          statusAuditoria.style.color = "#166534";
+          const statusAuditoria = document.getElementById("lblStatusAuditoria");
+          if (statusAuditoria) {
+            statusAuditoria.innerHTML = `<i data-lucide="shield-check" class="w-3 h-3 inline mr-1 text-emerald-600"></i>Auditoría Verificada con IA`;
+            statusAuditoria.style.background = "#ecfdf5";
+            statusAuditoria.style.borderColor = "#a7f3d0";
+            statusAuditoria.style.color = "#065f46";
+          }
+        } else {
+          aiBadge.classList.add("hidden");
+          const sectorLower = (lead.sector || lead.operacion || "").toLowerCase();
+          let preset = SECTOR_PRESETS.veterinaria;
+          let productoSugerido = "Fármacos & Especialidades Veterinarias";
+
+          if (sectorLower.includes("maquinaria") || sectorLower.includes("agrícola") || sectorLower.includes("agtech")) {
+            preset = SECTOR_PRESETS.maquinaria;
+            productoSugerido = "Maquinaria Agrícola & Equipamiento de Siembra/Fertilización";
+          } else if (sectorLower.includes("médica") || sectorLower.includes("salud") || sectorLower.includes("odontol") || sectorLower.includes("hospital")) {
+            preset = SECTOR_PRESETS.tecnologia_medica;
+            productoSugerido = "Tecnología & Equipamiento Médico";
+          } else if (sectorLower.includes("alimento") || sectorLower.includes("gourmet") || sectorLower.includes("infusion") || sectorLower.includes("dulce")) {
+            preset = SECTOR_PRESETS.alimentos;
+            productoSugerido = "Alimentos Procesados con Valor Agregado";
+          } else if (sectorLower.includes("cosmética") || sectorLower.includes("dermo")) {
+            preset = SECTOR_PRESETS.veterinaria;
+            productoSugerido = "Línea Dermocosmética & Cuidado Personal";
+          }
+
+          document.getElementById("txtProducto").value = productoSugerido;
+          document.getElementById("txtNcm").value = preset.ncm;
+          document.getElementById("txtArancelesDesc").value = preset.aranceles;
+          document.getElementById("txtMercados").value = preset.mercados;
+          document.getElementById("txtMercadosDesc").value = preset.mercadosDesc;
+          document.getElementById("txtNormas").value = preset.normas;
+          document.getElementById("txtNormasDesc").value = preset.normasDesc;
+          document.getElementById("txtMeetFecha").value = preset.meet;
+          document.getElementById("txtMeetDesc").value = preset.meetDesc;
+
+          const statusAuditoria = document.getElementById("lblStatusAuditoria");
+          if (statusAuditoria) {
+            statusAuditoria.textContent = "Relevamiento Express • 1 Pág.";
+            statusAuditoria.style.background = "#f0fdf4";
+            statusAuditoria.style.borderColor = "#bbf7d0";
+            statusAuditoria.style.color = "#166534";
+          }
         }
       }
 
@@ -749,27 +879,27 @@
     }
 
     function updatePreview() {
-      const empresa = document.getElementById("txtEmpresa").value.trim() || "[Nombre de la Empresa / PyME]";
-      const contacto = document.getElementById("txtContacto").value.trim() || "[Nombre del Contacto / Cargo]";
-      const producto = document.getElementById("txtProducto").value.trim() || "[Línea de productos a evaluar]";
+      const empresa = document.getElementById("txtEmpresa").value.trim() || (currentLeadType === 'alianza' ? "[Cámara / Entidad]" : "[Nombre de la Empresa / PyME]");
+      const contacto = document.getElementById("txtContacto").value.trim() || (currentLeadType === 'alianza' ? "[Autoridad / Interlocutor]" : "[Nombre del Contacto / Cargo]");
+      const producto = document.getElementById("txtProducto").value.trim() || (currentLeadType === 'alianza' ? "[Programa de Asistencia Comex]" : "[Línea de productos a evaluar]");
 
-      const ncm = document.getElementById("txtNcm").value.trim() || "3004.90.99";
-      const arancelesDesc = document.getElementById("txtArancelesDesc").value.trim() || "Derechos de exportación: 0%. Reintegro aplicable. Arancel preferencial Mercosur: 0%.";
+      const ncm = document.getElementById("txtNcm").value.trim() || (currentLeadType === 'alianza' ? "Convenio Institucional" : "3004.90.99");
+      const arancelesDesc = document.getElementById("txtArancelesDesc").value.trim();
 
-      const mercados = document.getElementById("txtMercados").value.trim() || "Paraguay & Uruguay";
-      const mercadosDesc = document.getElementById("txtMercadosDesc").value.trim() || "Mercados limítrofes con logística terrestre consolidada y alta demanda por manufacturas argentinas.";
+      const mercados = document.getElementById("txtMercados").value.trim() || (currentLeadType === 'alianza' ? "Brazo Técnico" : "Paraguay & Uruguay");
+      const mercadosDesc = document.getElementById("txtMercadosDesc").value.trim();
 
-      const normas = document.getElementById("txtNormas").value.trim() || "Requisitos Sanitarios";
-      const normasDesc = document.getElementById("txtNormasDesc").value.trim() || "Se requiere Certificado de Libre Venta (CLV) y homologación técnica mediante distribuidor local.";
+      const normas = document.getElementById("txtNormas").value.trim() || (currentLeadType === 'alianza' ? "Capacitación & Difusión" : "Requisitos Sanitarios");
+      const normasDesc = document.getElementById("txtNormasDesc").value.trim();
 
-      const meet = document.getElementById("txtMeetFecha").value.trim() || "Reunión de 20 min";
-      const meetDesc = document.getElementById("txtMeetDesc").value.trim() || "Cálculo de precio FOB/EXW sugerido y armado del plan de prospección en sesión por Meet.";
+      const meet = document.getElementById("txtMeetFecha").value.trim() || (currentLeadType === 'alianza' ? "Reunión Institucional" : "Reunión de 20 min");
+      const meetDesc = document.getElementById("txtMeetDesc").value.trim();
 
       document.getElementById("lblEmpresa").textContent = empresa;
       document.getElementById("lblContacto").textContent = contacto;
       document.getElementById("lblProducto").textContent = producto;
 
-      document.getElementById("lblNcmBadge").textContent = `NCM: ${ncm}`;
+      document.getElementById("lblNcmBadge").textContent = currentLeadType === 'alianza' ? ncm : `NCM: ${ncm}`;
       document.getElementById("lblArancelesTexto").textContent = arancelesDesc;
 
       document.getElementById("lblMercadosBadge").textContent = mercados;
@@ -783,25 +913,31 @@
 
       // Código de documento dinámico
       const cleanEmp = empresa.replace(/[^a-zA-Z0-9]/g, "").slice(0, 8).toUpperCase() || "NTC";
-      document.getElementById("lblCodigoDoc").textContent = `NEXUM-DIAG-${cleanEmp}`;
+      const prefix = currentLeadType === 'alianza' ? 'NEXUM-ALIANZA' : 'NEXUM-DIAG';
+      document.getElementById("lblCodigoDoc").textContent = `${prefix}-${cleanEmp}`;
 
       const options = { day: 'numeric', month: 'long', year: 'numeric' };
       document.getElementById("lblFechaActual").textContent = new Date().toLocaleDateString('es-ES', options);
     }
 
     function copiarPitchMensaje() {
-      const empresa = document.getElementById("txtEmpresa").value.trim() || "tu empresa";
+      const empresa = document.getElementById("txtEmpresa").value.trim() || (currentLeadType === 'alianza' ? "la Cámara" : "tu empresa");
       const contacto = document.getElementById("txtContacto").value.trim() || "Estimado";
       const mercados = document.getElementById("txtMercados").value.trim() || "la región";
       const primerNombre = contacto.split(" ")[0].replace(/[^a-zA-ZáéíóúÁÉÍÓÚ]/g, "") || "Estimado/a";
 
-      const pitch = `Hola ${primerNombre}, ¿cómo estás?\n\nTe comparto adjunto un anticipo de 1 carilla con el Diagnóstico Inicial de Factibilidad Exportadora que preparamos para ${empresa}, evaluando aranceles Mercosur y nichos de demanda inmediata en ${mercados}.\n\n¿Te parece que coordinemos un Meet breve de 20 minutos esta semana para ver los números de factibilidad y precios FOB exactos?\n\nQuedo a tu disposición.\n\nJuan Oviedo\nSocio Co-Fundador | NEXUM Trade Consulting\nhttps://nexumtradeconsulting.com.ar`;
+      let pitch = "";
+      if (currentLeadType === 'alianza') {
+        pitch = `Hola ${primerNombre}, ¿cómo estás?\n\nTe comparto adjunta una breve propuesta de Convenio de Cooperación Institucional entre NEXUM Trade Consulting y ${empresa}, orientada a brindar asistencia técnica en comercio exterior y diagnósticos iniciales de exportación 100% bonificados para sus empresas asociadas.\n\n¿Te parece que coordinemos un Meet breve de 20 minutos esta semana con la Dirección Ejecutiva o Comisión de Comercio Exterior para evaluar la articulación?\n\nQuedo a tu disposición.\n\nJuan Oviedo\nSocio Co-Fundador | NEXUM Trade Consulting\nhttps://nexumtradeconsulting.com.ar`;
+      } else {
+        pitch = `Hola ${primerNombre}, ¿cómo estás?\n\nTe comparto adjunto un anticipo de 1 carilla con el Diagnóstico Inicial de Factibilidad Exportadora que preparamos para ${empresa}, evaluando aranceles Mercosur y nichos de demanda inmediata en ${mercados}.\n\n¿Te parece que coordinemos un Meet breve de 20 minutos esta semana para ver los números de factibilidad y precios FOB exactos?\n\nQuedo a tu disposición.\n\nJuan Oviedo\nSocio Co-Fundador | NEXUM Trade Consulting\nhttps://nexumtradeconsulting.com.ar`;
+      }
 
       navigator.clipboard.writeText(pitch).then(() => {
         const btnLabel = document.getElementById("btnCopyPitchLabel");
         btnLabel.textContent = "¡Mensaje Copiado!";
         setTimeout(() => {
-          btnLabel.textContent = "Copiar Mensaje Meet";
+          btnLabel.textContent = currentLeadType === 'alianza' ? "Copiar Pitch Institucional" : "Copiar Mensaje Meet";
         }, 2000);
       }).catch(err => {
         alert("Mensaje para copiar:\n\n" + pitch);
