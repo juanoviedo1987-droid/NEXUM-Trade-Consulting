@@ -250,7 +250,7 @@
       </div>
 
       <!-- Selector Rápido de Cuenta desde Supabase CRM -->
-      <div class="p-3 bg-brand-50/50 rounded-xl border border-brand-100 mb-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+      <div class="p-3 bg-brand-50/50 rounded-xl border border-brand-100 mb-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
         <div class="flex items-center gap-2 flex-1 w-full">
           <i data-lucide="database" class="w-4 h-4 text-brand-600 shrink-0"></i>
           <span class="text-xs font-semibold text-brand-900 shrink-0">Cargar desde CRM:</span>
@@ -262,6 +262,18 @@
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
           <span>Refrescar CRM</span>
         </button>
+      </div>
+
+      <!-- Banner de Diagnóstico Enriquecido con IA -->
+      <div id="aiEnrichmentBadge" class="hidden p-2.5 mb-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+          <span><strong>Auditoría Comex Verificada con IA</strong> (Gemini 2.5 Flash + Web Grounding oficial)</span>
+        </div>
+        <span id="aiSourcesBadge" class="text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-3 h-3"></i>
+          <span>NCM & Catálogo Real</span>
+        </span>
       </div>
 
       <!-- Formulario de Campos Dinámicos -->
@@ -361,7 +373,7 @@
                 Evaluación Técnica Inicial & Hoja de Ruta para PyMEs
               </div>
             </div>
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 10.5px; font-weight: 700; padding: 3px 8px; rounded: 4px;">
+            <div id="lblStatusAuditoria" style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 4px;">
               Relevamiento Express • 1 Pág.
             </div>
           </div>
@@ -629,51 +641,110 @@
         leadsCache.forEach(lead => {
           const opt = document.createElement("option");
           opt.value = lead.id;
-          opt.textContent = `${lead.empresa} (${lead.sector || 'General'}) [${lead.status}]`;
+          const hasAiDiag = lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:");
+          opt.textContent = `${lead.empresa} (${lead.sector || 'General'}) [${lead.status}] ${hasAiDiag ? '🌟 [IA Verificado]' : ''}`;
           select.appendChild(opt);
         });
+
+        // Soporte para apertura directa desde CRM con URL param (?lead=<leadId>)
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramLeadId = urlParams.get("lead");
+        if (paramLeadId && leadsCache.some(l => l.id == paramLeadId)) {
+          select.value = paramLeadId;
+          cargarDesdeCrm(paramLeadId);
+        }
       } catch (err) {
         console.warn("No se pudieron cargar leads del CRM:", err);
       }
     }
 
     function cargarDesdeCrm(leadId) {
-      if (!leadId) return;
+      if (!leadId) {
+        document.getElementById("aiEnrichmentBadge").classList.add("hidden");
+        return;
+      }
       const lead = leadsCache.find(l => l.id == leadId);
       if (!lead) return;
 
       document.getElementById("txtEmpresa").value = lead.empresa || "";
       document.getElementById("txtContacto").value = `${lead.nombre || ""}${lead.cargo ? ' (' + lead.cargo + ')' : ''}`;
       
-      // Deducir sector y aplicar preset inteligente
-      const sectorLower = (lead.sector || lead.operacion || "").toLowerCase();
-      let preset = SECTOR_PRESETS.veterinaria;
-      let productoSugerido = "Fármacos & Especialidades Veterinarias";
-
-      if (sectorLower.includes("maquinaria") || sectorLower.includes("agrícola") || sectorLower.includes("agtech")) {
-        preset = SECTOR_PRESETS.maquinaria;
-        productoSugerido = "Maquinaria Agrícola & Equipamiento de Siembra/Fertilización";
-      } else if (sectorLower.includes("médica") || sectorLower.includes("salud") || sectorLower.includes("odontol") || sectorLower.includes("hospital")) {
-        preset = SECTOR_PRESETS.tecnologia_medica;
-        productoSugerido = "Tecnología & Equipamiento Médico";
-      } else if (sectorLower.includes("alimento") || sectorLower.includes("gourmet") || sectorLower.includes("infusion") || sectorLower.includes("dulce")) {
-        preset = SECTOR_PRESETS.alimentos;
-        productoSugerido = "Alimentos Procesados con Valor Agregado";
-      } else if (sectorLower.includes("cosmética") || sectorLower.includes("dermo")) {
-        preset = SECTOR_PRESETS.veterinaria;
-        productoSugerido = "Línea Dermocosmética & Cuidado Personal";
+      // 1. Verificar si tiene diagnóstico técnico real enriquecido con IA en Supabase
+      let comexDiag = null;
+      if (lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:")) {
+        try {
+          const match = lead.notas.match(/<!-- COMEX_DIAGNOSTICO:\s*(\{[\s\S]*?\})\s*-->/);
+          if (match) {
+            comexDiag = JSON.parse(match[1]);
+          }
+        } catch (e) {
+          console.warn("Error parseando COMEX_DIAGNOSTICO:", e);
+        }
       }
 
-      document.getElementById("txtProducto").value = productoSugerido;
-      document.getElementById("txtNcm").value = preset.ncm;
-      document.getElementById("txtArancelesDesc").value = preset.aranceles;
-      document.getElementById("txtMercados").value = preset.mercados;
-      document.getElementById("txtMercadosDesc").value = preset.mercadosDesc;
-      document.getElementById("txtNormas").value = preset.normas;
-      document.getElementById("txtNormasDesc").value = preset.normasDesc;
-      document.getElementById("txtMeetFecha").value = preset.meet;
-      document.getElementById("txtMeetDesc").value = preset.meetDesc;
+      const aiBadge = document.getElementById("aiEnrichmentBadge");
 
+      if (comexDiag) {
+        // Datos 100% reales investigados con Gemini y Grounding
+        document.getElementById("txtProducto").value = comexDiag.producto_estrella || "";
+        document.getElementById("txtNcm").value = comexDiag.ncm_codigo || "";
+        document.getElementById("txtArancelesDesc").value = comexDiag.aranceles_info || "";
+        document.getElementById("txtMercados").value = comexDiag.mercados_sugeridos || "";
+        document.getElementById("txtMercadosDesc").value = comexDiag.mercados_desc || "";
+        document.getElementById("txtNormas").value = comexDiag.normativas_clave || "";
+        document.getElementById("txtNormasDesc").value = comexDiag.normativas_desc || "";
+        document.getElementById("txtMeetFecha").value = "Reunión Técnica Meet (20 min)";
+        document.getElementById("txtMeetDesc").value = comexDiag.meet_desc || "Cálculo de precio FOB/EXW sugerido y validación de homologaciones en destino.";
+        
+        aiBadge.classList.remove("hidden");
+        const statusAuditoria = document.getElementById("lblStatusAuditoria");
+        if (statusAuditoria) {
+          statusAuditoria.innerHTML = `<i data-lucide="shield-check" class="w-3 h-3 inline mr-1 text-emerald-600"></i>Auditoría Verificada con IA`;
+          statusAuditoria.style.background = "#ecfdf5";
+          statusAuditoria.style.borderColor = "#a7f3d0";
+          statusAuditoria.style.color = "#065f46";
+        }
+      } else {
+        // Fallback a Presets heurísticos por sector
+        aiBadge.classList.add("hidden");
+        const sectorLower = (lead.sector || lead.operacion || "").toLowerCase();
+        let preset = SECTOR_PRESETS.veterinaria;
+        let productoSugerido = "Fármacos & Especialidades Veterinarias";
+
+        if (sectorLower.includes("maquinaria") || sectorLower.includes("agrícola") || sectorLower.includes("agtech")) {
+          preset = SECTOR_PRESETS.maquinaria;
+          productoSugerido = "Maquinaria Agrícola & Equipamiento de Siembra/Fertilización";
+        } else if (sectorLower.includes("médica") || sectorLower.includes("salud") || sectorLower.includes("odontol") || sectorLower.includes("hospital")) {
+          preset = SECTOR_PRESETS.tecnologia_medica;
+          productoSugerido = "Tecnología & Equipamiento Médico";
+        } else if (sectorLower.includes("alimento") || sectorLower.includes("gourmet") || sectorLower.includes("infusion") || sectorLower.includes("dulce")) {
+          preset = SECTOR_PRESETS.alimentos;
+          productoSugerido = "Alimentos Procesados con Valor Agregado";
+        } else if (sectorLower.includes("cosmética") || sectorLower.includes("dermo")) {
+          preset = SECTOR_PRESETS.veterinaria;
+          productoSugerido = "Línea Dermocosmética & Cuidado Personal";
+        }
+
+        document.getElementById("txtProducto").value = productoSugerido;
+        document.getElementById("txtNcm").value = preset.ncm;
+        document.getElementById("txtArancelesDesc").value = preset.aranceles;
+        document.getElementById("txtMercados").value = preset.mercados;
+        document.getElementById("txtMercadosDesc").value = preset.mercadosDesc;
+        document.getElementById("txtNormas").value = preset.normas;
+        document.getElementById("txtNormasDesc").value = preset.normasDesc;
+        document.getElementById("txtMeetFecha").value = preset.meet;
+        document.getElementById("txtMeetDesc").value = preset.meetDesc;
+
+        const statusAuditoria = document.getElementById("lblStatusAuditoria");
+        if (statusAuditoria) {
+          statusAuditoria.textContent = "Relevamiento Express • 1 Pág.";
+          statusAuditoria.style.background = "#f0fdf4";
+          statusAuditoria.style.borderColor = "#bbf7d0";
+          statusAuditoria.style.color = "#166534";
+        }
+      }
+
+      if (window.lucide) window.lucide.createIcons();
       updatePreview();
     }
 

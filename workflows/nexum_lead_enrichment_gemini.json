@@ -1,0 +1,104 @@
+{
+  "name": "NEXUM - Lead Comex Auto-Enrichment (Google AI)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "nexum-cron-trigger",
+      "name": "Cada 15 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?select=*&notas=not.ilike.*COMEX_DIAGNOSTICO*&origen=neq.alianza_institucional&limit=5",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "get-unprocessed-leads",
+      "name": "Consultar Leads Sin Diagnóstico",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"Actuá como Especialista Senior en Comercio Exterior de NEXUM Trade Consulting.\\nEmpresa: \\\"{{ $json.empresa }}\\\"\\nSector: \\\"{{ $json.sector }}\\\"\\n\\nInstrucciones:\\n1. Buscar la manufactura principal / producto estrella de exportación.\\n2. Clasificar la posición NCM exacta a 8 dígitos en Mercosur (XXXX.XX.XX).\\n3. Describir la posición arancelaria.\\n4. Detallar arancel Mercosur (0% ACE 18) y derechos/reintegros.\\n5. Sugerir 2 mercados limítrofes y normativas requeridas (SENASA/MAPA/SENACSA).\\n\\nResponde ÚNICAMENTE en JSON:\\n{\\\"producto_estrella\\\": \\\"...\\\", \\\"ncm_codigo\\\": \\\"...\\\", \\\"ncm_descripcion\\\": \\\"...\\\", \\\"aranceles_info\\\": \\\"...\\\", \\\"mercados_sugeridos\\\": \\\"...\\\", \\\"mercados_desc\\\": \\\"...\\\", \\\"normativas_clave\\\": \\\"...\\\", \\\"normativas_desc\\\": \\\"...\\\", \\\"meet_desc\\\": \\\"...\\\"}\"\n    }]\n  }],\n  \"tools\": [{ \"googleSearch\": {} }],\n  \"generationConfig\": { \"temperature\": 0.1 }\n}",
+        "options": {}
+      },
+      "id": "gemini-audit-node",
+      "name": "Auditoría Comex con Google AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?id=eq.{{ $('Consultar Leads Sin Diagnóstico').item.json.id }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"notas\": \"{{ $('Consultar Leads Sin Diagnóstico').item.json.notas || '' }}\\n\\n<!-- COMEX_DIAGNOSTICO: \" + JSON.stringify($json.candidates[0].content.parts[0].text.match(/\\{[\\s\\S]*\\}/)[0]) + \" -->\"\n}",
+        "options": {}
+      },
+      "id": "update-lead-supabase",
+      "name": "Guardar en Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Cada 15 minutos": {
+      "main": [
+        [
+          {
+            "node": "Consultar Leads Sin Diagnóstico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Leads Sin Diagnóstico": {
+      "main": [
+        [
+          {
+            "node": "Auditoría Comex con Google AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auditoría Comex con Google AI": {
+      "main": [
+        [
+          {
+            "node": "Guardar en Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
