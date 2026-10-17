@@ -176,13 +176,13 @@
           <i data-lucide="kanban" class="w-3.5 h-3.5 text-slate-500"></i>
           <span>2. CRM</span>
         </a>
-        <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
-          <i data-lucide="calculator" class="w-3.5 h-3.5 text-brand-500"></i>
-          <span>3. Cotizar</span>
-        </a>
         <a href="diagnostico-express.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
           <i data-lucide="file-check" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>4. Diagnóstico</span>
+          <span>3. Diagnóstico</span>
+        </a>
+        <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-brand-500"></i>
+          <span>4. Cotizar</span>
         </a>
       </nav>
 
@@ -426,7 +426,7 @@
   </div>
 
   <!-- ================= BOTTOM NAVIGATION BAR FIJA PARA CELULARES ================= -->
-  <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-50 px-4 py-2 flex items-center justify-around shadow-lg no-print">
+  <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-50 px-3 py-2 flex items-center justify-around shadow-lg no-print">
     <a href="procedimientos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
       <i data-lucide="book-open" class="w-4 h-4"></i>
       <span class="text-[10px] font-semibold">1. SOP</span>
@@ -435,15 +435,19 @@
       <i data-lucide="kanban" class="w-4 h-4"></i>
       <span class="text-[10px] font-semibold">2. CRM</span>
     </a>
+    <a href="diagnostico-express.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
+      <i data-lucide="file-check" class="w-4 h-4 text-slate-500"></i>
+      <span class="text-[10px] font-semibold">3. Diag.</span>
+    </a>
     <a href="presupuestos.html" class="flex flex-col items-center gap-1 text-brand-600 font-bold">
       <i data-lucide="calculator" class="w-4 h-4 text-brand-500"></i>
-      <span class="text-[10px]">3. Cotizar</span>
+      <span class="text-[10px]">4. Cotizar</span>
     </a>
-    <button onclick="imprimirYGuardar()" class="flex flex-col items-center gap-1 text-slate-700 hover:text-brand-600">
+    <button onclick="imprimirYGuardar()" class="flex flex-col items-center gap-1 text-slate-700 hover:text-brand-600 cursor-pointer">
       <i data-lucide="printer" class="w-4 h-4"></i>
       <span class="text-[10px] font-semibold">PDF</span>
     </button>
-    </nav>
+  </nav>
   </div> <!-- Fin cotizadorApp -->
 
   <!-- SCRIPT DE INTERACTIVIDAD & SUPABASE AUTH SINGLE SIGN-ON -->

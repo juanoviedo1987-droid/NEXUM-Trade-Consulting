@@ -208,13 +208,13 @@
           <i data-lucide="kanban" class="w-3.5 h-3.5 text-brand-500"></i>
           <span>2. CRM</span>
         </a>
-        <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
-          <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>3. Cotizar</span>
-        </a>
         <a href="diagnostico-express.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
           <i data-lucide="file-check" class="w-3.5 h-3.5 text-slate-500"></i>
-          <span>4. Diagnóstico</span>
+          <span>3. Diagnóstico</span>
+        </a>
+        <a href="presupuestos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition">
+          <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>4. Cotizar</span>
         </a>
       </nav>
 
@@ -313,22 +313,74 @@
         </div>
       </div>
 
-      <!-- Botón Desplegable de Filtros en Mobile + Contador -->
+      <!-- Pestañas de Segmentación: Todos / Comerciales / Alianzas -->
+      <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs font-semibold">
+        <button 
+          type="button" 
+          id="btnSegAll" 
+          onclick="setSegmentFilter('all')" 
+          class="px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold"
+        >
+          Todos <span id="segCountAll" class="text-[10px] opacity-75 font-normal">(0)</span>
+        </button>
+        <button 
+          type="button" 
+          id="btnSegCommercial" 
+          onclick="setSegmentFilter('commercial')" 
+          class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition"
+        >
+          Comerciales <span id="segCountCommercial" class="text-[10px] opacity-75 font-normal">(0)</span>
+        </button>
+        <button 
+          type="button" 
+          id="btnSegAlliances" 
+          onclick="setSegmentFilter('alliances')" 
+          class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition"
+        >
+          Alianzas & Cámaras <span id="segCountAlliances" class="text-[10px] opacity-75 font-normal">(0)</span>
+        </button>
+      </div>
+
+      <!-- Switch de Visualización: Tablero Kanban vs Lista Tabla -->
       <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+        
+        <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs font-semibold">
+          <button 
+            type="button" 
+            id="btnViewKanban" 
+            onclick="switchViewMode('kanban')" 
+            class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold cursor-pointer"
+            title="Vista Tablero Kanban del Embudo Comercial"
+          >
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+            <span>Kanban</span>
+          </button>
+          <button 
+            type="button" 
+            id="btnViewTable" 
+            onclick="switchViewMode('table')" 
+            class="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer"
+            title="Vista de Tabla Detallada"
+          >
+            <i data-lucide="list" class="w-3.5 h-3.5"></i>
+            <span>Tabla</span>
+          </button>
+        </div>
+
         <button 
           type="button" 
           onclick="toggleMobileFilters()" 
           id="btnMobileFilters"
-          class="sm:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-300 shadow-2xs hover:bg-slate-200 transition"
+          class="sm:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-300 shadow-2xs hover:bg-slate-200 transition"
         >
           <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-brand-600"></i>
-          <span>Filtros Avanzados</span>
+          <span>Filtros</span>
           <span id="activeFiltersBadge" class="hidden w-2 h-2 rounded-full bg-brand-500"></span>
         </button>
 
         <!-- Contador Filtrados -->
-        <div class="text-[11px] text-slate-500 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-200 font-medium">
-          <span id="filteredCount" class="font-bold text-slate-900">0</span> prospectos
+        <div class="text-[11px] text-slate-500 px-2.5 py-1 bg-slate-50 rounded-lg border border-slate-200 font-medium shrink-0">
+          <span id="filteredCount" class="font-bold text-slate-900">0</span>
         </div>
       </div>
 
@@ -404,10 +456,95 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!-- 3. VISTA DE TABLA PRINCIPAL (BLANCA, LIMPIA Y DE ALTO CONTRASTE)       -->
+    <!-- 3. CONTENIDO PRINCIPAL: VISTA KANBAN & VISTA DE TABLA                    -->
     <!-- ======================================================================= -->
-    <main class="flex-1 overflow-y-auto p-4 sm:p-5 pb-24 sm:pb-5">
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+    <main class="flex-1 overflow-y-auto p-3 sm:p-5 pb-24 sm:pb-5">
+      
+      <!-- Estado de carga global -->
+      <div id="tableLoading" class="p-12 text-center text-slate-500 flex flex-col items-center justify-center gap-2 bg-white rounded-xl border border-slate-200">
+        <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-brand-500"></i>
+        <p class="text-xs font-medium">Cargando base de datos comercial...</p>
+      </div>
+
+      <!-- VISTA A: TABLERO KANBAN DE ALTO IMPACTO -->
+      <div id="kanbanViewContainer" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 items-start overflow-x-auto pb-4">
+          
+          <!-- Columna 1: Prospectos Outbound -->
+          <div class="bg-slate-200/60 rounded-xl border border-slate-300/80 flex flex-col max-h-[calc(100vh-210px)] min-w-[260px]">
+            <div class="p-3 border-b border-slate-300/80 flex items-center justify-between bg-slate-100 rounded-t-xl">
+              <div class="flex items-center gap-1.5 font-bold text-xs text-slate-800">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                <span>Prospecto Outbound</span>
+              </div>
+              <span id="kanbanCount_prospecto" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-slate-700 border border-slate-300">0</span>
+            </div>
+            <div id="kanbanCol_prospecto" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'prospecto')" class="p-2.5 space-y-2.5 overflow-y-auto flex-1 min-h-[140px] transition-colors rounded-b-xl">
+              <!-- Tarjetas dinámicas -->
+            </div>
+          </div>
+
+          <!-- Columna 2: En Conversación -->
+          <div class="bg-cyan-50/60 rounded-xl border border-cyan-200 flex flex-col max-h-[calc(100vh-210px)] min-w-[260px]">
+            <div class="p-3 border-b border-cyan-200 flex items-center justify-between bg-cyan-100/60 rounded-t-xl">
+              <div class="flex items-center gap-1.5 font-bold text-xs text-cyan-900">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+                <span>En Conversación</span>
+              </div>
+              <span id="kanbanCount_contactado" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-cyan-800 border border-cyan-300">0</span>
+            </div>
+            <div id="kanbanCol_contactado" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'contactado')" class="p-2.5 space-y-2.5 overflow-y-auto flex-1 min-h-[140px] transition-colors rounded-b-xl">
+              <!-- Tarjetas dinámicas -->
+            </div>
+          </div>
+
+          <!-- Columna 3: Reunión Agendada -->
+          <div class="bg-amber-50/60 rounded-xl border border-amber-200 flex flex-col max-h-[calc(100vh-210px)] min-w-[260px]">
+            <div class="p-3 border-b border-amber-200 flex items-center justify-between bg-amber-100/60 rounded-t-xl">
+              <div class="flex items-center gap-1.5 font-bold text-xs text-amber-900">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span>Reunión Agendada</span>
+              </div>
+              <span id="kanbanCount_reunion_agendada" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-amber-800 border border-amber-300">0</span>
+            </div>
+            <div id="kanbanCol_reunion_agendada" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'reunion_agendada')" class="p-2.5 space-y-2.5 overflow-y-auto flex-1 min-h-[140px] transition-colors rounded-b-xl">
+              <!-- Tarjetas dinámicas -->
+            </div>
+          </div>
+
+          <!-- Columna 4: Diagnóstico Presupuestado -->
+          <div class="bg-indigo-50/60 rounded-xl border border-indigo-200 flex flex-col max-h-[calc(100vh-210px)] min-w-[260px]">
+            <div class="p-3 border-b border-indigo-200 flex items-center justify-between bg-indigo-100/60 rounded-t-xl">
+              <div class="flex items-center gap-1.5 font-bold text-xs text-indigo-900">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <span>Presupuestado</span>
+              </div>
+              <span id="kanbanCount_presupuestado" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-indigo-800 border border-indigo-300">0</span>
+            </div>
+            <div id="kanbanCol_presupuestado" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'presupuestado')" class="p-2.5 space-y-2.5 overflow-y-auto flex-1 min-h-[140px] transition-colors rounded-b-xl">
+              <!-- Tarjetas dinámicas -->
+            </div>
+          </div>
+
+          <!-- Columna 5: Cerrado Ganado (Cliente) -->
+          <div class="bg-emerald-50/60 rounded-xl border border-emerald-200 flex flex-col max-h-[calc(100vh-210px)] min-w-[260px]">
+            <div class="p-3 border-b border-emerald-200 flex items-center justify-between bg-emerald-100/60 rounded-t-xl">
+              <div class="flex items-center gap-1.5 font-bold text-xs text-emerald-900">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span>Cerrado Ganado</span>
+              </div>
+              <span id="kanbanCount_cliente" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-white text-emerald-800 border border-emerald-300">0</span>
+            </div>
+            <div id="kanbanCol_cliente" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'cliente')" class="p-2.5 space-y-2.5 overflow-y-auto flex-1 min-h-[140px] transition-colors rounded-b-xl">
+              <!-- Tarjetas dinámicas -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- VISTA B: TABLA DETALLADA (BLANCA, LIMPIA Y DE ALTO CONTRASTE) -->
+      <div id="tableViewContainer" class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hidden">
         <!-- VISTA DE TABLA (ESCRITORIO / PANTALLAS MEDIANAS Y GRANDES) -->
         <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
@@ -435,22 +572,17 @@
           <!-- Tarjetas móviles generadas dinámicamente -->
         </div>
 
-        <!-- Estado de carga -->
-        <div id="tableLoading" class="p-12 text-center text-slate-500 flex flex-col items-center justify-center gap-2">
-          <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-brand-500"></i>
-          <p class="text-xs font-medium">Cargando base de datos comercial...</p>
-        </div>
-
         <!-- Estado vacío -->
         <div id="tableEmpty" class="p-12 text-center text-slate-500 hidden">
           <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-slate-400"></i>
           <p class="text-xs font-medium">No se encontraron prospectos con los filtros actuales.</p>
         </div>
       </div>
+
     </main>
 
     <!-- ================= BOTTOM NAVIGATION BAR FIJA PARA CELULARES ================= -->
-    <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 px-4 py-2 flex items-center justify-around shadow-lg">
+    <nav class="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 px-3 py-2 flex items-center justify-around shadow-lg">
       <a href="procedimientos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
         <i data-lucide="book-open" class="w-4 h-4"></i>
         <span class="text-[10px] font-semibold">1. SOP</span>
@@ -459,11 +591,15 @@
         <i data-lucide="kanban" class="w-4 h-4 text-brand-500"></i>
         <span class="text-[10px]">2. CRM</span>
       </a>
+      <a href="diagnostico-express.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
+        <i data-lucide="file-check" class="w-4 h-4 text-slate-500"></i>
+        <span class="text-[10px] font-semibold">3. Diag.</span>
+      </a>
       <a href="presupuestos.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-900">
         <i data-lucide="calculator" class="w-4 h-4"></i>
-        <span class="text-[10px] font-semibold">3. Cotizar</span>
+        <span class="text-[10px] font-semibold">4. Cotizar</span>
       </a>
-      <button onclick="openNewLeadModal()" class="flex flex-col items-center gap-1 text-brand-600 font-semibold">
+      <button onclick="openNewLeadModal()" class="flex flex-col items-center gap-1 text-brand-600 font-semibold cursor-pointer">
         <i data-lucide="user-plus" class="w-4 h-4"></i>
         <span class="text-[10px]">+ Lead</span>
       </button>
@@ -774,6 +910,9 @@
     let currentSession = null;
     let allLeads = [];
     let currentSelectedLead = null;
+    let currentViewMode = localStorage.getItem('nexum_crm_view_mode') || 'kanban';
+    let currentSegment = 'all';
+    let draggedLeadId = null;
 
     // Etapas del Embudo y Badges (Temática Clara)
     const STAGE_LABELS = {
@@ -922,10 +1061,10 @@
         if (error) throw error;
 
         allLeads = data || [];
-        renderTable();
         updateKPIs(allLeads);
+        switchViewMode(currentViewMode);
 
-        if (showFeedback) showToast("Lista actualizada con Supabase", "success");
+        if (showFeedback) showToast("Base de datos sincronizada con Supabase", "success");
       } catch (err) {
         console.error("Error al obtener leads:", err);
         showToast(`Error al consultar datos: ${err.message}`, "error");
@@ -936,6 +1075,425 @@
       }
     }
 
+    // --- CONMUTADOR DE VISTAS (KANBAN VS TABLA) ---
+    function switchViewMode(mode) {
+      currentViewMode = mode;
+      localStorage.setItem('nexum_crm_view_mode', mode);
+
+      const btnKanban = document.getElementById("btnViewKanban");
+      const btnTable = document.getElementById("btnViewTable");
+      const kanbanContainer = document.getElementById("kanbanViewContainer");
+      const tableContainer = document.getElementById("tableViewContainer");
+
+      if (mode === 'kanban') {
+        if (btnKanban) {
+          btnKanban.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold cursor-pointer";
+        }
+        if (btnTable) {
+          btnTable.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer";
+        }
+        if (kanbanContainer) kanbanContainer.classList.remove("hidden");
+        if (tableContainer) tableContainer.classList.add("hidden");
+      } else {
+        if (btnTable) {
+          btnTable.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold cursor-pointer";
+        }
+        if (btnKanban) {
+          btnKanban.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer";
+        }
+        if (kanbanContainer) kanbanContainer.classList.add("hidden");
+        if (tableContainer) tableContainer.classList.remove("hidden");
+      }
+
+      renderCurrentView();
+    }
+
+    // --- PESTAÑAS DE SEGMENTACIÓN (TODOS / COMERCIALES / ALIANZAS) ---
+    function setSegmentFilter(seg) {
+      currentSegment = seg;
+
+      const btnAll = document.getElementById("btnSegAll");
+      const btnComm = document.getElementById("btnSegCommercial");
+      const btnAlliances = document.getElementById("btnSegAlliances");
+
+      [btnAll, btnComm, btnAlliances].forEach(btn => {
+        if (btn) btn.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer";
+      });
+
+      if (seg === 'commercial' && btnComm) {
+        btnComm.className = "px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold cursor-pointer";
+      } else if (seg === 'alliances' && btnAlliances) {
+        btnAlliances.className = "px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold cursor-pointer";
+      } else if (btnAll) {
+        btnAll.className = "px-2.5 py-1 rounded-md bg-white text-brand-600 shadow-2xs transition font-bold cursor-pointer";
+      }
+
+      renderCurrentView();
+    }
+
+    // --- DISPATCHER CENTRAL DE RENDERIZADO ---
+    function renderCurrentView() {
+      if (currentViewMode === 'kanban') {
+        renderKanban();
+      } else {
+        renderTable();
+      }
+    }
+
+    // --- CÁLCULO DE SEMÁFORO DE URGENCIA TEMPORAL ---
+    function getDateUrgencyBadge(dateStr) {
+      if (!dateStr) return { text: "Sin fecha", class: "bg-slate-100 text-slate-500 border-slate-200", icon: "calendar" };
+      try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(dateStr + "T00:00:00");
+        const diffTime = target.getTime() - today.getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) {
+          return { text: `Vencido (${Math.abs(diffDays)}d)`, class: "bg-rose-50 text-rose-700 border-rose-200 font-bold", icon: "alert-triangle" };
+        } else if (diffDays === 0) {
+          return { text: "Hoy", class: "bg-rose-50 text-rose-700 border-rose-300 font-bold animate-pulse", icon: "clock" };
+        } else if (diffDays === 1) {
+          return { text: "Mañana", class: "bg-amber-50 text-amber-700 border-amber-200 font-bold", icon: "clock" };
+        } else if (diffDays <= 3) {
+          return { text: `En ${diffDays} días`, class: "bg-amber-50 text-amber-700 border-amber-200 font-semibold", icon: "calendar" };
+        } else {
+          return { text: "Programado", class: "bg-slate-100 text-slate-600 border-slate-200", icon: "calendar" };
+        }
+      } catch (e) {
+        return { text: dateStr, class: "bg-slate-100 text-slate-600 border-slate-200", icon: "calendar" };
+      }
+    }
+
+    // --- ACCIÓN DIRECTA: COPIAR PITCH COMERCIAL SEGMENTADO ---
+    function copyPitchForLead(leadId) {
+      const lead = allLeads.find(l => l.id == leadId);
+      if (!lead) return;
+
+      const contactName = lead.nombre ? lead.nombre.split(' ')[0] : 'Estimado/a';
+      const companyName = lead.empresa || 'su empresa';
+      const sector = lead.sector || lead.operacion || 'su sector industrial';
+
+      let pitch = "";
+      if (lead.notas && (lead.notas.toLowerCase().includes('asunto:') || lead.notas.toLowerCase().includes('estimado') || lead.notas.toLowerCase().includes('hola'))) {
+        pitch = lead.notas;
+      } else if (lead.origen === 'alianza_institucional') {
+        pitch = `Estimado/a ${contactName}, buen día. Mi nombre es Juan Oviedo, socio de Nexum Trade Consulting (consultora estratégica de comercio exterior para PyMEs industriales).\n\nNos ponemos en contacto con ${companyName} con el propósito de acercarles nuestra propuesta de Alianza Técnica & Derivación de Comercio Exterior. Brindamos a sus asociados un Diagnóstico Inicial de Factibilidad Exportadora bonificado para auditar barreras de entrada, ventajas arancelarias y mercados lógicos.\n\n¿Sería posible coordinar un breve Meet de 15 minutos para presentarles la iniciativa? Quedo a su entera disposición.`;
+      } else {
+        pitch = `Hola ${contactName}, ¿cómo estás? Te contacto desde Nexum Trade Consulting. Estuvimos analizando el potencial de ${companyName} en el rubro de ${sector} para la apertura y consolidación de mercados externos en la región (Mercosur / Latam).\n\nDiseñamos un Diagnóstico Inicial de Viabilidad para validar aranceles NCM, normativas en destino y costos de salida FOB. ¿Te interesaría que te comparta una síntesis ejecutiva de 1 carilla sin compromiso para que evalúen la oportunidad? Saludos cordiales.`;
+      }
+
+      copyToClipboard(pitch, `Pitch comercial copiado para ${companyName}`);
+    }
+
+    // --- GESTIÓN DE ACTUALIZACIÓN DE ESTADO EN MEMORIA Y SUPABASE ---
+    async function updateLeadStatus(leadId, newStatus) {
+      const lead = allLeads.find(l => l.id == leadId);
+      if (!lead) return;
+      if (lead.status === newStatus) return;
+
+      const oldStatus = lead.status;
+      lead.status = newStatus; // Actualización optimista
+
+      renderCurrentView();
+      updateKPIs(allLeads);
+
+      try {
+        const { error } = await supabaseClient
+          .from(TABLE_NAME)
+          .update({ status: newStatus })
+          .eq('id', leadId);
+
+        if (error) throw error;
+
+        const stageName = STAGE_LABELS[newStatus]?.name || newStatus;
+        showToast(`"${lead.empresa}" avanzada a: ${stageName}`, "success");
+      } catch (err) {
+        console.error("Error al actualizar etapa:", err);
+        lead.status = oldStatus; // Rollback
+        renderCurrentView();
+        updateKPIs(allLeads);
+        showToast(`Error al sincronizar con Supabase: ${err.message}`, "error");
+      }
+    }
+
+    // --- DRAG & DROP NATIVO DEL TABLERO KANBAN ---
+    function handleDragStart(e, leadId) {
+      draggedLeadId = leadId;
+      e.dataTransfer.setData('text/plain', leadId);
+      e.dataTransfer.effectAllowed = 'move';
+      const card = document.getElementById(`kanbanCard_${leadId}`);
+      if (card) {
+        card.classList.add('opacity-40', 'scale-95');
+      }
+    }
+
+    function handleDragEnd(e) {
+      if (draggedLeadId) {
+        const card = document.getElementById(`kanbanCard_${draggedLeadId}`);
+        if (card) {
+          card.classList.remove('opacity-40', 'scale-95');
+        }
+      }
+      draggedLeadId = null;
+      document.querySelectorAll("[id^='kanbanCol_']").forEach(col => {
+        col.classList.remove('bg-brand-100/40', 'ring-2', 'ring-brand-400');
+      });
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const col = e.currentTarget;
+      if (!col.classList.contains('ring-2')) {
+        col.classList.add('bg-brand-100/40', 'ring-2', 'ring-brand-400');
+      }
+    }
+
+    function handleDragLeave(e) {
+      const col = e.currentTarget;
+      col.classList.remove('bg-brand-100/40', 'ring-2', 'ring-brand-400');
+    }
+
+    function handleDrop(e, targetStatus) {
+      e.preventDefault();
+      const col = e.currentTarget;
+      col.classList.remove('bg-brand-100/40', 'ring-2', 'ring-brand-400');
+
+      const leadId = e.dataTransfer.getData('text/plain') || draggedLeadId;
+      if (!leadId) return;
+
+      updateLeadStatus(leadId, targetStatus);
+    }
+
+    // --- RENDERIZADO DEL TABLERO KANBAN ---
+    function renderKanban() {
+      const filtered = getFilteredLeads();
+      const filteredCountEl = document.getElementById("filteredCount");
+      if (filteredCountEl) filteredCountEl.textContent = filtered.length;
+
+      const columns = {
+        prospecto: document.getElementById("kanbanCol_prospecto"),
+        contactado: document.getElementById("kanbanCol_contactado"),
+        reunion_agendada: document.getElementById("kanbanCol_reunion_agendada"),
+        presupuestado: document.getElementById("kanbanCol_presupuestado"),
+        cliente: document.getElementById("kanbanCol_cliente")
+      };
+
+      const countBadges = {
+        prospecto: document.getElementById("kanbanCount_prospecto"),
+        contactado: document.getElementById("kanbanCount_contactado"),
+        reunion_agendada: document.getElementById("kanbanCount_reunion_agendada"),
+        presupuestado: document.getElementById("kanbanCount_presupuestado"),
+        cliente: document.getElementById("kanbanCount_cliente")
+      };
+
+      // Limpiar columnas
+      Object.values(columns).forEach(col => {
+        if (col) col.innerHTML = "";
+      });
+
+      const columnCounts = {
+        prospecto: 0,
+        contactado: 0,
+        reunion_agendada: 0,
+        presupuestado: 0,
+        cliente: 0
+      };
+
+      filtered.forEach(lead => {
+        let colKey = lead.status;
+        if (colKey === 'nuevo' || colKey === 'notificado' || !columns[colKey]) {
+          colKey = 'prospecto';
+        }
+        columnCounts[colKey]++;
+
+        const targetCol = columns[colKey];
+        if (!targetCol) return;
+
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs hover:shadow-md transition-all cursor-grab active:cursor-grabbing hover:border-brand-300 space-y-2 select-none group";
+        card.draggable = true;
+        card.id = `kanbanCard_${lead.id}`;
+
+        card.ondragstart = (e) => handleDragStart(e, lead.id);
+        card.ondragend = (e) => handleDragEnd(e);
+        card.onclick = (e) => {
+          if (e.target.closest("button") || e.target.closest("a") || e.target.closest("select")) return;
+          openLeadModal(lead.id);
+        };
+
+        // Header de la tarjeta: Prioridad + Sector + Avance Rápido
+        const cardHeader = document.createElement("div");
+        cardHeader.className = "flex items-center justify-between gap-1 text-[10px]";
+
+        const headerLeft = document.createElement("div");
+        headerLeft.className = "flex items-center gap-1.5 overflow-hidden";
+
+        const prio = (lead.prioridad || "B").toUpperCase();
+        const prioClass = PRIORITY_BADGES[prio] || PRIORITY_BADGES.B;
+        const prioBadge = document.createElement("span");
+        prioBadge.className = `px-1.5 py-0.5 rounded font-bold border ${prioClass}`;
+        prioBadge.textContent = prio;
+        headerLeft.appendChild(prioBadge);
+
+        const sectorTag = document.createElement("span");
+        sectorTag.className = "text-slate-500 font-semibold truncate max-w-[110px]";
+        sectorTag.textContent = lead.sector || lead.operacion || "Comex";
+        headerLeft.appendChild(sectorTag);
+
+        const nextStageMap = {
+          prospecto: 'contactado',
+          contactado: 'reunion_agendada',
+          reunion_agendada: 'presupuestado',
+          presupuestado: 'cliente',
+          cliente: 'prospecto'
+        };
+        const nextStage = nextStageMap[colKey] || 'contactado';
+        const btnAdvance = document.createElement("button");
+        btnAdvance.type = "button";
+        btnAdvance.className = "p-1 rounded text-slate-400 hover:text-brand-600 hover:bg-slate-100 transition shrink-0 cursor-pointer";
+        btnAdvance.title = `Avanzar etapa a: ${STAGE_LABELS[nextStage]?.name || nextStage}`;
+        btnAdvance.onclick = (e) => {
+          e.stopPropagation();
+          updateLeadStatus(lead.id, nextStage);
+        };
+        btnAdvance.innerHTML = `<i data-lucide="arrow-right-circle" class="w-3.5 h-3.5"></i>`;
+
+        cardHeader.appendChild(headerLeft);
+        cardHeader.appendChild(btnAdvance);
+        card.appendChild(cardHeader);
+
+        // Empresa & Contacto
+        const cardBody = document.createElement("div");
+        cardBody.className = "space-y-0.5";
+
+        const companyEl = document.createElement("div");
+        companyEl.className = "font-heading font-bold text-slate-900 text-xs hover:text-brand-600 transition leading-snug line-clamp-2";
+        companyEl.textContent = lead.empresa || "Empresa Sin Nombre";
+        cardBody.appendChild(companyEl);
+
+        const contactEl = document.createElement("div");
+        contactEl.className = "text-[11px] text-slate-500 truncate";
+        contactEl.textContent = lead.nombre || "Contacto Sin Definir";
+        if (lead.cargo) {
+          const cargoSpan = document.createElement("span");
+          cargoSpan.className = "text-slate-400 ml-1";
+          cargoSpan.textContent = `• ${lead.cargo}`;
+          contactEl.appendChild(cargoSpan);
+        }
+        cardBody.appendChild(contactEl);
+        card.appendChild(cardBody);
+
+        // Próxima Acción con Semáforo
+        if (lead.proxima_accion) {
+          const actionBox = document.createElement("div");
+          actionBox.className = "bg-slate-50 p-2 rounded-lg border border-slate-200/70 text-[11px] space-y-1";
+
+          const actionText = document.createElement("div");
+          actionText.className = "text-slate-800 font-medium line-clamp-2";
+          actionText.textContent = lead.proxima_accion;
+          actionBox.appendChild(actionText);
+
+          if (lead.fecha_proxima_accion) {
+            const urgency = getDateUrgencyBadge(lead.fecha_proxima_accion);
+            const actionDateRow = document.createElement("div");
+            actionDateRow.className = "flex items-center justify-between text-[10px]";
+
+            const urgencyBadge = document.createElement("span");
+            urgencyBadge.className = `px-1.5 py-0.5 rounded font-semibold border ${urgency.class}`;
+            urgencyBadge.textContent = urgency.text;
+
+            const rawDate = document.createElement("span");
+            rawDate.className = "text-slate-400 font-mono";
+            rawDate.textContent = formatDate(lead.fecha_proxima_accion);
+
+            actionDateRow.appendChild(urgencyBadge);
+            actionDateRow.appendChild(rawDate);
+            actionBox.appendChild(actionDateRow);
+          }
+          card.appendChild(actionBox);
+        }
+
+        // Barra Inferior: Contacto Rápido & Botón "Pitch"
+        const footer = document.createElement("div");
+        footer.className = "flex items-center justify-between pt-1 border-t border-slate-100 gap-1";
+
+        const contactIcons = document.createElement("div");
+        contactIcons.className = "flex items-center gap-1";
+
+        const phoneList = parsePhoneList(lead.telefono || "");
+        const emailList = parseEmailList(lead.email || "");
+
+        if (phoneList.length > 0) {
+          const pFirst = phoneList[0];
+          if (pFirst.isWa) {
+            const waLink = document.createElement("a");
+            waLink.href = `https://wa.me/${pFirst.digits}`;
+            waLink.target = "_blank";
+            waLink.className = "p-1 rounded text-emerald-600 hover:bg-emerald-50 transition";
+            waLink.title = `WhatsApp: ${pFirst.label}`;
+            waLink.onclick = (e) => e.stopPropagation();
+            waLink.innerHTML = `<i data-lucide="message-circle" class="w-3.5 h-3.5"></i>`;
+            contactIcons.appendChild(waLink);
+          } else {
+            const callLink = document.createElement("a");
+            callLink.href = `tel:${pFirst.digits}`;
+            callLink.className = "p-1 rounded text-slate-500 hover:text-emerald-700 hover:bg-slate-100 transition";
+            callLink.title = `Llamar: ${pFirst.label}`;
+            callLink.onclick = (e) => e.stopPropagation();
+            callLink.innerHTML = `<i data-lucide="phone" class="w-3.5 h-3.5"></i>`;
+            contactIcons.appendChild(callLink);
+          }
+        }
+
+        if (emailList.length > 0) {
+          const mailLink = document.createElement("a");
+          mailLink.href = `mailto:${emailList[0]}`;
+          mailLink.className = "p-1 rounded text-slate-500 hover:text-brand-600 hover:bg-slate-100 transition";
+          mailLink.title = `Email: ${emailList[0]}`;
+          mailLink.onclick = (e) => e.stopPropagation();
+          mailLink.innerHTML = `<i data-lucide="mail" class="w-3.5 h-3.5"></i>`;
+          contactIcons.appendChild(mailLink);
+        }
+
+        footer.appendChild(contactIcons);
+
+        const btnPitch = document.createElement("button");
+        btnPitch.type = "button";
+        btnPitch.className = "flex items-center gap-1 px-2 py-1 rounded bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 text-[10px] font-bold transition cursor-pointer";
+        btnPitch.title = "Copiar Pitch Comercial de Prospección";
+        btnPitch.onclick = (e) => {
+          e.stopPropagation();
+          copyPitchForLead(lead.id);
+        };
+        btnPitch.innerHTML = `<i data-lucide="zap" class="w-3 h-3 text-brand-600"></i><span>Pitch</span>`;
+        footer.appendChild(btnPitch);
+
+        card.appendChild(footer);
+        targetCol.appendChild(card);
+      });
+
+      // Actualizar conteos
+      Object.keys(columnCounts).forEach(k => {
+        if (countBadges[k]) countBadges[k].textContent = columnCounts[k];
+      });
+
+      // Indicadores vacíos si no hay tarjetas
+      Object.keys(columns).forEach(k => {
+        const col = columns[k];
+        if (col && columnCounts[k] === 0) {
+          const emptyDiv = document.createElement("div");
+          emptyDiv.className = "p-6 text-center text-slate-400 text-[11px] border-2 border-dashed border-slate-300/70 rounded-xl flex flex-col items-center justify-center gap-1";
+          emptyDiv.innerHTML = `<i data-lucide="inbox" class="w-5 h-5 text-slate-300"></i><span>Sin prospectos</span>`;
+          col.appendChild(emptyDiv);
+        }
+      });
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
     // --- RENDERIZADO DE TABLA (100% SEGURO MEDIANTE DOM NATIVO Y TEXTCONTENT) ---
     function renderTable() {
       const tbody = document.getElementById("tableBody");
@@ -944,7 +1502,8 @@
       if (!tbody) return;
 
       const filtered = getFilteredLeads();
-      document.getElementById("filteredCount").textContent = filtered.length;
+      const filteredCountEl = document.getElementById("filteredCount");
+      if (filteredCountEl) filteredCountEl.textContent = filtered.length;
 
       tbody.innerHTML = "";
       if (cardsContainer) cardsContainer.innerHTML = "";
@@ -955,6 +1514,15 @@
       }
       emptyState.classList.add("hidden");
 
+      const stageOptions = [
+        { val: 'prospecto', label: 'Prospecto Outbound' },
+        { val: 'contactado', label: 'En Conversación' },
+        { val: 'reunion_agendada', label: 'Reunión Agendada' },
+        { val: 'presupuestado', label: 'Presupuestado' },
+        { val: 'cliente', label: 'Cerrado Ganado' },
+        { val: 'descartado', label: 'En Pausa / Perdido' }
+      ];
+
       filtered.forEach(lead => {
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-50 transition-colors cursor-pointer";
@@ -963,12 +1531,28 @@
           openLeadModal(lead.id);
         };
 
-        // 1. Columna Empresa & Contacto
+        // 1. Columna Empresa & Contacto + Botón Rápido Pitch
         const tdCompany = document.createElement("td");
         tdCompany.className = "py-3.5 px-4";
+        const divCompRow = document.createElement("div");
+        divCompRow.className = "flex items-center gap-1.5";
         const divComp = document.createElement("div");
-        divComp.className = "font-bold text-slate-900 text-xs hover:text-brand-600";
+        divComp.className = "font-bold text-slate-900 text-xs hover:text-brand-600 truncate";
         divComp.textContent = lead.empresa || "Empresa Sin Nombre";
+        divCompRow.appendChild(divComp);
+
+        const btnPitchTable = document.createElement("button");
+        btnPitchTable.type = "button";
+        btnPitchTable.className = "text-brand-600 hover:text-brand-800 p-0.5 rounded hover:bg-brand-50 transition shrink-0 cursor-pointer";
+        btnPitchTable.title = "Copiar Pitch Comercial";
+        btnPitchTable.onclick = (e) => {
+          e.stopPropagation();
+          copyPitchForLead(lead.id);
+        };
+        btnPitchTable.innerHTML = `<i data-lucide="zap" class="w-3.5 h-3.5 text-brand-500"></i>`;
+        divCompRow.appendChild(btnPitchTable);
+        tdCompany.appendChild(divCompRow);
+
         const divContact = document.createElement("div");
         divContact.className = "text-[11px] text-slate-500 mt-0.5";
         divContact.textContent = lead.nombre || "Sin Contacto";
@@ -978,17 +1562,32 @@
           spanCargo.textContent = `• ${lead.cargo}`;
           divContact.appendChild(spanCargo);
         }
-        tdCompany.appendChild(divComp);
         tdCompany.appendChild(divContact);
 
-        // 2. Columna Etapa
+        // 2. Columna Etapa (Selector Interactivo en 1 Clic)
         const tdStage = document.createElement("td");
         tdStage.className = "py-3.5 px-4";
         const stage = STAGE_LABELS[lead.status] || { name: lead.status || 'Nuevo', class: 'bg-slate-100 text-slate-700' };
-        const spanStage = document.createElement("span");
-        spanStage.className = `px-2 py-0.5 rounded-full text-[10px] font-bold border ${stage.class}`;
-        spanStage.textContent = stage.name;
-        tdStage.appendChild(spanStage);
+
+        const selectStage = document.createElement("select");
+        selectStage.className = `px-2 py-1 rounded-lg text-[10px] font-bold border transition cursor-pointer ${stage.class} bg-white/90 hover:bg-white focus:ring-1 focus:ring-brand-500`;
+        selectStage.title = "Cambiar etapa en 1 clic";
+        selectStage.onclick = (e) => e.stopPropagation();
+        selectStage.onchange = (e) => {
+          e.stopPropagation();
+          updateLeadStatus(lead.id, e.target.value);
+        };
+
+        stageOptions.forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s.val;
+          opt.textContent = s.label;
+          if (lead.status === s.val || (s.val === 'prospecto' && (lead.status === 'nuevo' || lead.status === 'notificado'))) {
+            opt.selected = true;
+          }
+          selectStage.appendChild(opt);
+        });
+        tdStage.appendChild(selectStage);
 
         // 3. Columna Prioridad
         const tdPrio = document.createElement("td");
@@ -1010,21 +1609,32 @@
         tdResp.className = "py-3.5 px-4 text-slate-700 font-semibold";
         tdResp.textContent = lead.responsable || "Sin Asignar";
 
-        // 6. Columna Próxima Acción
+        // 6. Columna Próxima Acción con Semáforo
         const tdNextAction = document.createElement("td");
         tdNextAction.className = "py-3.5 px-4";
         if (lead.proxima_accion) {
           const divAction = document.createElement("div");
-          divAction.className = "truncate max-w-[200px] text-slate-800 font-medium";
+          divAction.className = "text-slate-800 font-medium line-clamp-2 max-w-[220px]";
           divAction.textContent = lead.proxima_accion;
           divAction.title = lead.proxima_accion;
           tdNextAction.appendChild(divAction);
 
           if (lead.fecha_proxima_accion) {
-            const spanDate = document.createElement("span");
-            spanDate.className = "text-[10px] text-brand-600 font-mono font-semibold";
-            spanDate.textContent = lead.fecha_proxima_accion;
-            tdNextAction.appendChild(spanDate);
+            const urgency = getDateUrgencyBadge(lead.fecha_proxima_accion);
+            const badgeDateRow = document.createElement("div");
+            badgeDateRow.className = "mt-1 flex items-center gap-1.5";
+
+            const spanBadge = document.createElement("span");
+            spanBadge.className = `inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${urgency.class}`;
+            spanBadge.innerHTML = `<i data-lucide="${urgency.icon}" class="w-3 h-3"></i><span>${urgency.text}</span>`;
+            badgeDateRow.appendChild(spanBadge);
+
+            const spanRaw = document.createElement("span");
+            spanRaw.className = "text-[10px] text-slate-400 font-mono";
+            spanRaw.textContent = formatDate(lead.fecha_proxima_accion);
+            badgeDateRow.appendChild(spanRaw);
+
+            tdNextAction.appendChild(badgeDateRow);
           }
         } else {
           const spanEmptyAction = document.createElement("span");
@@ -1039,7 +1649,6 @@
         const divActions = document.createElement("div");
         divActions.className = "flex flex-col gap-1";
 
-        // Fila 1: Teléfonos
         const rawPhones = (lead.telefono || "").trim();
         const phoneList = parsePhoneList(rawPhones);
         if (phoneList.length > 0) {
@@ -1083,7 +1692,6 @@
           divActions.appendChild(rowPhones);
         }
 
-        // Fila 2: Emails
         const rawEmails = (lead.email || "").trim();
         const emailList = parseEmailList(rawEmails);
         if (emailList.length > 0) {
@@ -1121,20 +1729,37 @@
         tdDate.className = "py-3.5 px-4 text-slate-500 text-[11px] whitespace-nowrap";
         tdDate.textContent = formatDate(lead.created_at);
 
-        // 9. Columna Acciones
+        // 9. Columna Acciones (Pitch + Ficha)
         const tdBtn = document.createElement("td");
-        tdBtn.className = "py-3.5 px-4 text-right";
+        tdBtn.className = "py-3.5 px-4 text-right whitespace-nowrap";
+        const divActionsCol = document.createElement("div");
+        divActionsCol.className = "flex items-center justify-end gap-1.5";
+
+        const btnPitchAction = document.createElement("button");
+        btnPitchAction.type = "button";
+        btnPitchAction.className = "flex items-center gap-1 px-2 py-1 rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 text-[10px] font-bold transition cursor-pointer";
+        btnPitchAction.title = "Copiar Pitch Comercial";
+        btnPitchAction.onclick = (e) => {
+          e.stopPropagation();
+          copyPitchForLead(lead.id);
+        };
+        btnPitchAction.innerHTML = `<i data-lucide="zap" class="w-3 h-3 text-brand-600"></i><span>Pitch</span>`;
+
         const btnView = document.createElement("button");
-        btnView.className = "p-1.5 rounded-lg bg-slate-100 hover:bg-brand-50 text-slate-600 hover:text-brand-700 transition border border-slate-200";
+        btnView.type = "button";
+        btnView.className = "p-1.5 rounded-lg bg-slate-100 hover:bg-brand-50 text-slate-600 hover:text-brand-700 transition border border-slate-200 cursor-pointer";
         btnView.title = "Ver / Editar Ficha";
         btnView.onclick = (e) => {
           e.stopPropagation();
           openLeadModal(lead.id);
         };
         btnView.innerHTML = `<i data-lucide="external-link" class="w-3.5 h-3.5"></i>`;
-        tdBtn.appendChild(btnView);
 
-        // Adjuntar celdas a la fila
+        divActionsCol.appendChild(btnPitchAction);
+        divActionsCol.appendChild(btnView);
+        tdBtn.appendChild(divActionsCol);
+
+        // Adjuntar celdas
         tr.appendChild(tdCompany);
         tr.appendChild(tdStage);
         tr.appendChild(tdPrio);
@@ -1152,11 +1777,10 @@
           const card = document.createElement("div");
           card.className = "p-4 bg-white hover:bg-slate-50 transition cursor-pointer space-y-2.5";
           card.onclick = (e) => {
-            if (e.target.closest("button") || e.target.closest("a")) return;
+            if (e.target.closest("button") || e.target.closest("a") || e.target.closest("select")) return;
             openLeadModal(lead.id);
           };
 
-          // Fila superior: Empresa, Badges y Botón Ver
           const cardHeader = document.createElement("div");
           cardHeader.className = "flex items-start justify-between gap-2";
 
@@ -1179,14 +1803,29 @@
 
           const cardBadges = document.createElement("div");
           cardBadges.className = "flex items-center gap-1.5 shrink-0";
-          const cardStageBadge = document.createElement("span");
-          cardStageBadge.className = `px-2 py-0.5 rounded-full text-[10px] font-bold border ${stage.class}`;
-          cardStageBadge.textContent = stage.name;
+
           const cardPrioBadge = document.createElement("span");
-          cardPrioBadge.className = `px-1.5 py-0.5 rounded-full text-[10px] font-bold border ${prioClass}`;
+          cardPrioBadge.className = `px-1.5 py-0.5 rounded text-[10px] font-bold border ${prioClass}`;
           cardPrioBadge.textContent = prio;
-          cardBadges.appendChild(cardStageBadge);
           cardBadges.appendChild(cardPrioBadge);
+
+          const selectCardStage = document.createElement("select");
+          selectCardStage.className = `px-2 py-0.5 rounded text-[10px] font-bold border transition ${stage.class} bg-white/90`;
+          selectCardStage.onclick = (e) => e.stopPropagation();
+          selectCardStage.onchange = (e) => {
+            e.stopPropagation();
+            updateLeadStatus(lead.id, e.target.value);
+          };
+          stageOptions.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s.val;
+            opt.textContent = s.label;
+            if (lead.status === s.val || (s.val === 'prospecto' && (lead.status === 'nuevo' || lead.status === 'notificado'))) {
+              opt.selected = true;
+            }
+            selectCardStage.appendChild(opt);
+          });
+          cardBadges.appendChild(selectCardStage);
 
           cardHeader.appendChild(cardTitleBox);
           cardHeader.appendChild(cardBadges);
@@ -1220,9 +1859,9 @@
 
           card.appendChild(cardDetails);
 
-          // Fila Inferior: Botones de contacto en 1 toque (WhatsApp / Teléfono / Mail)
+          // Fila Inferior: Botones de contacto en 1 toque + Botón Pitch + Botón Ficha
           const cardActionsBar = document.createElement("div");
-          cardActionsBar.className = "flex items-center justify-between pt-1 gap-2";
+          cardActionsBar.className = "flex items-center justify-between pt-1 gap-2 flex-wrap";
 
           const cardContactBtns = document.createElement("div");
           cardContactBtns.className = "flex items-center gap-1.5 flex-wrap";
@@ -1267,9 +1906,18 @@
             });
           }
 
+          const btnCardPitch = document.createElement("button");
+          btnCardPitch.type = "button";
+          btnCardPitch.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold hover:bg-brand-100 transition cursor-pointer";
+          btnCardPitch.onclick = (e) => {
+            e.stopPropagation();
+            copyPitchForLead(lead.id);
+          };
+          btnCardPitch.innerHTML = `<i data-lucide="zap" class="w-3.5 h-3.5 text-brand-600"></i><span>Pitch</span>`;
+
           const btnCardOpen = document.createElement("button");
           btnCardOpen.type = "button";
-          btnCardOpen.className = "flex items-center gap-1 px-3 py-1.5 rounded-lg bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold hover:bg-brand-100 transition ml-auto";
+          btnCardOpen.className = "flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-300 text-xs font-semibold hover:bg-slate-100 transition ml-auto cursor-pointer";
           btnCardOpen.innerHTML = `<span>Ficha</span><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>`;
           btnCardOpen.onclick = (e) => {
             e.stopPropagation();
@@ -1277,6 +1925,7 @@
           };
 
           cardActionsBar.appendChild(cardContactBtns);
+          cardActionsBar.appendChild(btnCardPitch);
           cardActionsBar.appendChild(btnCardOpen);
           card.appendChild(cardActionsBar);
 
@@ -1287,6 +1936,7 @@
       if (window.lucide) window.lucide.createIcons();
     }
 
+    // --- FILTRADO INTELIGENTE (SEGMENTO + BÚSQUEDA + SELECTORES) ---
     function getFilteredLeads() {
       const q = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
       const stFilter = document.getElementById("filterStage")?.value || "all";
@@ -1295,6 +1945,15 @@
       const prioFilter = document.getElementById("filterPriority")?.value || "all";
 
       return allLeads.filter(lead => {
+        // 1. Filtro de Segmentación
+        const isAlliance = lead.origen === 'alianza_institucional' ||
+          (lead.sector && lead.sector.toLowerCase().includes('alianza')) ||
+          (lead.empresa && (lead.empresa.includes('Cámara') || lead.empresa.includes('Agencia') || lead.empresa.includes('COPAL')));
+
+        if (currentSegment === 'commercial' && isAlliance) return false;
+        if (currentSegment === 'alliances' && !isAlliance) return false;
+
+        // 2. Filtro de Búsqueda de Texto
         if (q) {
           const matchCompany = (lead.empresa || "").toLowerCase().includes(q);
           const matchName = (lead.nombre || "").toLowerCase().includes(q);
@@ -1309,6 +1968,7 @@
           }
         }
 
+        // 3. Filtros Select
         if (stFilter !== "all" && lead.status !== stFilter) return false;
         if (secFilter !== "all") {
           const sec = (lead.sector || lead.operacion || "").toLowerCase();
@@ -1345,7 +2005,6 @@
       if (val) clearBtn.classList.remove("hidden");
       else clearBtn.classList.add("hidden");
 
-      // Actualizar badge de filtros activos
       const st = document.getElementById("filterStage")?.value || "all";
       const sec = document.getElementById("filterSector")?.value || "all";
       const resp = document.getElementById("filterResponsible")?.value || "all";
@@ -1357,7 +2016,7 @@
         else badge.classList.add("hidden");
       }
 
-      renderTable();
+      renderCurrentView();
     }
 
     function clearSearch() {
@@ -1372,16 +2031,41 @@
       let proposals = 0;
       let won = 0;
 
+      let countAll = allLeads.length;
+      let countAlliances = 0;
+      let countCommercial = 0;
+
+      allLeads.forEach(l => {
+        const isAlliance = l.origen === 'alianza_institucional' ||
+          (l.sector && l.sector.toLowerCase().includes('alianza')) ||
+          (l.empresa && (l.empresa.includes('Cámara') || l.empresa.includes('Agencia') || l.empresa.includes('COPAL')));
+        if (isAlliance) countAlliances++;
+        else countCommercial++;
+      });
+
       leads.forEach(l => {
         if (l.status === 'reunion_agendada') meetings++;
         if (l.status === 'presupuestado') proposals++;
         if (l.status === 'cliente') won++;
       });
 
-      document.getElementById("kpiTotal").textContent = total;
-      document.getElementById("kpiMeetings").textContent = meetings;
-      document.getElementById("kpiProposals").textContent = proposals;
-      document.getElementById("kpiWon").textContent = won;
+      const kpiTotalEl = document.getElementById("kpiTotal");
+      const kpiMeetingsEl = document.getElementById("kpiMeetings");
+      const kpiProposalsEl = document.getElementById("kpiProposals");
+      const kpiWonEl = document.getElementById("kpiWon");
+
+      if (kpiTotalEl) kpiTotalEl.textContent = total;
+      if (kpiMeetingsEl) kpiMeetingsEl.textContent = meetings;
+      if (kpiProposalsEl) kpiProposalsEl.textContent = proposals;
+      if (kpiWonEl) kpiWonEl.textContent = won;
+
+      const segAllEl = document.getElementById("segCountAll");
+      const segCommEl = document.getElementById("segCountCommercial");
+      const segAlliEl = document.getElementById("segCountAlliances");
+
+      if (segAllEl) segAllEl.textContent = `(${countAll})`;
+      if (segCommEl) segCommEl.textContent = `(${countCommercial})`;
+      if (segAlliEl) segAlliEl.textContent = `(${countAlliances})`;
     }
 
     // --- MODAL DETALLE / EDICIÓN DE PROSPECTO ---
@@ -1484,7 +2168,8 @@
 
         // Actualizar en memoria
         Object.assign(currentSelectedLead, payload);
-        renderTable();
+        renderCurrentView();
+        updateKPIs(allLeads);
         closeLeadModal();
         showToast("Prospecto actualizado correctamente", "success");
       } catch (err) {
@@ -1511,7 +2196,8 @@
         if (error) throw error;
 
         allLeads = allLeads.filter(l => l.id != leadId);
-        renderTable();
+        renderCurrentView();
+        updateKPIs(allLeads);
         closeLeadModal();
         showToast("Prospecto eliminado", "info");
       } catch (err) {
@@ -1579,7 +2265,8 @@
         if (data && data[0]) {
           allLeads.unshift(data[0]);
         }
-        renderTable();
+        renderCurrentView();
+        updateKPIs(allLeads);
         closeNewLeadModal();
         showToast("¡Prospecto creado exitosamente!", "success");
       } catch (err) {
