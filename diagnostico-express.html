@@ -249,19 +249,64 @@
         </div>
       </div>
 
-      <!-- Selector Rápido de Cuenta desde Supabase CRM -->
-      <div class="p-3 bg-brand-50/50 rounded-xl border border-brand-100 mb-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
-        <div class="flex items-center gap-2 flex-1 w-full">
-          <i data-lucide="database" class="w-4 h-4 text-brand-600 shrink-0"></i>
-          <span class="text-xs font-semibold text-brand-900 shrink-0">Cargar desde CRM:</span>
-          <select id="selectLeadCrm" onchange="cargarDesdeCrm(this.value)" class="w-full bg-white border border-brand-200 rounded-lg p-1.5 text-xs text-slate-800 font-medium focus:ring-1 focus:ring-brand-500">
-            <option value="">-- Seleccionar prospecto registrado para autocompletar --</option>
-          </select>
+      <!-- Selector Rápido de Cuenta desde Supabase CRM con Tabs Segmentados -->
+      <div class="p-3 bg-brand-50/50 rounded-xl border border-brand-100 mb-3 space-y-2.5">
+        <!-- Encabezado y Tabs de Segmentación -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="database" class="w-4 h-4 text-brand-600 shrink-0"></i>
+            <span class="text-xs font-bold text-slate-800">Cargar Cuenta CRM:</span>
+          </div>
+
+          <!-- Selector de Tipo de Segmento (Tabs) -->
+          <div class="inline-flex p-0.5 bg-slate-200/80 rounded-lg text-xs font-semibold">
+            <button 
+              type="button" 
+              id="tabPymes" 
+              onclick="setSegmentTab('pyme')" 
+              class="px-2.5 py-1 rounded-md transition flex items-center gap-1.5 bg-white text-brand-700 shadow-xs"
+            >
+              <span>📦 PyMEs Industriales</span>
+              <span id="badgeCountPymes" class="px-1.5 py-0.2 rounded-full text-[10px] bg-brand-100 text-brand-800 font-bold">24</span>
+            </button>
+            <button 
+              type="button" 
+              id="tabAlianzas" 
+              onclick="setSegmentTab('alianza')" 
+              class="px-2.5 py-1 rounded-md transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900"
+            >
+              <span>🏛️ Cámaras & Alianzas</span>
+              <span id="badgeCountAlianzas" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-700 font-bold">11</span>
+            </button>
+          </div>
+
+          <button onclick="fetchLeadsParaDiagnostico()" class="text-xs text-brand-700 hover:text-brand-900 font-semibold flex items-center gap-1 cursor-pointer shrink-0 self-end sm:self-auto">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Refrescar CRM</span>
+          </button>
         </div>
-        <button onclick="fetchLeadsParaDiagnostico()" class="text-xs text-brand-700 hover:text-brand-900 font-semibold flex items-center gap-1 cursor-pointer shrink-0">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-          <span>Refrescar CRM</span>
-        </button>
+
+        <!-- Fila de Búsqueda y Dropdown -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+          <!-- Input de Filtro Rápido -->
+          <div class="sm:col-span-4 relative">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="filterLeadInput" 
+              oninput="filtrarOpcionesSelect(this.value)" 
+              placeholder="Buscar por nombre..." 
+              class="w-full pl-8 pr-2.5 py-1.5 bg-white border border-brand-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-500 placeholder-slate-400"
+            >
+          </div>
+
+          <!-- Dropdown filtrado -->
+          <div class="sm:col-span-8">
+            <select id="selectLeadCrm" onchange="cargarDesdeCrm(this.value)" class="w-full bg-white border border-brand-200 rounded-lg p-1.5 text-xs text-slate-800 font-medium focus:ring-1 focus:ring-brand-500">
+              <option value="">-- Seleccionar prospecto registrado --</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <!-- Banner de Diagnóstico Enriquecido con IA -->
@@ -625,6 +670,75 @@
     }
 
     let currentLeadType = 'pyme'; // 'pyme' | 'alianza'
+    let activeSegmentTab = 'pyme'; // 'pyme' | 'alianza'
+
+    function setSegmentTab(tab) {
+      activeSegmentTab = tab;
+      const tabPymes = document.getElementById("tabPymes");
+      const tabAlianzas = document.getElementById("tabAlianzas");
+      const filterInput = document.getElementById("filterLeadInput");
+      if (filterInput) filterInput.value = "";
+
+      if (tab === 'pyme') {
+        tabPymes.className = "px-2.5 py-1 rounded-md transition flex items-center gap-1.5 bg-white text-brand-700 shadow-xs";
+        tabAlianzas.className = "px-2.5 py-1 rounded-md transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+      } else {
+        tabAlianzas.className = "px-2.5 py-1 rounded-md transition flex items-center gap-1.5 bg-white text-brand-700 shadow-xs";
+        tabPymes.className = "px-2.5 py-1 rounded-md transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+      }
+      renderSelectOptions();
+    }
+
+    function renderSelectOptions(filterText = "") {
+      const select = document.getElementById("selectLeadCrm");
+      if (!select) return;
+
+      const normFilter = filterText.toLowerCase().trim();
+      const placeholder = activeSegmentTab === 'pyme' 
+        ? "-- Seleccionar PyME industrial (" + (leadsCache.filter(l => !isLeadAlianza(l)).length) + ") --"
+        : "-- Seleccionar Cámara o Alianza (" + (leadsCache.filter(l => isLeadAlianza(l)).length) + ") --";
+
+      select.innerHTML = `<option value="">${placeholder}</option>`;
+
+      const filteredLeads = leadsCache.filter(lead => {
+        const isAlianza = isLeadAlianza(lead);
+        const matchesTab = activeSegmentTab === 'pyme' ? !isAlianza : isAlianza;
+        if (!matchesTab) return false;
+
+        if (!normFilter) return true;
+        const searchPool = `${lead.empresa || ''} ${lead.nombre || ''} ${lead.sector || ''}`.toLowerCase();
+        return searchPool.includes(normFilter);
+      });
+
+      filteredLeads.forEach(lead => {
+        const opt = document.createElement("option");
+        opt.value = lead.id;
+        const hasAiDiag = lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:");
+        if (activeSegmentTab === 'alianza') {
+          opt.textContent = `🏛️ ${lead.empresa} (${lead.sector || 'Entidad'})`;
+        } else {
+          opt.textContent = `📦 ${lead.empresa} (${lead.sector || 'PyME'}) ${hasAiDiag ? '🌟 [IA Verificado]' : ''}`;
+        }
+        select.appendChild(opt);
+      });
+
+      if (filteredLeads.length === 0 && normFilter) {
+        const optEmpty = document.createElement("option");
+        optEmpty.disabled = true;
+        optEmpty.textContent = "No se encontraron resultados con ese criterio";
+        select.appendChild(optEmpty);
+      }
+    }
+
+    function isLeadAlianza(lead) {
+      return lead.origen === 'alianza_institucional' || 
+             (lead.sector && lead.sector.toLowerCase().includes('alianza')) ||
+             (lead.sector && lead.sector.toLowerCase().includes('cámara'));
+    }
+
+    function filtrarOpcionesSelect(val) {
+      renderSelectOptions(val);
+    }
 
     // Cargar leads desde Supabase para autocompletar con optgroups
     async function fetchLeadsParaDiagnostico() {
@@ -637,40 +751,28 @@
         if (error) throw error;
         leadsCache = data || [];
 
-        const select = document.getElementById("selectLeadCrm");
-        select.innerHTML = '<option value="">-- Seleccionar cuenta para autocompletar --</option>';
+        // Conteo para los badges de las pestañas
+        const pymesCount = leadsCache.filter(l => !isLeadAlianza(l)).length;
+        const alianzasCount = leadsCache.filter(l => isLeadAlianza(l)).length;
 
-        const optGroupPymes = document.createElement("optgroup");
-        optGroupPymes.label = "📂 PyMEs Manufactureras (Comerciales - 24)";
-        const optGroupAlianzas = document.createElement("optgroup");
-        optGroupAlianzas.label = "🏛️ Cámaras & Alianzas Institucionales (11)";
+        const badgeP = document.getElementById("badgeCountPymes");
+        const badgeA = document.getElementById("badgeCountAlianzas");
+        if (badgeP) badgeP.textContent = pymesCount;
+        if (badgeA) badgeA.textContent = alianzasCount;
 
-        leadsCache.forEach(lead => {
-          const isAlianza = lead.origen === 'alianza_institucional' || 
-                            (lead.sector && lead.sector.toLowerCase().includes('alianza')) ||
-                            (lead.sector && lead.sector.toLowerCase().includes('cámara'));
-          const opt = document.createElement("option");
-          opt.value = lead.id;
-          const hasAiDiag = lead.notas && lead.notas.includes("<!-- COMEX_DIAGNOSTICO:");
-
-          if (isAlianza) {
-            opt.textContent = `🏛️ ${lead.empresa} (${lead.sector || 'Entidad'})`;
-            optGroupAlianzas.appendChild(opt);
-          } else {
-            opt.textContent = `📦 ${lead.empresa} (${lead.sector || 'PyME'}) ${hasAiDiag ? '🌟 [IA Verificado]' : ''}`;
-            optGroupPymes.appendChild(opt);
-          }
-        });
-
-        select.appendChild(optGroupPymes);
-        select.appendChild(optGroupAlianzas);
+        renderSelectOptions();
 
         // Soporte para apertura directa desde CRM con URL param (?lead=<leadId>)
         const urlParams = new URLSearchParams(window.location.search);
         const paramLeadId = urlParams.get("lead");
         if (paramLeadId && leadsCache.some(l => l.id == paramLeadId)) {
-          select.value = paramLeadId;
-          cargarDesdeCrm(paramLeadId);
+          const lead = leadsCache.find(l => l.id == paramLeadId);
+          if (lead) {
+            setSegmentTab(isLeadAlianza(lead) ? 'alianza' : 'pyme');
+            const select = document.getElementById("selectLeadCrm");
+            if (select) select.value = paramLeadId;
+            cargarDesdeCrm(paramLeadId);
+          }
         }
       } catch (err) {
         console.warn("No se pudieron cargar leads del CRM:", err);
