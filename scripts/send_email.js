@@ -1,6 +1,7 @@
 /**
- * Helper de Despacho SMTP Oficial - Nexum Trade Consulting
- * Con firma HTML institucional y logo oficial.
+ * Helper de Despacho Oficial - Nexum Trade Consulting
+ * 1. Envía el correo por SMTP autenticado desde juan.oviedo@nexumtc.com.ar
+ * 2. Guarda automáticamente una copia en la carpeta "Enviados" (INBOX.Sent) por IMAP
  */
 const tls = require('tls');
 const fs = require('fs');
@@ -43,16 +44,7 @@ Tel: +54 9 11 7237-6197
 Web: https://nexumtradeconsulting.com.ar
 `;
 
-function sendEmail({ to, subject, bodyParagraphs }) {
-  const env = loadEnv();
-  const user = env.NEXUM_EMAIL_USER || 'juan.oviedo@nexumtc.com.ar';
-  const pass = env.NEXUM_EMAIL_PASS;
-  const host = env.NEXUM_SMTP_HOST || 'smtp.hostinger.com';
-  const port = parseInt(env.NEXUM_SMTP_PORT || '465', 10);
-
-  if (!pass) throw new Error('No se encontró NEXUM_EMAIL_PASS en stack.env');
-
-  // Construir versiones
+function buildMimeMessage({ user, to, subject, bodyParagraphs }) {
   const textBody = bodyParagraphs.join('\n\n') + '\n' + OFFICIAL_SIGNATURE_TEXT;
   const htmlBody = `
   <div style="font-family: Arial, sans-serif; font-size: 13px; color: #1e293b; line-height: 1.6;">
@@ -61,6 +53,32 @@ function sendEmail({ to, subject, bodyParagraphs }) {
   </div>
   `;
 
+  const dateHeader = new Date().toUTCString();
+  const boundary = 'nexum_' + Date.now();
+  
+  let message = `From: "Juan Manuel Oviedo - Nexum Trade Consulting" <${user}>\r\n`;
+  message += `To: <${to}>\r\n`;
+  message += `Subject: ${subject}\r\n`;
+  message += `Date: ${dateHeader}\r\n`;
+  message += `MIME-Version: 1.0\r\n`;
+  message += `Content-Type: multipart/alternative; boundary="${boundary}"\r\n\r\n`;
+
+  message += `--${boundary}\r\n`;
+  message += `Content-Type: text/plain; charset=UTF-8\r\n`;
+  message += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
+  message += textBody + `\r\n\r\n`;
+
+  message += `--${boundary}\r\n`;
+  message += `Content-Type: text/html; charset=UTF-8\r\n`;
+  message += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
+  message += htmlBody + `\r\n\r\n`;
+
+  message += `--${boundary}--\r\n`;
+
+  return message;
+}
+
+function sendSmtp({ user, pass, host, port, to, rawMessage }) {
   return new Promise((resolve, reject) => {
     const socket = tls.connect(port, host, () => {});
     let step = 'INIT';
@@ -91,33 +109,11 @@ function sendEmail({ to, subject, bodyParagraphs }) {
         socket.write('DATA\r\n');
       } else if (resp.startsWith('354') && step === 'DATA') {
         step = 'SENDING';
-        const dateHeader = new Date().toUTCString();
-        const boundary = 'nexum_' + Date.now();
-        
-        let message = `From: "Juan Manuel Oviedo - Nexum Trade Consulting" <${user}>\r\n`;
-        message += `To: <${to}>\r\n`;
-        message += `Subject: ${subject}\r\n`;
-        message += `Date: ${dateHeader}\r\n`;
-        message += `MIME-Version: 1.0\r\n`;
-        message += `Content-Type: multipart/alternative; boundary="${boundary}"\r\n\r\n`;
-
-        message += `--${boundary}\r\n`;
-        message += `Content-Type: text/plain; charset=UTF-8\r\n`;
-        message += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
-        message += textBody + `\r\n\r\n`;
-
-        message += `--${boundary}\r\n`;
-        message += `Content-Type: text/html; charset=UTF-8\r\n`;
-        message += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
-        message += htmlBody + `\r\n\r\n`;
-
-        message += `--${boundary}--\r\n.\r\n`;
-
-        socket.write(message);
+        socket.write(rawMessage + '\r\n.\r\n');
       } else if (resp.startsWith('250') && step === 'SENDING') {
         step = 'DONE';
         socket.write('QUIT\r\n');
-        resolve({ success: true, to, subject });
+        resolve({ success: true, to });
       } else if (resp.startsWith('5') || resp.startsWith('4')) {
         reject(new Error(`SMTP Error [${step}]: ${resp.trim()}`));
         socket.end();
@@ -126,6 +122,65 @@ function sendEmail({ to, subject, bodyParagraphs }) {
 
     socket.on('error', err => reject(err));
   });
+}
+
+function saveToSentImap({ user, pass, rawMessage }) {
+  return new Promise((resolve) => {
+    const socket = tls.connect(993, 'imap.hostinger.com', () => {});
+    const msgBuffer = Buffer.from(rawMessage, 'utf8');
+    const msgLen = msgBuffer.length;
+    let step = 'INIT';
+
+    socket.on('data', data => {
+      const resp = data.toString();
+
+      if (resp.includes('* OK') && step === 'INIT') {
+        step = 'LOGIN';
+        socket.write(`a1 LOGIN ${user} ${pass}\r\n`);
+      } else if (resp.includes('a1 OK') && step === 'LOGIN') {
+        step = 'APPEND';
+        socket.write(`a2 APPEND "INBOX.Sent" (\\Seen) {${msgLen}}\r\n`);
+      } else if (resp.startsWith('+') && step === 'APPEND') {
+        step = 'SEND_BODY';
+        socket.write(msgBuffer);
+        socket.write('\r\n');
+      } else if (resp.includes('a2 OK') && step === 'SEND_BODY') {
+        step = 'DONE';
+        socket.write('a3 LOGOUT\r\n');
+        resolve(true);
+      } else if (resp.includes('NO') || resp.includes('BAD')) {
+        console.warn('IMAP Append Warning:', resp.trim());
+        socket.end();
+        resolve(false);
+      }
+    });
+
+    socket.on('error', () => resolve(false));
+  });
+}
+
+async function sendEmail({ to, subject, bodyParagraphs }) {
+  const env = loadEnv();
+  const user = env.NEXUM_EMAIL_USER || 'juan.oviedo@nexumtc.com.ar';
+  const pass = env.NEXUM_EMAIL_PASS;
+  const host = env.NEXUM_SMTP_HOST || 'smtp.hostinger.com';
+  const port = parseInt(env.NEXUM_SMTP_PORT || '465', 10);
+
+  if (!pass) throw new Error('No se encontró NEXUM_EMAIL_PASS en stack.env');
+
+  const rawMessage = buildMimeMessage({ user, to, subject, bodyParagraphs });
+
+  // 1. Enviar por SMTP a destino
+  const smtpRes = await sendSmtp({ user, pass, host, port, to, rawMessage });
+
+  // 2. Guardar copia en la carpeta Enviados (INBOX.Sent) para verlo en Hostinger Webmail
+  try {
+    await saveToSentImap({ user, pass, rawMessage });
+  } catch(e) {
+    // Si falla el guardado local, el mail ya se envió igual
+  }
+
+  return smtpRes;
 }
 
 module.exports = { sendEmail, OFFICIAL_SIGNATURE_HTML, OFFICIAL_SIGNATURE_TEXT };
