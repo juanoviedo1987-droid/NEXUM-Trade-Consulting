@@ -167,6 +167,10 @@
 
       <!-- Navegación entre Módulos / Apps (Desktop Segmented Switch - CENTRADA ABSOLUTA) -->
       <nav class="hidden sm:flex sm:absolute sm:left-1/2 sm:-translate-x-1/2 items-center gap-1 bg-slate-100 p-0.5 sm:p-1 rounded-xl border border-slate-200 text-xs font-semibold z-10">
+        <a href="app.html" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-white/60 transition" title="Ir al Portal de Apps">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>Suite</span>
+        </a>
         <a href="procedimientos.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-brand-600 shadow-xs border border-slate-200/80">
           <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-500"></i>
           <span>1. SOP</span>
@@ -296,6 +300,11 @@
           <span>Tarifas Oficiales</span>
         </button>
 
+        <button onclick="mostrarSeccion('pitch')" id="nav-pitch" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
+          <i data-lucide="presentation" class="w-4 h-4 text-amber-500 shrink-0"></i>
+          <span>Pitch Deck & Business Plan</span>
+        </button>
+
         <button onclick="mostrarSeccion('firmas')" id="nav-firmas" class="nav-item w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-slate-100 transition active:scale-[0.98]">
           <i data-lucide="mail" class="w-4 h-4 text-blue-600 shrink-0"></i>
           <span>Firmas de Email Oficiales</span>
@@ -312,6 +321,14 @@
             <span>Brand Kit & Logos</span>
           </span>
           <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-400 group-hover:text-brand-500"></i>
+        </a>
+
+        <a href="app.html" class="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700 transition group mt-2 pt-2 border-t border-slate-200">
+          <span class="flex items-center gap-2.5">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-brand-600 shrink-0"></i>
+            <span class="font-bold">Hub de la Suite</span>
+          </span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-brand-500"></i>
         </a>
 
       </div>
@@ -928,6 +945,176 @@ Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y
           </div>
         </section>
 
+        <!-- ================= SECCIÓN: PITCH DECK & BUSINESS PLAN COMERCIAL ================= -->
+        <section id="sec-pitch" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs hidden">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center font-bold">
+                <i data-lucide="presentation" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Estrategia Comercial & Business Plan</span>
+                <h2 class="text-xl font-heading font-extrabold text-slate-900">Pitch Deck B2B · Guion de Reunión</h2>
+              </div>
+            </div>
+            <button onclick="copiarTexto(document.getElementById('pitchDeckFullText').innerText, 'Guion del Pitch')" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition cursor-pointer">
+              <i data-lucide="copy" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Copiar Guion Completo</span>
+            </button>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
+            Estructura y guion diapositiva por diapositiva para reuniones comerciales con directores, dueños y gerentes de PyMEs argentinas. Diseñado para proyectar en Google Meet/Zoom, presentar en persona o enviar como resumen ejecutivo.
+          </p>
+
+          <div id="pitchDeckFullText" class="space-y-6 text-xs sm:text-sm">
+            
+            <!-- Diapositiva 1 -->
+            <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-200 text-slate-700 uppercase">Diapositiva 1 · Portada</span>
+                <span class="text-[11px] text-slate-500 font-medium">Apertura (1 min)</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900">Expandí tu Negocio al Mundo · Consultoría Estratégica en Exportación para PyMEs</h3>
+              <p class="text-xs text-slate-600"><strong>Badge de Autoridad:</strong> +20 Años de Experiencia en Comercio Exterior | Carlos A. Oviedo & Equipo Nexum</p>
+              <div class="p-3 bg-white rounded-xl border border-slate-200/80 text-slate-700 italic text-xs">
+                💬 <strong>Mensaje de Apertura (Voz del consultor):</strong> "Gracias por recibirnos. El objetivo de hoy no es venderles un curso ni hablar de teoría, sino mostrarles cómo una PyME argentina puede abrir mercados en el exterior con seguridad jurídica, costos logísticos controlados y cobro garantizado."
+              </div>
+            </div>
+
+            <!-- Diapositiva 2 -->
+            <div class="p-5 rounded-2xl border border-rose-200 bg-rose-50/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-700 uppercase">Diapositiva 2 · El Diagnóstico</span>
+                <span class="text-[11px] text-rose-700 font-semibold">Los 4 Dolores de la PyME</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900">Exportar no debería ser una apuesta a ciegas</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div class="p-3 bg-white rounded-xl border border-rose-200/80">
+                  <span class="font-bold text-rose-900 block mb-1">1. Incertidumbre Comercial</span>
+                  <p class="text-xs text-slate-600">¿A qué país apuntar? ¿Cómo validar si un importador es solvente y serio sin viajar?</p>
+                </div>
+                <div class="p-3 bg-white rounded-xl border border-rose-200/80">
+                  <span class="font-bold text-rose-900 block mb-1">2. Barrera Burocrática y Aduanera</span>
+                  <p class="text-xs text-slate-600">Regulaciones arancelarias, certificaciones sanitarias y temor a retenciones o multas.</p>
+                </div>
+                <div class="p-3 bg-white rounded-xl border border-rose-200/80">
+                  <span class="font-bold text-rose-900 block mb-1">3. Riesgo Logístico</span>
+                  <p class="text-xs text-slate-600">Fletes internacionales con sobrecostos, demoras portuarias y falta de control de carga.</p>
+                </div>
+                <div class="p-3 bg-white rounded-xl border border-rose-200/80">
+                  <span class="font-bold text-rose-900 block mb-1">4. Seguridad de Cobro</span>
+                  <p class="text-xs text-slate-600">Miedo a despachar y no cobrar, o perder margen en la liquidación de divisas.</p>
+                </div>
+              </div>
+              <p class="text-xs font-semibold text-rose-800 pt-1">
+                ⚠️ Dato Clave: "El 80% de los errores y sobrecostos en exportación ocurren por fallas en la planificación previa al despacho."
+              </p>
+            </div>
+
+            <!-- Diapositiva 3 -->
+            <div class="p-5 rounded-2xl border border-brand-200 bg-brand-50/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-brand-100 text-brand-700 uppercase">Diapositiva 3 · Nuestra Solvencia</span>
+                <span class="text-[11px] text-brand-700 font-semibold">Trayectoria Probada</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900">Convertimos una vida de experiencia en tus resultados</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Nuestra experiencia se forjó en el <strong>sector veterinario y farmacéutico animal</strong>, caracterizado por las barreras sanitarias (SENASA, FDA, registros internacionales) y de cadena de frío más estrictas del mundo. Si pudimos exportar biológicos a mercados hiperregulados, tenemos la solvencia para llevar cualquier producto de tu PyME a destino.
+              </p>
+              <div class="p-3 bg-white rounded-xl border border-brand-200 text-brand-900 text-xs font-medium">
+                🎯 <strong>Enfoque PyME:</strong> Sin la burocracia de grandes multinacionales. Acompañamiento mano a mano directo con los directores y gerentes de la empresa.
+              </div>
+            </div>
+
+            <!-- Diapositiva 4 -->
+            <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-200 text-slate-700 uppercase">Diapositiva 4 · Matriz 360°</span>
+                <span class="text-[11px] text-slate-500 font-medium">Cobertura Integral</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900">Qué Hacemos por tu Empresa de Punta a Punta</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <span class="font-bold text-brand-700 block">1. Mercados & Socios</span>
+                  <span class="text-slate-600 text-[11px]">Búsqueda y filtrado de compradores calificados en el exterior.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <span class="font-bold text-brand-700 block">2. Compliance & Normas</span>
+                  <span class="text-slate-600 text-[11px]">Cumplimiento exacto de requisitos aduaneros y fitosanitarios.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <span class="font-bold text-brand-700 block">3. Logística Global</span>
+                  <span class="text-slate-600 text-[11px]">Negociación de fletes marítimos, aéreos y terrestres.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <span class="font-bold text-brand-700 block">4. Certificados & Registros</span>
+                  <span class="text-slate-600 text-[11px]">Certificados de origen y homologaciones de producto.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <span class="font-bold text-brand-700 block">5. Auditoría Pre-Embarque</span>
+                  <span class="text-slate-600 text-[11px]">Revisión minuciosa de facturas, packing list y BL/CRT.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                  <span class="font-bold text-brand-700 block">6. Incoterms & Cobranza</span>
+                  <span class="text-slate-600 text-[11px]">Cartas de crédito, cobranza documentaria y contratos seguros.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diapositiva 5 -->
+            <div class="p-5 rounded-2xl border border-emerald-200 bg-emerald-50/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 uppercase">Diapositiva 5 · Metodología</span>
+                <span class="text-[11px] text-emerald-800 font-semibold">4 Fases Claras</span>
+              </div>
+              <h3 class="text-base font-bold text-slate-900">Cómo Trabajamos: Paso a Paso, Sin Sorpresas</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
+                <div class="p-2.5 bg-white rounded-lg border border-emerald-200">
+                  <span class="font-bold text-emerald-800 block">Fase 1: Sem. 1-2</span>
+                  <span class="font-medium text-slate-900 block text-[11px]">Diagnóstico</span>
+                  <span class="text-slate-500 text-[11px]">Auditoría de producto, costos y selección de mercados clave.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-emerald-200">
+                  <span class="font-bold text-emerald-800 block">Fase 2: Sem. 3-6</span>
+                  <span class="font-medium text-slate-900 block text-[11px]">Adecuación</span>
+                  <span class="text-slate-500 text-[11px]">Registros sanitarios, packaging y revisión documental.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-emerald-200">
+                  <span class="font-bold text-emerald-800 block">Fase 3: Sem. 7-10</span>
+                  <span class="font-medium text-slate-900 block text-[11px]">Vinculación</span>
+                  <span class="text-slate-500 text-[11px]">Contacto con compradores, términos comerciales e Incoterms.</span>
+                </div>
+                <div class="p-2.5 bg-white rounded-lg border border-emerald-200">
+                  <span class="font-bold text-emerald-800 block">Fase 4: Sem. 11+</span>
+                  <span class="font-medium text-slate-900 block text-[11px]">Ejecución</span>
+                  <span class="text-slate-500 text-[11px]">Despacho aduanero, flete y seguimiento hasta acreditar fondos.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diapositiva 6 y 7 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 uppercase">Diapositiva 6 · Diferencial</span>
+                <h4 class="font-bold text-slate-900 text-sm">¿Por Qué Elegir Nexum?</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Las agencias tradicionales cobran fees fijos altos, delegan en juniors sin experiencia aduanera y aplican recetas de libro. En Nexum brindamos consultoría senior personalizada, conocimiento operativo de trinchera y enfoque exclusivo en rentabilidad neta.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-xl border border-brand-300 bg-brand-50/60 space-y-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-200 text-brand-800 uppercase">Diapositiva 7 · Cierre / CTA</span>
+                <h4 class="font-bold text-brand-900 text-sm">Próximo Paso: Diagnóstico Inicial Sin Costo</h4>
+                <p class="text-xs text-slate-700 leading-relaxed">
+                  "Evaluamos la posición arancelaria y el potencial de su producto con nuestro sistema de inteligencia comex. Les entregamos una devolución ejecutiva de 1 carilla sin costo ni compromiso para evaluar números reales."
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         <!-- ================= SECCIÓN: FIRMAS DE EMAIL OFICIALES ================= -->
         <section id="sec-firmas" class="content-section bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
           <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
@@ -1163,7 +1350,12 @@ Al transferir, envianos el comprobante y tu CUIT para emitir la factura formal y
         authScreen.classList.add("hidden");
         sopApp.classList.remove("hidden");
         if (window.lucide) window.lucide.createIcons();
-        mostrarSeccion('resumen');
+        
+        // Revisar si vino con hash o localStorage para ir directo a una sección (ej: pitch)
+        const hashSec = window.location.hash ? window.location.hash.replace("#", "") : null;
+        const targetSec = localStorage.getItem('nexum_target_sop') || hashSec || 'resumen';
+        localStorage.removeItem('nexum_target_sop');
+        mostrarSeccion(targetSec);
       } else {
         sopApp.classList.add("hidden");
         authScreen.classList.remove("hidden");

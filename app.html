@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NEXUM Suite · Portal Central de Aplicaciones</title>
+  
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/logo-3.png">
+
+  <!-- Google Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <!-- Supabase JS Client Oficial con Versión Fija (v2.48.1) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.48.1/dist/umd/supabase.js"></script>
+
+  <style>
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-modal {
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            slate: {
+              850: '#151F32',
+              900: '#0F172A',
+              950: '#090E17'
+            },
+            brand: {
+              50: '#F0F9FF',
+              100: '#E0F2FE',
+              200: '#BAE6FD',
+              400: '#38BDF8',
+              500: '#0074A1',
+              600: '#0284C7',
+              700: '#0369A1',
+              800: '#075985',
+              900: '#002529',
+              950: '#00171A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full flex flex-col font-sans antialiased text-slate-100 bg-slate-950 selection:bg-brand-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- 1. PANTALLA DE LOGIN CON SUPABASE AUTH (SINGLE SIGN-ON SUITE)              -->
+  <!-- ========================================================================= -->
+  <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div class="w-full max-w-sm p-6 sm:p-8 bg-slate-900/95 border border-slate-800 rounded-3xl shadow-2xl backdrop-blur-xl animate-modal text-left">
+      
+      <!-- Isotipo & Identidad -->
+      <div class="flex items-center justify-center mb-5">
+        <div class="w-16 h-16 rounded-2xl bg-brand-500/10 p-2.5 border border-brand-500/20 shadow-inner flex items-center justify-center">
+          <img src="assets/logo-3.png" alt="Nexum Isotipo" class="w-12 h-12 object-contain">
+        </div>
+      </div>
+
+      <div class="text-center mb-6">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 mb-2">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-brand-400"></i>
+          Nexum Command Center
+        </span>
+        <h1 class="text-xl font-heading font-extrabold text-white tracking-tight">NEXUM Suite</h1>
+        <p class="text-xs text-slate-400 mt-1">Acceso seguro a las aplicaciones internas</p>
+      </div>
+
+      <!-- Formulario de Login -->
+      <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1.5" for="loginEmail">Email Corporativo</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="email" 
+              id="loginEmail" 
+              required 
+              autocomplete="email"
+              placeholder="juan.oviedo@nexumtc.com.ar" 
+              class="w-full pl-9 pr-3 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition shadow-inner"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1.5" for="loginPassword">Contraseña</label>
+          <div class="relative">
+            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              required 
+              autocomplete="current-password"
+              placeholder="••••••••" 
+              class="w-full pl-9 pr-10 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition shadow-inner"
+            >
+            <button 
+              type="button" 
+              onclick="togglePasswordVisibility()" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition"
+              tabindex="-1"
+            >
+              <i data-lucide="eye" id="loginEyeIcon" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginError" class="p-2.5 rounded-lg bg-rose-950/60 border border-rose-800 text-rose-300 text-xs hidden flex items-start gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 mt-0.5 text-rose-400"></i>
+          <span id="loginErrorMsg">Credenciales inválidas.</span>
+        </div>
+
+        <button 
+          type="submit" 
+          id="loginSubmitBtn" 
+          class="w-full py-2.5 px-4 bg-brand-500 hover:bg-brand-600 active:scale-[0.98] text-white font-bold rounded-xl transition shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span id="loginBtnText">Iniciar Sesión</span>
+        </button>
+
+        <p class="text-[11px] text-slate-500 text-center pt-2 border-t border-slate-800">
+          Single Sign-On unificado para todo el equipo directivo.
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. HUB DE APLICACIONES (PROTEGIDO TRAS LOGIN)                             -->
+  <!-- ========================================================================= -->
+  <div id="appContainer" class="min-h-full flex flex-col hidden">
+
+    <!-- Topbar Corporativo -->
+    <header class="bg-slate-900/80 border-b border-slate-800 backdrop-blur-md sticky top-0 z-30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+        
+        <!-- Logo & Titulo -->
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-brand-500/10 border border-brand-500/30 p-1.5 flex items-center justify-center">
+            <img src="assets/logo-3.png" alt="Nexum Logo" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-heading font-extrabold text-white text-base tracking-tight leading-none">NEXUM</span>
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-brand-500/20 text-brand-400 border border-brand-500/30">Suite</span>
+            </div>
+            <span class="text-[11px] text-slate-400">Portal Operativo & Herramientas B2B</span>
+          </div>
+        </div>
+
+        <!-- Acciones Rápidas Topbar -->
+        <div class="flex items-center gap-2.5">
+          <a 
+            href="index.html" 
+            class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+            title="Ver sitio web público de Nexum"
+          >
+            <i data-lucide="globe" class="w-3.5 h-3.5 text-brand-400"></i>
+            <span>Ver Web</span>
+          </a>
+
+          <a 
+            href="https://wa.me/5491172376197" 
+            target="_blank" 
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-800 transition"
+            title="WhatsApp Oficial"
+          >
+            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span class="hidden md:inline">WhatsApp</span>
+          </a>
+
+          <button 
+            onclick="handleLogout()" 
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800 transition cursor-pointer"
+            title="Cerrar sesión"
+          >
+            <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
+            <span class="hidden sm:inline">Salir</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+      
+      <!-- Banner de Bienvenida -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-900 via-slate-900 to-slate-850 p-6 sm:p-8 border border-slate-800 shadow-2xl">
+        <div class="relative z-10 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-semibold mb-3">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Sistema Operativo Central v2.6</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-heading font-extrabold text-white tracking-tight">
+            Command Center Nexum
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+            Gestión comercial, análisis técnico de factibilidad con inteligencia artificial, cotizaciones y manuales operativos de comercio exterior para PyMEs argentinas.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 mt-5 text-xs text-slate-400">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="server" class="w-4 h-4 text-emerald-400"></i>
+              <span>n8n Cloud 24/7 (GCP)</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="database" class="w-4 h-4 text-sky-400"></i>
+              <span>Supabase Leads DB</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+              <span>Google Gemini AI</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      </div>
+
+      <!-- SECCIÓN 1: APPS OPERATIVAS NÚCLEO (Las 4 Aplicaciones Maestras) -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm sm:text-base font-heading font-extrabold text-white tracking-tight">
+              Aplicaciones Operativas del Pipeline
+            </h2>
+            <p class="text-xs text-slate-400">Herramientas diarias para prospección, diagnóstico y cierre</p>
+          </div>
+          <span class="text-xs text-brand-400 font-semibold px-2.5 py-1 bg-brand-500/10 border border-brand-500/20 rounded-full">
+            4 Módulos
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- App 1: SOP -->
+          <a href="procedimientos.html" class="group bg-slate-900 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-brand-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 group-hover:scale-105 transition">
+                  <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Módulo 1</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-brand-400 transition">1. Manual & SOP</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Metodología en 5 fases, checklist de onboarding PyME, tarifas oficiales, datos bancarios CBU y plantillas.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-brand-400 group-hover:text-brand-300">
+              <span>Abrir Manual</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+          <!-- App 2: CRM -->
+          <a href="crm.html" class="group bg-slate-900 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-brand-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-105 transition">
+                  <i data-lucide="kanban" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">Módulo 2</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-sky-400 transition">2. CRM & Pipeline</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Gestión de cuentas PyME y Cámaras Institucionales, notas de seguimiento, estados comerciales e historial.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-sky-400 group-hover:text-sky-300">
+              <span>Abrir CRM</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+          <!-- App 3: Diagnostico Express -->
+          <a href="diagnostico-express.html" class="group bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-emerald-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition">
+                  <i data-lucide="file-check" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Módulo 3</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-emerald-400 transition">3. Diagnóstico Express</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Entregable A4 de 1 carilla con IA. Modo Dual: Viabilidad Exportadora (PyMEs) vs. Convenio Institucional (Cámaras).
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-emerald-400 group-hover:text-emerald-300">
+              <span>Generar Informe</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+          <!-- App 4: Cotizador Presupuestos -->
+          <a href="presupuestos.html" class="group bg-slate-900 border border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-purple-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-105 transition">
+                  <i data-lucide="calculator" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30">Módulo 4</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-purple-400 transition">4. Cotizador Express</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Generador y calculador de presupuestos de servicios Comex en PDF con desglose por módulo y condiciones comerciales.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-purple-400 group-hover:text-purple-300">
+              <span>Cotizar Servicio</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2: RECURSOS COMERCIALES, MARCA & IDENTIDAD -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm sm:text-base font-heading font-extrabold text-white tracking-tight">
+              Recursos Comerciales, Identidad & Comunicación
+            </h2>
+            <p class="text-xs text-slate-400">Activos de marca, kits visuales, firmas corporativas y presentaciones</p>
+          </div>
+          <span class="text-xs text-slate-400 font-semibold px-2.5 py-1 bg-slate-800 border border-slate-700 rounded-full">
+            3 Módulos
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          
+          <!-- Recurso 1: Pitch Comercial & Business Plan -->
+          <a href="procedimientos.html#pitch" onclick="localStorage.setItem('nexum_target_sop', 'pitch')" class="group bg-slate-900 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:scale-105 transition">
+                  <i data-lucide="presentation" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Business Deck</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-amber-400 transition">Pitch Deck & Plan Comercial</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Estructura de 7 diapositivas para reuniones con dueños de PyMEs: Dolores, Matriz 360°, Metodología y Cierre.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-amber-400 group-hover:text-amber-300">
+              <span>Ver Diapositivas</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+          <!-- Recurso 2: Brand Kit -->
+          <a href="brand.html" class="group bg-slate-900 border border-slate-800 hover:border-sky-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-sky-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 group-hover:scale-105 transition">
+                  <i data-lucide="palette" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">Manual de Marca</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-sky-400 transition">Brand Kit & Logos Oficiales</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Descarga de isotipos, logos en SVG/PNG para fondo claro y oscuro, portadas de WhatsApp Business y paleta HEX.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-sky-400 group-hover:text-sky-300">
+              <span>Explorar Recursos</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+          <!-- Recurso 3: Firmas de Correo -->
+          <a href="firmas-nexum.html" class="group bg-slate-900 border border-slate-800 hover:border-blue-500/50 rounded-2xl p-5 transition flex flex-col justify-between hover:shadow-xl hover:shadow-blue-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-11 h-11 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
+                  <i data-lucide="mail-check" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">Hostinger Mail</span>
+              </div>
+              <h3 class="font-heading font-bold text-white text-base group-hover:text-blue-400 transition">Firmas de Correo Oficiales</h3>
+              <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Generador de firmas HTML optimizadas para Webmail de Hostinger, Outlook y Gmail con botón de 1-click copy.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-semibold text-blue-400 group-hover:text-blue-300">
+              <span>Copiar Firmas</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- SECCIÓN 3: ACCESOS DIRECTOS Y HERRAMIENTAS EXTERNAS -->
+      <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 shrink-0">
+            <i data-lucide="external-link" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-white text-sm">Sitio Web Público Oficial</h3>
+            <p class="text-xs text-slate-400">Landing institucional con formulario B2B y captura en vivo</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <a 
+            href="index.html" 
+            target="_blank" 
+            class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs transition shadow-sm"
+          >
+            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+            <span>Abrir nexumtradeconsulting.com.ar</span>
+          </a>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer de la Suite -->
+    <footer class="bg-slate-900/40 border-t border-slate-800/80 py-4 px-6 text-center text-xs text-slate-500">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <p>&copy; 2026 Nexum Trade Consulting · Suite de Operaciones Interna</p>
+        <p class="text-[11px] text-slate-600">Ambiente de Producción · Buenos Aires, Argentina</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- SCRIPT DE CONTROL Y SUPABASE AUTH -->
+  <script>
+    const SUPABASE_URL = "https://wbcfmanuhotyevquiaht.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY2ZtYW51aG90eWV2cXVpYWh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2MjcyNzcsImV4cCI6MjEwNjIwMzI3N30.9Lx4mXOP3WIfmqJ5AGbqEOYTA2nZ_KeSnD54OFrR__g";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (window.lucide) window.lucide.createIcons();
+
+      // Escuchar cambios de sesión
+      supabaseClient.auth.onAuthStateChange((event, session) => {
+        handleAuthState(session);
+      });
+
+      // Verificar sesión inicial
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        handleAuthState(session);
+      } catch (err) {
+        console.warn("Error validando sesión:", err);
+        handleAuthState(null);
+      }
+    });
+
+    function handleAuthState(session) {
+      const authScreen = document.getElementById("authScreen");
+      const appContainer = document.getElementById("appContainer");
+
+      if (session && session.user) {
+        authScreen.classList.add("hidden");
+        appContainer.classList.remove("hidden");
+        if (window.lucide) window.lucide.createIcons();
+      } else {
+        authScreen.classList.remove("hidden");
+        appContainer.classList.add("hidden");
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      const errorEl = document.getElementById("loginError");
+      const errorMsg = document.getElementById("loginErrorMsg");
+      const btn = document.getElementById("loginSubmitBtn");
+      const btnText = document.getElementById("loginBtnText");
+
+      errorEl.classList.add("hidden");
+      btn.disabled = true;
+      btnText.textContent = "Verificando...";
+
+      try {
+        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      } catch (err) {
+        errorMsg.textContent = err.message === "Invalid login credentials"
+          ? "Credenciales incorrectas. Verificá email y contraseña."
+          : `Error de acceso: ${err.message}`;
+        errorEl.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btnText.textContent = "Iniciar Sesión";
+      }
+    }
+
+    async function handleLogout() {
+      if (!confirm("¿Deseás cerrar la sesión de la Suite?")) return;
+      await supabaseClient.auth.signOut();
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById("loginPassword");
+      const eye = document.getElementById("loginEyeIcon");
+      if (input.type === "password") {
+        input.type = "text";
+        eye.setAttribute("data-lucide", "eye-off");
+      } else {
+        input.type = "password";
+        eye.setAttribute("data-lucide", "eye");
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+  </script>
+
+</body>
+</html>
