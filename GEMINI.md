@@ -36,3 +36,11 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
    - Ergonomía táctil obligatoria (zonas de toque >= 44px, navegación al alcance del pulgar, formularios adaptativos, sin scrolls laterales accidentales).
    - En PC se garantiza la vista ejecutiva de pantalla completa sin comprometer la base móvil.
 
+8. **Perfil de Cliente Ideal (ICP) y Prospección Quirúrgica:**
+   - **Target Obligatorio:** PyMEs chicas o talleres/fábricas boutique argentinas (de **5 a 30 empleados**).
+   - **Exclusión Estricta:** NUNCA prospectar empresas medianas/grandes que ya cuenten con departamento interno de Comercio Exterior, despachantes corporativos fijos o estructura burocrática inaccesible.
+   - **Perfil del Prospecto:** Producto terminado con marca propia (no materias primas a granel), validado en mercado interno, con capacidad productiva disponible, sin experiencia exportadora sólida o con exportaciones esporádicas.
+   - **Decisor Directo:** El dueño, fundador o socio gerente debe ser accesible de forma directa (a una llamada, WhatsApp comercial o LinkedIn de distancia; sin filtros de secretaría o conmutadores complejos).
+   - **Cadencia de Contacto:** Siempre validar y acordar la lista de empresas con Juan ANTES de cargar a base de datos. Estrategia multicanal: Email formal inicial (plantar bandera) seguido a los 3-5 días de contacto directo por WhatsApp/llamada telefónica.
+
+
