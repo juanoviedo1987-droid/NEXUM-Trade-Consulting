@@ -13,8 +13,8 @@
       <stop offset="100%" stop-color="#38bdf8"/>
     </linearGradient>
 
-    <!-- Resplandor sutil a la derecha detrás del logo -->
-    <radialGradient id="glowRight" cx="78%" cy="50%" r="50%">
+    <!-- Resplandor sutil en la zona central-derecha -->
+    <radialGradient id="glowRight" cx="72%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#0284c7" stop-opacity="0.22"/>
       <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
     </radialGradient>
@@ -24,7 +24,7 @@
   <rect width="1584" height="396" fill="url(#bgGradRight)"/>
   <rect width="1584" height="396" fill="url(#glowRight)"/>
 
-  <!-- DETALLES SUTILES DECORATIVOS (Líneas tenues de comercio exterior) -->
+  <!-- DETALLES SUTILES DECORATIVOS -->
   <g opacity="0.10" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="8 8">
     <line x1="0" y1="50" x2="1584" y2="50" />
     <line x1="0" y1="346" x2="1584" y2="346" />
@@ -32,8 +32,8 @@
     <circle cx="80" cy="346" r="5" fill="#38bdf8"/>
   </g>
 
-  <!-- BLOQUE PRINCIPAL UBICADO CON AIRE PERFECTO (X: 620, Margen derecho de seguridad amplio) -->
-  <g transform="translate(620, 75)">
+  <!-- BLOQUE COMPLETO DESPLAZADO A LA IZQUIERDA (X: 490) PARA DEJAR 360PX DE MARGEN DERECHO LIBRE -->
+  <g transform="translate(490, 75)">
     
     <!-- ISOTIPO: N entrelazada Dark Mode -->
     <g stroke-linecap="round" stroke-linejoin="round">
@@ -69,12 +69,12 @@
           letter-spacing="0.32em" 
           fill="#38bdf8">TRADE CONSULTING</text>
 
-    <!-- SUBTÍTULO SOBRIO CON ANCHO CALIBRADO PARA QUE NO SE PEGUE AL BORDE -->
+    <!-- SUBTÍTULO ALINEADO EXACTAMENTE AL ANCHO DE TRADE CONSULTING -->
     <text x="354" y="235" 
           font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" 
-          font-size="15" 
+          font-size="14.5" 
           font-weight="500" 
-          letter-spacing="0.08em" 
+          letter-spacing="0.05em" 
           fill="#94a3b8">CONSULTORÍA ESTRATÉGICA EN COMERCIO EXTERIOR</text>
   </g>
 
