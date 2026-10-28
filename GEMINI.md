@@ -53,5 +53,10 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
    - **Extensión:** Máximo 3 o 4 líneas. Menos es más: dejar que la contraparte hable, responda o proponga.
    - **Regla de Ejecución Estricta:** NUNCA disparar envíos masivos de emails, mensajes ni mutaciones operativas externas sin la confirmación y el visto bueno explícito de Juan.
 
+10. **Aislamiento de Alertas n8n (Inbound Web vs. Outbound CRM):**
+    - El estado `status: 'nuevo'` está reservado **EXCLUSIVAMENTE para leads orgánicos del formulario web** (`nexumtc.com.ar`). La automatización n8n en GCP despacha alertas por correo a Juan cada vez que detecta un lead con `status: 'nuevo'`.
+    - Toda prospección saliente / outbound cargada en Supabase debe crearse con `status: 'prospecto'` (o pasar a `status: 'contactado'` tras el envío). **PROHIBIDO cargar prospectos fríos con `status: 'nuevo'`** para no saturar el Gmail personal de Juan con falsas alertas de consulta web.
+
+
 
 

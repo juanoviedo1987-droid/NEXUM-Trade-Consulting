@@ -24,7 +24,7 @@
     {
       "parameters": {
         "method": "GET",
-        "url": "https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?status=eq.nuevo",
+        "url": "https://wbcfmanuhotyevquiaht.supabase.co/rest/v1/leads_nexum?status=eq.nuevo&origen=eq.web",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
