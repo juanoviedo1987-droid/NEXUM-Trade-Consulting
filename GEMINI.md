@@ -57,6 +57,12 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
     - El estado `status: 'nuevo'` está reservado **EXCLUSIVAMENTE para leads orgánicos del formulario web** (`nexumtc.com.ar`). La automatización n8n en GCP despacha alertas por correo a Juan cada vez que detecta un lead con `status: 'nuevo'`.
     - Toda prospección saliente / outbound cargada en Supabase debe crearse con `status: 'prospecto'` (o pasar a `status: 'contactado'` tras el envío). **PROHIBIDO cargar prospectos fríos con `status: 'nuevo'`** para no saturar el Gmail personal de Juan con falsas alertas de consulta web.
 
+11. **Permiso Previo Obligatorio (Cero Autonomía No Solicitada):**
+    - **Regla de Oro:** SOLO hacer, editar, crear, sincronizar archivos o ejecutar acciones operativas si Juan lo pide explícitamente en el chat.
+    - Ante cualquier pregunta informativa, responder únicamente lo consultado y **PREGUNTAR antes de realizar cualquier cambio**.
+    - Esperar siempre el "Sí", "Dale" o confirmación consciente de Juan antes de ejecutar.
+
+
 
 
 
