@@ -44,4 +44,14 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
    - **Decisor Directo:** El dueño, fundador, socio gerente o director comercial debe ser accesible de forma directa (a una llamada, WhatsApp comercial o LinkedIn de distancia).
    - **Cadencia de Contacto:** Siempre validar la lista de prospectos con Juan ANTES de cargar a base de datos. Estrategia multicanal: Email formal inicial (plantar bandera) seguido a los 3-5 días de contacto directo por WhatsApp o llamada telefónica.
 
+9. **Tono de Voz y Copywriting de Juan (Estilo de Comunicación B2B):**
+   - **ADN de Comunicación:** Rioplatense natural, simple, cercano, seguro y al grano. Cero rodeos, cero chamuyo corporativo o jerga inflada de consultora tradicional (PROHIBIDO usar frases como "sinergia estratégica", "en pos de", "quedo a su entera disposición", "estimados directivos").
+   - **Estructura Estándar para WhatsApp / Mensajes Directos:**
+     - Saludo natural y al pie: *"¡Hola [Nombre]! ¿Cómo estás? Te habla Juan, socio de Nexum."*
+     - Foco en 1 sola frase concreta sobre el interés o producto.
+     - Cierre abierto y sin presiones: *"Cuando quieras coordinamos una videollamada o hablamos por acá, lo que te sea más cómodo."*
+   - **Extensión:** Máximo 3 o 4 líneas. Menos es más: dejar que la contraparte hable, responda o proponga.
+   - **Regla de Ejecución Estricta:** NUNCA disparar envíos masivos de emails, mensajes ni mutaciones operativas externas sin la confirmación y el visto bueno explícito de Juan.
+
+
 
