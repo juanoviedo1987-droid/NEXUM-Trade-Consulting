@@ -2,128 +2,160 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Generador Portada LinkedIn - Nexum Trade Consulting</title>
+  <title>Kit LinkedIn Oficial — Nexum Trade Consulting</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; background: #0b0f19; }
+    body { font-family: 'Inter', sans-serif; background: #070d14; }
     .heading { font-family: 'Plus Jakarta Sans', sans-serif; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-slate-100">
 
-  <div class="max-w-6xl w-full text-center mb-6">
-    <h1 class="text-2xl font-bold heading text-white">Portada Oficial para LinkedIn — Nexum Trade Consulting</h1>
-    <p class="text-sm text-slate-400 mt-1">Medidas exactas: 1584 x 396 px (Proporción 4:1). El margen izquierdo está libre para tu foto de perfil.</p>
-    <div class="mt-4 flex items-center justify-center gap-3">
-      <button onclick="descargarPNG()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl transition shadow-lg shadow-sky-500/20 flex items-center gap-2 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        Descargar Portada en PNG (1584x396)
-      </button>
+  <div class="max-w-5xl w-full text-center mb-8">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/20 text-sky-400 text-xs font-bold uppercase tracking-wider mb-2 font-mono">
+      <span>🛡️</span> Identidad Visual LinkedIn (Empresa)
     </div>
+    <h1 class="text-2xl sm:text-3xl font-extrabold heading text-white tracking-tight">Nexum Trade Consulting</h1>
+    <p class="text-sm text-slate-400 mt-1">Recursos oficiales generados según la paleta maestra y Brand Kit del proyecto.</p>
   </div>
 
-  <!-- CONTENEDOR DEL BANNER (1584 x 396 píxeles exactos) -->
-  <div class="overflow-x-auto w-full flex justify-center pb-8">
-    <div id="bannerLinkedIn" style="width: 1584px; height: 396px; min-width: 1584px; min-height: 396px;" class="relative overflow-hidden bg-gradient-to-r from-slate-950 via-slate-900 to-[#032b43] border border-slate-800 shadow-2xl flex items-center">
-      
-      <!-- Fondo con textura de rutas globales y gradientes de luz -->
-      <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#0074A1 1px, transparent 1px); background-size: 24px 24px;"></div>
-      
-      <!-- Círculos de luz ambiental -->
-      <div class="absolute -top-20 -left-20 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-20 right-10 w-[500px] h-[500px] bg-sky-600/15 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="max-w-6xl w-full space-y-12">
 
-      <!-- Isotipo Nexum gigante decorativo en marca de agua de fondo a la derecha -->
-      <img src="assets/logo-nexum-icon.svg" class="absolute -right-12 -bottom-16 w-[420px] h-[420px] opacity-[0.06] pointer-events-none select-none">
-
-      <!-- ZONA IZQUIERDA: ÁREA PROTEGIDA PARA LA FOTO DE PERFIL CIRCULAR -->
-      <div class="w-[360px] h-full shrink-0 relative flex flex-col justify-end p-8 border-r border-white/5">
-        <div class="w-32 h-32 rounded-full border border-dashed border-sky-400/30 flex items-center justify-center text-center p-3 opacity-30 select-none">
-          <span class="text-[11px] text-sky-200 uppercase font-mono tracking-wider">Espacio para tu Foto de Perfil</span>
+    <!-- RECURSO 1: FOTO DE PERFIL / AVATAR CUADRADO (500x500) -->
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+      <div class="space-y-2 text-left max-w-md">
+        <span class="px-2.5 py-0.5 rounded bg-sky-500/10 text-sky-400 text-[11px] font-bold uppercase tracking-wider font-mono">1. Avatar Oficial</span>
+        <h2 class="text-xl font-bold text-white heading">Foto de Perfil LinkedIn (Empresa)</h2>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Isotipo de la <strong>N entrelazada</strong> en degradé celeste/blanco sobre fondo petróleo corporativo (<code class="text-sky-300">#002529</code>). Márgenes de seguridad calibrados para no recortar las flechas.
+        </p>
+        <div class="pt-3">
+          <button onclick="descargarPerfilPNG()" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl transition flex items-center gap-2 cursor-pointer shadow-md shadow-sky-500/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Descargar Perfil PNG (500x500)
+          </button>
         </div>
       </div>
 
-      <!-- ZONA DERECHA: MENSAJE PRINCIPAL, PROPUESTA DE VALOR Y CONTACTO -->
-      <div class="flex-1 h-full flex flex-col justify-between py-9 px-12 z-10 text-left">
-        
-        <!-- Header superior derecho: Logo Nexum + Badge -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <img src="assets/logo-nexum.png" alt="Nexum Trade Consulting" class="h-10 object-contain drop-shadow">
-          </div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-400/20 text-sky-300 text-xs font-semibold tracking-wide uppercase font-mono">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Consultoría Estratégica COMEX
-          </div>
+      <!-- Preview Avatar 500x500 renderizado -->
+      <div class="flex items-center justify-center p-4 bg-slate-950 rounded-2xl border border-slate-800">
+        <div id="avatarLinkedIn" style="width: 260px; height: 260px;" class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#002529] via-[#003943] to-[#00171A] flex items-center justify-center border border-white/10 shadow-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-44 h-44 drop-shadow-md">
+            <defs>
+              <linearGradient id="avatarCyanGrad" x1="0%" y1="100%" x2="50%" y2="0%">
+                <stop offset="0%" stop-color="#0284c7"/>
+                <stop offset="100%" stop-color="#38bdf8"/>
+              </linearGradient>
+            </defs>
+            <g transform="translate(62, 70) scale(1.3)" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Trazo 1: Blanco Puro -->
+              <path d="M 45 230 L 120 70 L 180 200 L 235 85" fill="none" stroke="#ffffff" stroke-width="32"/>
+              <polygon points="235,55 208,98 263,88" fill="#ffffff"/>
+              <!-- Trazo 2: Celeste Luminoso -->
+              <path d="M 95 230 L 160 95 L 220 220 L 285 55" fill="none" stroke="url(#avatarCyanGrad)" stroke-width="32"/>
+              <polygon points="285,25 258,68 313,58" fill="#38bdf8"/>
+            </g>
+          </svg>
         </div>
+      </div>
+    </div>
 
-        <!-- Centro: Título Potente y Bajada PyME -->
-        <div class="space-y-2.5 max-w-3xl">
-          <h2 class="text-[44px] leading-tight font-extrabold heading tracking-tight text-white drop-shadow-sm">
-            Llevamos tu fábrica <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-300 to-teal-200">al mundo.</span>
-          </h2>
-          <p class="text-[17px] leading-snug text-slate-300 font-medium max-w-2xl">
-            Comercio Exterior estratégico y factibilidad técnica para fábricas y PyMEs argentinas sin departamento propio de exportación.
+    <!-- RECURSO 2: PORTADA / BANNER PANORÁMICO MINIMALISTA (1128 x 191 px) -->
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl text-left">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded bg-sky-500/10 text-sky-400 text-[11px] font-bold uppercase tracking-wider font-mono">2. Portada Oficial LinkedIn</span>
+          <h2 class="text-xl font-bold text-white heading mt-1">Banner Panorámico para Página de Empresa</h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+            100% minimalista: Logo oficial dark + subtítulo sobrio + web oficial (<code class="text-sky-300">nexumtradeconsulting.com.ar</code>).
           </p>
         </div>
+        <button onclick="descargarPortadaPNG()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-sky-500/20 shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Descargar Portada PNG (1128x191)
+        </button>
+      </div>
 
-        <!-- Footer del banner: 3 Píldoras de Valor + Datos de Contacto Directo -->
-        <div class="flex items-center justify-between pt-3 border-t border-white/10 text-xs">
+      <!-- Preview Portada Panorámica LinkedIn (Escalada visualmente para pantalla) -->
+      <div class="overflow-x-auto w-full flex justify-center pb-2">
+        <div id="portadaLinkedIn" style="width: 1128px; height: 191px; min-width: 1128px; min-height: 191px;" class="relative overflow-hidden bg-gradient-to-r from-[#002529] via-[#003943] to-[#0a192f] border border-slate-800 shadow-2xl flex items-center justify-between px-16">
           
-          <!-- 3 Pilares -->
-          <div class="flex items-center gap-6 text-slate-300 font-medium">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-[11px]">✓</span>
-              <span>Factibilidad & Aranceles NCM</span>
+          <!-- Textura sutil y luz de fondo -->
+          <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#38bdf8 1px, transparent 1px); background-size: 20px 20px;"></div>
+          <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- LADO IZQUIERDO / CENTRO: LOGO OFICIAL DARK + SUBTÍTULO -->
+          <div class="relative z-10 flex flex-col justify-center">
+            
+            <!-- Logo Horizontal Completo SVG integrado -->
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 260" class="h-16 w-auto">
+                <defs>
+                  <linearGradient id="bannerCyanGrad" x1="0%" y1="100%" x2="50%" y2="0%">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="100%" stop-color="#38bdf8"/>
+                  </linearGradient>
+                </defs>
+                <g transform="translate(15, 10)">
+                  <g stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M 50 200 L 125 55 L 185 175 L 240 70" fill="none" stroke="#ffffff" stroke-width="28"/>
+                    <polygon points="240,42 215,80 265,72" fill="#ffffff"/>
+                    <path d="M 95 200 L 160 78 L 220 195 L 285 45" fill="none" stroke="url(#bannerCyanGrad)" stroke-width="28"/>
+                    <polygon points="285,18 260,56 310,48" fill="#38bdf8"/>
+                  </g>
+                  <text x="350" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="108" font-weight="800" letter-spacing="-0.02em" fill="#ffffff">NEXUM</text>
+                  <text x="354" y="186" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600" letter-spacing="0.32em" fill="#38bdf8">TRADE CONSULTING</text>
+                </g>
+              </svg>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-[11px]">✓</span>
-              <span>Habilitaciones & Normativa</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-[11px]">✓</span>
-              <span>Apertura de Mercados Regionales</span>
-            </div>
+
+            <!-- Subtítulo limpio en 1 sola línea -->
+            <p class="text-[12px] font-medium tracking-[0.22em] uppercase text-slate-300/90 font-mono mt-1 pl-1">
+              Consultoría Estratégica en Comercio Exterior
+            </p>
           </div>
 
-          <!-- Contacto Oficial -->
-          <div class="flex items-center gap-5 text-right font-mono text-[13px] text-sky-200 font-semibold">
-            <span class="text-slate-400">🌐 nexumtc.com.ar</span>
-            <span class="text-slate-600">|</span>
-            <span class="text-emerald-400">✉️ info@nexumtc.com.ar</span>
+          <!-- LADO DERECHO: WEB OFICIAL -->
+          <div class="relative z-10 flex items-center">
+            <div class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <span class="text-sm font-mono font-semibold text-sky-200 tracking-wide">nexumtradeconsulting.com.ar</span>
+            </div>
           </div>
 
         </div>
-
       </div>
-
     </div>
+
   </div>
 
   <script>
-    async function descargarPNG() {
-      const banner = document.getElementById('bannerLinkedIn');
-      
-      // Ocultar temporalmente el círculo guía de la foto antes de exportar
-      const placeholderFoto = banner.querySelector('.w-32');
-      if (placeholderFoto) placeholderFoto.style.display = 'none';
+    async function descargarPerfilPNG() {
+      const avatar = document.getElementById('avatarLinkedIn');
+      const canvas = await html2canvas(avatar, {
+        scale: 2, // 520x520 nítido
+        backgroundColor: null
+      });
+      const link = document.createElement('a');
+      link.download = 'perfil-linkedin-nexum-500x500.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
 
+    async function descargarPortadaPNG() {
+      const banner = document.getElementById('portadaLinkedIn');
       const canvas = await html2canvas(banner, {
-        scale: 2, // Calidad retina ultra nítida
+        scale: 2, // 2256x382 ultra nítido
         useCORS: true,
         allowTaint: true,
-        width: 1584,
-        height: 396
+        width: 1128,
+        height: 191
       });
-
-      if (placeholderFoto) placeholderFoto.style.display = 'flex';
-
       const link = document.createElement('a');
-      link.download = 'portada-linkedin-nexum-1584x396.png';
+      link.download = 'portada-linkedin-nexum-1128x191.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
