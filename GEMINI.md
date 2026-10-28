@@ -36,11 +36,12 @@ Este proyecto gestiona el sitio web corporativo, la captura de leads B2B y las a
    - Ergonomía táctil obligatoria (zonas de toque >= 44px, navegación al alcance del pulgar, formularios adaptativos, sin scrolls laterales accidentales).
    - En PC se garantiza la vista ejecutiva de pantalla completa sin comprometer la base móvil.
 
-8. **Perfil de Cliente Ideal (ICP) y Prospección Quirúrgica:**
-   - **Target Obligatorio:** PyMEs chicas o talleres/fábricas boutique argentinas (de **5 a 30 empleados**).
-   - **Exclusión Estricta:** NUNCA prospectar empresas medianas/grandes que ya cuenten con departamento interno de Comercio Exterior, despachantes corporativos fijos o estructura burocrática inaccesible.
-   - **Perfil del Prospecto:** Producto terminado con marca propia (no materias primas a granel), validado en mercado interno, con capacidad productiva disponible, sin experiencia exportadora sólida o con exportaciones esporádicas.
-   - **Decisor Directo:** El dueño, fundador o socio gerente debe ser accesible de forma directa (a una llamada, WhatsApp comercial o LinkedIn de distancia; sin filtros de secretaría o conmutadores complejos).
-   - **Cadencia de Contacto:** Siempre validar y acordar la lista de empresas con Juan ANTES de cargar a base de datos. Estrategia multicanal: Email formal inicial (plantar bandera) seguido a los 3-5 días de contacto directo por WhatsApp/llamada telefónica.
+8. **Perfil de Cliente Ideal (ICP) y Filtro Maestro de Prospección:**
+   - **Filtro Maestro Obligatorio:** Empresas o fábricas argentinas que **NO cuenten con departamento propio ni analista interno de Comercio Exterior**. Si tienen un producto terminado con marca propia y no tienen área de Comex interna, **califican automáticamente para ser contactadas**.
+   - **Dotación de Personal Flexible:** No limitar por cantidad de operarios. Una fábrica puede tener 10, 40 o más de 60 empleados (donde la gran mayoría está en planta/producción) y ser un cliente ideal con excelente espalda financiera, siempre que carezca de estructura de Comex.
+   - **Exclusión Estricta:** NUNCA prospectar empresas que ya tengan gerencia/jefatura interna de Comercio Exterior o burocracias corporativas impenetrables.
+   - **Perfil del Producto:** Producto terminado con marca propia (no materias primas a granel), validado en el mercado interno y con capacidad productiva para atender pedidos regionales.
+   - **Decisor Directo:** El dueño, fundador, socio gerente o director comercial debe ser accesible de forma directa (a una llamada, WhatsApp comercial o LinkedIn de distancia).
+   - **Cadencia de Contacto:** Siempre validar la lista de prospectos con Juan ANTES de cargar a base de datos. Estrategia multicanal: Email formal inicial (plantar bandera) seguido a los 3-5 días de contacto directo por WhatsApp o llamada telefónica.
 
 
